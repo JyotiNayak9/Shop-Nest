@@ -20,6 +20,13 @@ export interface TextInputInterface {
     type?: string
     row?:number
 }
+export interface ImageInputInterface{
+    type: any
+    name:string
+    errMsg?: string 
+    control: any
+    onChange: any
+}
 export const TextInputComponent = ({type="text",control,name, defaultValue, errMsg=null}: TextInputInterface) => {
     const {field} = useController({
         control: control,
@@ -165,3 +172,30 @@ export const CancelButton = ({loading = false, children}: {loading:boolean, chil
         </>
     )
 }
+export const ImageUpload = ({control,errMsg="",type="file",name}:ImageInputInterface) => { //onchange
+    const {field: { onChange, ...restField },} = useController({
+        control :control,
+        name:name,
+    });
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+          onChange(file); // This updates RHF state
+        }
+      };
+    return(
+        <>
+        <input
+        {...restField}
+        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+       accept="image/*"
+        onChange={handleImageChange}
+        type={type}
+        name={name}
+      ></input>
+      <span className="text-sm italic text-red-800">
+             {errMsg}
+            </span>
+      </>
+    )
+    }

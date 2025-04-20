@@ -7,3 +7,9 @@ export const UserRoles = {
     CUSTOMER : "customer",
     SELLER: "seller"
 }
+
+export interface SearchParams {
+    page?: number | 1;
+    limit: number|10;
+    search?: string | null| undefined;
+}

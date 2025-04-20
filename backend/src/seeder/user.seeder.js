@@ -7,7 +7,7 @@ const adminUsers =[
     {
         name: "Jyoti",
         email:"jyoti@gmail.com",
-        password:bcrypt.hashSync("Admin123", 10),
+        password:bcrypt.hashSync("Admin123#", 10),
         role: UserRoles.ADMIN,
         status: StatusType.ACTIVE
     }

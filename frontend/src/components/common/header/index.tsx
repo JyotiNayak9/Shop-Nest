@@ -11,7 +11,9 @@ export const HomeHeader = () => {
     <>
       <Navbar fluid rounded className=" pb-0 shadow-lg">
         <Navbar.Brand href="">
+          <NavLink to="/">
           <img src={logo} className="ml-20 h-20 sm:h-20 w-30 " alt=" Logo" />
+        </NavLink>
         </Navbar.Brand>
         <div className="flex md:order-2 mr-10">
           <Navbar.Collapse>
@@ -29,7 +31,7 @@ export const HomeHeader = () => {
                   {LoggedInUser.name}
                 </NavLink>
                 <NavLink
-                  to="/login"
+                  to="/logout"
                   className={({ isActive }: { isActive: boolean }) =>
                     isActive
                       ? "md:text-blue-600"

@@ -18,11 +18,11 @@ const BrandSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    status:{
-        type: String,
-        enum: [StatusType.ACTIVE, StatusType.INACTIVE],
-        default : StatusType.INACTIVE
-    },
+    // status:{
+    //     type: String,
+    //     enum: [StatusType.ACTIVE, StatusType.INACTIVE],
+    //     default : StatusType.INACTIVE
+    // },
     createdBy:{
         type: mongoose.Types.ObjectId,
         ref: "User",

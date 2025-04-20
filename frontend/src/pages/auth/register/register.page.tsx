@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import authSvc from "../auth.service";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState ,useEffect, useContext} from "react";
 import { LoadingComponent } from "../../../components/common/loading/loading-component";
 import AuthContext from "../../../context/auth.context";
@@ -14,14 +14,12 @@ import AuthContext from "../../../context/auth.context";
 const RegisterPage = () => {
 
   const registerDTO = Yup.object({
-    name: Yup.string().required().min(2).max(50),
+    name: Yup.string().required().matches(/^[A-Z][a-z]+(?: [A-Z][a-z]+)+$/,"Invalid name format").min(2).max(50),
     email: Yup.string().email().required(),
-    address: Yup.string(),
-    password: Yup.string().matches(/^(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,25}$/).required(),
+    password: Yup.string().matches(/^(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,25}$/,"password must contain small letter, capital letter, number and special character").required(),
     confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password and confirm password must match"),
     role: Yup.string().matches(/^(seller|customer)$/).default('customer').required(),
-    phone: Yup.string().nullable(),
-    image: Yup.string()
+    // image:Yup.string()
   })
 
   const navigate = useNavigate();
@@ -31,13 +29,20 @@ const RegisterPage = () => {
     resolver: yupResolver(registerDTO)
   });
 
-  
+  const {LoggedInUser} = useContext(AuthContext)
+  useEffect(() => {
+    if(LoggedInUser){
+      toast.info("You are already logged in.")
+      navigate("/"+LoggedInUser.role)
+    }
+  },[LoggedInUser])
  
   const submitForm = async (data: any) => {
       try{
         setLoading(true);
-       await authSvc.postRequest('auth/register', data,{file:true})
-          toast.success("Your account has been created successfully. Please check your email for futher processing")
+        await authSvc.postRequest('/auth/register',data,{file:true});
+
+          toast.success("Your account has been created successfully. ")
           navigate('/')
       } catch(exception : any){
         if(+exception.status === 400){
@@ -50,13 +55,7 @@ const RegisterPage = () => {
         setLoading(false)
       }
   }
-  const LoggedInUser = useContext(AuthContext)
-  useEffect(() => {
-    if(LoggedInUser){
-      toast.info("You are already logged in.")
-      navigate("/"+LoggedInUser.role)
-    }
-  },[LoggedInUser])
+
   console.log(errors)
     return(
         <>
@@ -135,7 +134,7 @@ const RegisterPage = () => {
             />
           </div>
 
-          <div className="col-span-6">
+          {/* <div className="col-span-6">
             <InputLabel htmlFor="address">Address</InputLabel>
             <TextAreaInputComponent
               name="address"
@@ -143,8 +142,8 @@ const RegisterPage = () => {
           
               control={control}
             />
-            </div>
-          <div className="col-span-6">
+            </div> */}
+          {/* <div className="col-span-6">
           <InputLabel htmlFor="phone">Phone</InputLabel>
            
             <TextInputComponent
@@ -153,7 +152,7 @@ const RegisterPage = () => {
     
            control={control}
            />
-          </div>
+          </div> */}
           <div className="col-span-6">
           <InputLabel htmlFor="role">Role</InputLabel>
 
@@ -164,7 +163,7 @@ const RegisterPage = () => {
              control={control}
             />
           </div>
-          <div className="col-span-6">
+          {/* <div className="col-span-6">
           <InputLabel htmlFor="image">Image</InputLabel>
 
             <input 
@@ -176,17 +175,10 @@ const RegisterPage = () => {
              }}
              ></input>
            
-          </div>
+          </div> */}
 
           
-          <div className="col-span-6">
-            <p className="text-sm text-gray-500">
-              By creating an account, you agree to our
-              <a href="#" className="text-gray-700 underline mx-1" > terms and conditions </a>
-              and
-              <a href="#" className="text-gray-700 underline mx-1">privacy policy</a>.
-            </p>
-          </div>
+        
 
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
             <button disabled = {loading}
@@ -198,7 +190,13 @@ const RegisterPage = () => {
 
             <p className="mt-4 text-sm text-gray-500 sm:mt-0">
               Already have an account?
-              <a href="#" className="text-gray-700 underline">Log in</a>.
+             <NavLink
+                           className={"text-sm text-gray-900 hover:text-violet-800"}
+                           to={"/login"}
+                         >
+                           {" "}
+                          Login
+                         </NavLink>
             </p>
           </div>
         </form>

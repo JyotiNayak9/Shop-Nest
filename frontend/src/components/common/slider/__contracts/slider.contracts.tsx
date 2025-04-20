@@ -1,7 +1,7 @@
 interface SingleSlider {
     _id:string,
     title: string,
-    image: string,
+    image: any,
     link: string | null | undefined
 }
 

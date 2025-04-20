@@ -70,7 +70,7 @@ class AuthController {
             })
 
             if(bcrypt.compareSync(password, user.password)){
-                if(user.status === StatusType.ACTIVE){
+                
 
                     const token = jwt.sign({
                         sub: user._id
@@ -84,7 +84,7 @@ class AuthController {
                     sub: user._id,
                     type: "refresh"
                 }, process.env.JWT_SECRET,{
-                    expiresIn: "1 day"
+                    expiresIn: "2 day"
                 })
 
                 res.json({
@@ -103,9 +103,7 @@ class AuthController {
                         message: "login successful",
                         meta: null
                     })
-                }else{
-                    throw {status:422, message: "your account has not been activated yet"}
-                }
+              
             }else{
                 throw {status: 422, message:"Credentials doesnot match"}
             }
@@ -129,7 +127,7 @@ class AuthController {
 
     refreshToken = async(req, res, next) =>{
         try{
-            let token = req.headers['Authorization'] || null;
+            let token = req.headers['authorization'] || null;
         
             if(!token){
                 throw {status: 401, message: "Token required"}

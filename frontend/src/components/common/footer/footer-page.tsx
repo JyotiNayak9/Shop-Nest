@@ -19,29 +19,29 @@ const HomeFooter = () => {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:mt-4 sm:grid-cols-3 sm:gap-6">
             <div>
-              <Footer.Title title="about" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Flowbite</Footer.Link>
-                <Footer.Link href="#">Tailwind CSS</Footer.Link>
+              <Footer.Link href="/">Home</Footer.Link>
+                <Footer.Link href="/about">About Us</Footer.Link>
+              
+               
+
               </Footer.LinkGroup>
             </div>
             <div>
-              <Footer.Title title="Follow us" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Github</Footer.Link>
-                <Footer.Link href="#">Discord</Footer.Link>
+              <Footer.Link href="/products">Products</Footer.Link>
+              <Footer.Link href="/contact">Contact</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
-              <Footer.Title title="Legal" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Privacy Policy</Footer.Link>
-                <Footer.Link href="#">Terms &amp; Conditions</Footer.Link>
+              <Footer.Link href="/contact">Contact</Footer.Link>
+              <Footer.Link href="/categories">Categories</Footer.Link>
               </Footer.LinkGroup>
             </div>
           </div>
         </div>
-        <Footer.Divider />
+        {/* <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between">
           <Footer.Copyright href="#" by="Flowbite™" year={2022} />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
@@ -51,7 +51,7 @@ const HomeFooter = () => {
             <Footer.Icon href="#" icon={BsGithub} />
             <Footer.Icon href="#" icon={BsDribbble} />
           </div>
-        </div>
+        </div> */}
       </div>
     </Footer>
     </>

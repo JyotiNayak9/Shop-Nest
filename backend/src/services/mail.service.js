@@ -23,7 +23,7 @@ class MailService {
         }catch(exception){
             console.log(exception)
             console.log("Error connecting to mail server")
-            //process.exit(1)
+            // process.exit(1)
         }
     }
 

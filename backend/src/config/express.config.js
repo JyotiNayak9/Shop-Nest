@@ -5,6 +5,7 @@ require("./db.config.js");
 
 const router = require("./router.config.js");
 const { MulterError } = require("multer");
+const { hasValidDomain } = require("../modules/user/user.request.js");
 const app = express();
 
 app.use(cors())
@@ -42,16 +43,22 @@ if(error.code === 11000){
         statusCode = 400
     }
 
+// if(!hasValidDomain){
+//     statusCode = 400;
+//     message = "Email domain is not valid"
+//     detail = {
+//         email: "Email domain is not valid"
+//     }
+// }
 if(error instanceof MulterError){
-    if(error.code = "LIMIT_FILE_SIZE"){
+    if(error.code == "LIMIT_FILE_SIZE"){
         statusCode = 400,
         detail = {
-            [error.field] : 'file size too large'
+            [error.field] : error.message
         }
 
     }
 }
-
 
 res.status(statusCode).json({
     result:detail,

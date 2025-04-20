@@ -53,7 +53,7 @@ const LoginPage = () => {
 
  return(
     <>
-      <section className="flex  flex-col items-center justify-center min-h-screen">
+      <section className="flex flex-col items-center justify-center min-h-screen">
         <Heading3>
           <>Login Page</>
         </Heading3>
@@ -87,7 +87,20 @@ const LoginPage = () => {
           <div className="my-2">
             <NavLink
               className={"text-sm text-gray-900 hover:text-violet-800"}
-              to={"/forget-password"}
+              to={"#"}
+              onClick={ async(e) => {
+                e.preventDefault();
+                try{
+                  setLoading(true);
+                   await authSvc.postRequest("/user/forgotpasswordtoken", {email: control._formValues.email});
+                  toast.success(`Password reset link has been sent to your email`);
+                  navigate("/login");
+                }
+                catch(exception: any) {
+                  toast.error(exception.data.message);
+                }
+              }
+            }
             >
               {" "}
               Forgot Password?

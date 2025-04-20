@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "../pages/landing";
-import RegisterPage from "../pages/auth/register/register.page";
 import AboutPage from "../pages/about/about-page";
 import CategoryPage from "../pages/categories/categories";
 import ProductsPage from "../pages/allproducts/all-products";
@@ -20,8 +19,19 @@ import AdminDashboard from "../pages/dashboard/admin-dashboard.page";
 import CheckPermission from "./rbac.config";
 import { UserRoles } from "./constants";
 import NotFoundError from "../components/common/error/not-found-error";
-import BannerListingPage from "../pages/banner/banner-list-page";
-import CreateBanner from "../pages/banner/banner-create-page";
+import RegisterPage from "../pages/auth/register/register.page";
+import Logout from "../pages/auth/logout";
+import ResetPassword from "../pages/auth/forget-password";
+import CategoryListingPage from "../pages/Cms/category/category-list-page";
+import CreateCategory from "../pages/Cms/category/category-create-page";
+import EditCategory from "../pages/Cms/category/category-edit-page";
+import BrandListingPage from "../pages/Cms/brand/brand-list-page";
+import CreateBrand from "../pages/Cms/brand/brand-create-page";
+import EditBrand from "../pages/Cms/brand/brand-edit-page";
+import ProductListingPage from "../pages/Cms/product/product-list-page";
+import CreateProduct from "../pages/Cms/product/product-create-page";
+import EditProduct from "../pages/Cms/product/product-edit-page";
+// import ForgotPasswordPage from "../pages/auth/forget-password";
 
 const RouterConfig = () => {
     const [LoggedInUser, setLoggedInUser] = useState();
@@ -55,22 +65,36 @@ setLoggedInUser(response.result);
                 <Route path="register" element={<RegisterPage/>}/>
                 <Route path="activate/:token" element={<UserActivation/>}/>
                 <Route path="login" element={<LoginPage/>}/>
+                <Route path="login" element={<LoginPage/>}/>
+                <Route path="resetpassword/:token" element={<ResetPassword/>}/>
+                <Route path="logout" element={<Logout/>}/>
                 <Route path="about" element={<AboutPage/>}/>
                 <Route path="categories" element={<CategoryPage/>}/>
                 <Route path="products" element={<ProductsPage/>}/>
                 <Route path="contact" element={<ContactPage/>}/>
                 <Route path="categories/:slug" element={<CategoryDetailsPage/>}/>
                 <Route path="products/:slug" element={<ProduuctDetailsPage/>}/>
-                <Route path="*" element  = {<NotFoundError url="/" label="Go to Homeage"/>}/>
+                <Route path="*" element  = {<NotFoundError url="/" label="Go to Homepage"/>}/>
                 </Route>
 
                 <Route path="/admin" element={<CheckPermission allowedBy={UserRoles.ADMIN}>
                     <Adminlayout/>
                     </CheckPermission>}>
                 <Route index element={<AdminDashboard/>}/>
-                <Route path="banner" element = {<BannerListingPage/>}/>
-                <Route path="banner/create" element = {<CreateBanner/>}/>
+                <Route path="category" element = {<CategoryListingPage/>}/>
+                <Route path="category/create" element = {<CreateCategory/>}/>
+                <Route path="category/:id/edit" element = {<EditCategory/>}/>
+
+                <Route path="brand" element = {<BrandListingPage/>}/>
+                <Route path="brand/create" element = {<CreateBrand/>}/>
+                <Route path="brand/:id/edit" element = {<EditBrand/>}/>
                 <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
+
+                <Route path="product" element = {<ProductListingPage/>}/>
+                <Route path="product/create" element = {<CreateProduct/>}/>
+                <Route path="product/:id/edit" element = {<EditProduct/>}/>
+                <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
+
 
 
                 </Route>

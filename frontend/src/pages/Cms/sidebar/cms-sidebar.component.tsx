@@ -16,11 +16,11 @@ const CMSSidebar = () => {
       url:"/admin",
       icon: <MdDashboard className="w-6 h-4 mr-4"/>
     },
-    {
-      name:"Banner Management",
-      url:"/admin/banner",
-      icon: <HiFilm className="w-6 h-4 mr-4"/> 
-    },
+    // {
+    //   name:"Banner Management",
+    //   url:"/admin/banner",
+    //   icon: <HiFilm className="w-6 h-4 mr-4"/> 
+    // },
     {
       name:"Product Management",
       url:"/admin/product",

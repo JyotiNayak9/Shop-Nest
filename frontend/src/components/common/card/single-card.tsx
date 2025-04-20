@@ -1,4 +1,4 @@
-import { Card } from "flowbite-react"
+import { Card } from "flowbite-react";
 import SingleCardWithImageAndTitleProps from "./single-card.contracts";
 import ProductCardProps from "./product-card.contracts";
 

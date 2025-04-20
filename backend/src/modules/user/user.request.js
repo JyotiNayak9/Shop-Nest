@@ -1,7 +1,8 @@
 const Joi = require("joi");
+const dns = require('dns');
 
 const userCreateDTO = Joi.object({
-    name : Joi.string().regex(/^[a-zA-Z]+$/i).min(2).max(50).required(),
+    name : Joi.string().regex(/^[A-Z][a-z]+(?: [A-Z][a-z]+)+$/i).min(2).max(50).required(),
     email : Joi.string().email().required().messages({
         "string.email" : "Email must have a valid format"
     }),
@@ -20,6 +21,16 @@ const userCreateDTO = Joi.object({
     })
 })
 
+PasswordUpdateDTO = Joi.object({
+    password : Joi.string().regex(/^(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,25}$/).required().messages({
+        "string.pattern.base" : "password must contain small letter, capital letter, number and special character"
+    }),
+    confirmPassword : Joi.string().equal(Joi.ref('password')).required().messages({
+        "any.only" : "password and confirm password should match"
+    }),
+})
+
 module.exports = {
-    userCreateDTO
+    userCreateDTO,
+    PasswordUpdateDTO
 }

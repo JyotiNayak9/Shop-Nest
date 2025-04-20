@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import SliderComponent from "../common/slider"
 import SingleSlider from "../common/slider/__contracts/slider.contracts"
-
+// import { Banner } from "flowbite-react"
+import banner1 from "../../assets/images/banner1.png";
 
 export const BannerComponent = () =>{
 
@@ -12,21 +13,21 @@ export const BannerComponent = () =>{
             {
             _id: "",
             title:"Banner Image",
-            image: "https://icms-image.slatic.net/images/ims-web/6548804b-b8c5-4896-9b46-2e75d09b61c7.jpg",
-            link:"https://google.com",
+            image: {banner1},
+            link:"/",
         },
-        {
+         {
             _id: "",
             title:"Banner Image",
-            image: "https://icms-image.slatic.net/images/ims-web/8219dc4b-18ec-481d-a34c-ff76d36ee6f8.jpg",
-            link:"",
+            image: {banner1},
+            link:"/",
         },
-        {
-            _id: "",
-            title:"Banner Image",
-            image: "https://icms-image.slatic.net/images/ims-web/7a9f9cb2-0a0d-459e-abf7-911a129a5f64.jpg",
-            link:"",
-        },
+        // {
+        //     _id: "",
+        //     title:"Banner Image",
+        //     image: "https://icms-image.slatic.net/images/ims-web/7a9f9cb2-0a0d-459e-abf7-911a129a5f64.jpg",
+        //     link:"",
+        // },
     ]
     setBannerData(response)
     }

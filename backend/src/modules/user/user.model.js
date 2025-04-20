@@ -34,23 +34,21 @@ const UserSchema = new mongoose.Schema({
         enum: [...Object.values(UserRoles)],
         default: UserRoles.CUSTOMER
     },
-    image:{
-        type: String,
-    },
-    status:{
-        type : String,
-        enum: [...Object.values(StatusType)],
-        default: StatusType.INACTIVE
-    },
-    activationToken: String,
-    activateFor: Date,
+    // image: Array,
+    // status:{
+    //     type : String,
+    //     enum: [...Object.values(StatusType)],
+    //     default: StatusType.INACTIVE
+    // },
+    // activationToken: String,
+    // activateFor: Date,
     phone: [String],
     address: {
         permanent:AddressSchema,
         temporary:AddressSchema
     },
-    forgetToken:String,
-    forgetFor: Date,
+    passwordResetToken:String,
+    passwordResetExpires: Date,
     image: String,
     createdBy:{
         type: mongoose.Types.ObjectId,

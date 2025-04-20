@@ -72,12 +72,8 @@ class CategoryController{
             if(!id){
                 throw {status:400, message:"Id is required"}
             }
-            this.categoryDetail = await categoryService.getDetailByfilter({
-                _id:id
-            })
-            if(!this.categoryDetail){
-                throw{status:404, message:"Category doesnot exists"}
-            }}catch(exception){
+            
+            }catch(exception){
                 throw exception
             }
     }
@@ -85,6 +81,12 @@ class CategoryController{
         try{
             const id = req.params.id;
             await this.#validateId(id)
+            this.categoryDetail = await categoryService.getDetailByfilter({
+                _id:id
+            })
+            if(!this.categoryDetail){
+                throw{status:404, message:"Category doesnot exists"}
+            }
             res.json({
                 result: this.categoryDetail,
                 maessage: "Category Fetched successfully",
