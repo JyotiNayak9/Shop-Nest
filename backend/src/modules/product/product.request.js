@@ -1,6 +1,7 @@
 const joi = require("joi")
 const { StatusType, ProductStatus } = require("../../config/constants.config");
 const { description } = require("../auth/auth.request");
+const { features } = require("process");
 
 const ProductCreateDTO = joi.object({
     title: joi.string().min(3).max(100).required(),
@@ -15,7 +16,8 @@ const ProductCreateDTO = joi.object({
         postedBy: joi.string()
     }
     ],
-    status: joi.string().valid(...Object.values(ProductStatus)).required(),
+    features: joi.array().items(joi.string()),
+    // status: joi.string().valid(...Object.values(ProductStatus)).required(),
     image: joi.array()
 });
 
@@ -32,7 +34,8 @@ const ProductUpdateDTO = joi.object({
         postedBy: joi.string()
     }
     ],
-    status: joi.string().valid(...Object.values(ProductStatus)),
+    features: joi.array().items(joi.string()),
+    // status: joi.string().valid(...Object.values(ProductStatus)),
     image: joi.array()
 });
 

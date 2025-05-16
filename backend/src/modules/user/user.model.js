@@ -13,6 +13,26 @@ const AddressSchema = new mongoose.Schema({
     wardNo: Number,
     houseAddress: String
     }); 
+const StoreSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    panNumber: {
+        type: String,
+        required: true
+    },
+    // status: {
+    //     type: String,
+    //     enum: [...Object.values(StatusType)],
+    //     default: StatusType.INACTIVE
+    // }
+});
+
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -47,6 +67,7 @@ const UserSchema = new mongoose.Schema({
         permanent:AddressSchema,
         temporary:AddressSchema
     },
+    store: StoreSchema,
     passwordResetToken:String,
     passwordResetExpires: Date,
     image: String,

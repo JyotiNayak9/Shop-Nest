@@ -97,6 +97,33 @@ class CategoryController{
         }
         
     }
+     getbyslug = async(req, res, next) => {
+        try{
+            const {slug} = req.params
+            // idvalidate(id)
+        const category = await categoryService.categoryDetailBySlug(slug)
+        res.json({
+            result : category,
+            message: `details of category Id ${slug} `,
+            meta: null
+        })
+        }catch(exception){
+            next(exception)
+        }
+     }
+    getAllCategories = async(req, res, next) =>{
+        try{
+            const categories = await categoryService.getAllCategory()
+            res.json({
+                result: categories,
+                message: "Category list",
+                meta: null
+            })
+        }catch(exception){
+            next(exception)
+
+        }
+    }
     update = async(req, res, next) =>{
         try{
             const id = req.params.id;

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "../pages/landing";
 import AboutPage from "../pages/about/about-page";
-import CategoryPage from "../pages/categories/categories";
+import CategoryPage, { AllCategory } from "../pages/categories/categories";
 import ProductsPage from "../pages/allproducts/all-products";
 import ContactPage from "../pages/contact/contact-page";
 import CategoryDetailsPage from "../pages/categories/category-details";
@@ -31,22 +31,26 @@ import EditBrand from "../pages/Cms/brand/brand-edit-page";
 import ProductListingPage from "../pages/Cms/product/product-list-page";
 import CreateProduct from "../pages/Cms/product/product-create-page";
 import EditProduct from "../pages/Cms/product/product-edit-page";
-// import ForgotPasswordPage from "../pages/auth/forget-password";
+import ProductDetailPage from "../pages/allproducts/product-details";
+import ForgotPasswordPage from "../pages/auth/forget-password";
+import CartDisplay from "../pages/cart/cart.tsx";
+import SellerRegister from "../pages/auth/register/seller-register.tsx";
+import SellerLayout from "../pages/layout/seller.page.tsx";
 
 const RouterConfig = () => {
-    const [LoggedInUser, setLoggedInUser] = useState();
+    const [LoggedInUser, setLoggedInUser] = useState<any>(null);
     const [loading, setLoading] = useState(true)
     const getLoggedInUser = async() => {
         try {
-const response: any = await authSvc.getRequest("/auth/me", {auth:true})
-console.log(response)
-setLoggedInUser(response.result);
-        }catch(exception) {
+            const response: any = await authSvc.getRequest("/auth/me", {auth:true})
+            console.log(response)
+            setLoggedInUser(response.result);
+        } catch(exception) {
            console.log(exception) 
         } finally {
-        setLoading(false)
+            setLoading(false)
+        }
     }
-}
     useEffect(() => {
         getLoggedInUser();
     },[])
@@ -56,24 +60,29 @@ setLoggedInUser(response.result);
     return (
         <>
         {loading? <>loading .... </> : <> 
-            <AuthContext.Provider value = {{LoggedInUser, setLoggedInUser}}>
+            <AuthContext.Provider value={{LoggedInUser, setLoggedInUser}}>
         <ToastContainer/>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element = {<HomepageLayout/>}>
                 <Route index element={<LandingPage/>}/>
                 <Route path="register" element={<RegisterPage/>}/>
+                <Route path="/SellerRegister" element={<SellerRegister/>}/>
                 <Route path="activate/:token" element={<UserActivation/>}/>
                 <Route path="login" element={<LoginPage/>}/>
                 <Route path="login" element={<LoginPage/>}/>
                 <Route path="resetpassword/:token" element={<ResetPassword/>}/>
                 <Route path="logout" element={<Logout/>}/>
                 <Route path="about" element={<AboutPage/>}/>
-                <Route path="categories" element={<CategoryPage/>}/>
+                <Route path="categories" element={<AllCategory/>}/>
                 <Route path="products" element={<ProductsPage/>}/>
                 <Route path="contact" element={<ContactPage/>}/>
                 <Route path="categories/:slug" element={<CategoryDetailsPage/>}/>
-                <Route path="products/:slug" element={<ProduuctDetailsPage/>}/>
+                <Route path="products/:slug" element={<ProductDetailPage/>}/>
+
+                <Route path="cart" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                    <CartDisplay/>
+                    </CheckPermission> }/>
                 <Route path="*" element  = {<NotFoundError url="/" label="Go to Homepage"/>}/>
                 </Route>
 
@@ -94,16 +103,16 @@ setLoggedInUser(response.result);
                 <Route path="product/create" element = {<CreateProduct/>}/>
                 <Route path="product/:id/edit" element = {<EditProduct/>}/>
                 <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
-
-
-
                 </Route>
 
+
                 <Route path="/seller" element={<CheckPermission allowedBy={UserRoles.SELLER}>
-                <Adminlayout/>
-                    
+                <SellerLayout/>                   
                 </CheckPermission>}>
-                <Route  element={<AboutPage/>}></Route>
+                <Route path="product" element = {<ProductListingPage/>}/>
+                <Route path="product/create" element = {<CreateProduct/>}/>
+                <Route path="product/:id/edit" element = {<EditProduct/>}/>
+                <Route path="*" element  = {<NotFoundError url="/seller" label="Go to Dashboard"/>}/>
                 
                 </Route>
             </Routes>

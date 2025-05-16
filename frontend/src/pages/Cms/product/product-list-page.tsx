@@ -11,15 +11,19 @@ import { FaPen, FaTrash } from "react-icons/fa"
 import Swal from "sweetalert2"
 import ProductSvc from "./product-service"
 import { ActionButtons } from "../../../components/common/table/table-actionbuttons"
+import { get } from "react-hook-form"
 const ProductListingPage = () => {
     const [pagination, setPagination] = useState({
         currentPage : 1,
         totalPage: 1,
         limit: 10
     })
-    const [Product, setProduct] =useState([]);
+    const [Product, setProduct] =useState<any[]>([]);
     const [loading, setLoading] =useState(true);
     const [search, setSearch] = useState<string |null>();
+    const [categoryMap, setCategoryMap] = useState<{ [key: string]: string }>({});
+    const [brandMap, setBrandMap] = useState<{ [key: string]: string }>({});
+
     const onPageChange =async (page:number) => {
         console.log(pagination);
         setPagination({
@@ -35,7 +39,7 @@ const ProductListingPage = () => {
     const getAllProduct = async ({page = 1, limit=10, search=''}: SearchParams) => {
       try{
         setLoading(true)
-        const response: any = await authSvc.getRequest("/Product/", {auth:true , params : {limit: limit, page: page,search: search}})
+        const response: any = await authSvc.getRequest("/product/getproducts", {auth:true , params : {limit: limit, page: page,search: search}})
         console.log(response)
         setProduct(response.result);
         console.log(Product)
@@ -52,15 +56,54 @@ const ProductListingPage = () => {
       setLoading(false)
       }
     }
- 
-
+  //  const  getCategoryDetails = async (id:string) => {
+  //     try{
+    
+  //       const response: any = await authSvc.getRequest("/category/"+id, {auth:true})
+  //       console.log(response)
+  //       setCategory(response.result);
+  //       console.log(category)
+  //     }catch(exception){
+  //       toast.error("Error while fetching category detail")
+  //     }
+  //   }
+  const getAllCategories = async () => {
+    try {
+      const response: any = await authSvc.getRequest("/category/getall", { auth: true });
+      const map: { [key: string]: string } = {};
+      response.result.forEach((cat: any) => {
+        map[cat._id] = cat.title;
+      });
+      setCategoryMap(map);
+    } catch (err) {
+      toast.error("Failed to fetch categories");
+      console.error(err);
+    }
+  };
+  const getAllBrand = async () => {
+    try {
+      const response: any = await authSvc.getRequest("/brand/getall", { auth: true });
+      const map: { [key: string]: string } = {};
+      response.result.forEach((br: any) => {
+        map[br._id] = br.title;
+      });
+      setBrandMap(map);
+    } catch (err) {
+      toast.error("Failed to fetch categories");
+      console.error(err);
+    }
+  };
+  
+  
     useEffect(()=>{
       const timeout = setTimeout(() =>{
         getAllProduct({
           page: 1,
           limit: 10,
           search: search
-        })
+        }),
+        getAllCategories(),
+        getAllBrand()
     })
       return () => {
         clearTimeout(timeout)
@@ -69,7 +112,7 @@ const ProductListingPage = () => {
 
     const deleteData = async (id:string) => {
    try{
-          await ProductSvc.deleteRequest('/Product/'+id, {auth:true})
+          await ProductSvc.deleteRequest('/product/deleteaproduct/'+id, {auth:true})
           toast.success("Product deleted successfully")
           getAllProduct({
             page:1,
@@ -97,7 +140,10 @@ const ProductListingPage = () => {
           <Table.HeadCell className="bg-gray-900 text-white py-4">Title</Table.HeadCell>
           {/* <Table.HeadCell className="bg-gray-900 text-white py-4">Link</Table.HeadCell> */}
           <Table.HeadCell className="bg-gray-900 text-white py-4">Image</Table.HeadCell>
-          {/* <Table.HeadCell className="bg-gray-900 text-white py-4">Status</Table.HeadCell> */}
+          <Table.HeadCell className="bg-gray-900 text-white py-4">Category</Table.HeadCell>
+          <Table.HeadCell className="bg-gray-900 text-white py-4">Brand</Table.HeadCell>
+          <Table.HeadCell className="bg-gray-900 text-white py-4">Price</Table.HeadCell>
+          <Table.HeadCell className="bg-gray-900 text-white py-4">Stock</Table.HeadCell>
           <Table.HeadCell className="bg-gray-900 text-white py-4">
             Action
           </Table.HeadCell>
@@ -113,13 +159,28 @@ const ProductListingPage = () => {
              {
               
               Product.map((row:any, index:number) => (
-                
+              
+               
                 <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {row.title}
                 </Table.Cell>
                 <Table.Cell>
                   <img src={row.image} alt={row.title} className="h-12 w-12 object-cover rounded" />
+                </Table.Cell>
+               
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {categoryMap[row.category] || "N/A"}
+                </Table.Cell>
+
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {brandMap[row.brand] || "N/A"}
+                </Table.Cell>
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {row.price}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {row.quantity}
                 </Table.Cell>
                 <Table.Cell className="flex gap-3">
                   <ActionButtons

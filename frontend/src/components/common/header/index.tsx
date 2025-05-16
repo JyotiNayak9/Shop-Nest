@@ -19,7 +19,14 @@ export const HomeHeader = () => {
           <Navbar.Collapse>
             {LoggedInUser ? (
               <>
-                <NavLink
+              {LoggedInUser.role === "customer" ? (
+              <>
+              <NavLink
+                to="/cart">
+                  {LoggedInUser.name}
+              </NavLink>
+              </>
+              ):(<NavLink
                   to={"/" + LoggedInUser.role}
                   className={({ isActive }: { isActive: boolean }) =>
                     isActive
@@ -29,7 +36,10 @@ export const HomeHeader = () => {
                   }
                 >
                   {LoggedInUser.name}
-                </NavLink>
+                </NavLink>)
+                }  
+              
+                
                 <NavLink
                   to="/logout"
                   className={({ isActive }: { isActive: boolean }) =>
@@ -126,6 +136,17 @@ export const HomeHeader = () => {
             }
           >
             Contact
+          </NavLink>
+          <NavLink
+            to="/SellerRegister"
+            className={({ isActive }: { isActive: boolean }) =>
+              isActive
+                ? "md:text-blue-600"
+                : "md:text-gray-700" +
+                  "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
+            }
+          >
+            Become a Vendor
           </NavLink>
         </Navbar.Collapse>
       </Navbar>

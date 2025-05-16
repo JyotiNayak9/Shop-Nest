@@ -12,25 +12,21 @@ type PermissionType = {
 const CheckPermission = ({allowedBy, children}: PermissionType) => {
   
     const {LoggedInUser} = useContext(AuthContext)
-    if(LoggedInUser) {
-            if(LoggedInUser.role === allowedBy){
-                return children
-            } else{
-                toast.warn("You do not have permission to access this panel.")
-                return(
-                    <>
-                    <Navigate to={'/' + LoggedInUser.role}/>
-                    </>
-                )
-            }
-    } else{
-        console.log("I am here")
-       toast.error("Please login first");
-        return(
-            <>
-            <Navigate to={'/login'}/>
-            </>
-        )
+    
+    // If user is not logged in
+    if(!LoggedInUser) {
+        console.log("User not logged in")
+        toast.error("Please login first");
+        return <Navigate to={'/login'}/>
     }
+    
+    // If user is logged in but doesn't have the required role
+    if(LoggedInUser.role !== allowedBy) {
+        toast.warn("You do not have permission to access this panel.")
+        return <Navigate to={'/' + LoggedInUser.role}/>
+    }
+    
+    // User has the required role
+    return children
 }
 export default CheckPermission

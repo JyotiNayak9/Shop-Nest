@@ -1,13 +1,15 @@
-import { CancelButton, ImageUpload, InputLabel, StatusSelectComponent, SubmitButton, TextInputComponent } from "../../../components/common/form/input-component.";
+import { CancelButton, ImageUpload, InputLabel, SelectComponent, StatusSelectComponent, SubmitButton, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
 import { Heading2, Heading3 } from "../../../components/common/title"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import authSvc from "../../auth/auth.service";
 import { toast } from "react-toastify";
+import { SearchParams } from "../../../config/constants";
+import ProductSvc from "./product-service";
 
 
 const CreateProduct = () => {
@@ -17,11 +19,65 @@ const CreateProduct = () => {
         image: yup
           .mixed()
           .required(),
+          description: yup.string().required(),
+          price: yup.number().required(),
+          category: yup.object({
+            label: yup.string().required(),
+            value: yup
+              .string()
+              .required()
+          }).required(),
+          brand: yup.object({
+            label: yup.string().required(),
+            value: yup
+              .string()
+              .required()
+             
+          }).required(),
+          quantity: yup.number().required(),
+          features:yup.string(),
     //       status: yup.object({ label: yup.string().matches(/^(Publish|Unpublish)$/).required(),
     //         value: yup.string().matches(/^(active|inactive)$/).required() }).required(),
       });
       const navigate = useNavigate();
       const [loading, setLoading] = useState(false);
+      const [category, setCategory] = useState<any[]>([]);
+      const [brands, setBrands] = useState<any[]>([]);
+    //   const [pagination, setPagination] = useState({
+    //     currentPage : 1,
+    //     totalPage: 1,
+    //     limit: 10
+    // })
+    const getBrand = async () => {
+      try{
+        // setLoading(true)
+        const response: any = await authSvc.getRequest("/brand/getall" )
+        console.log(response)
+        setBrands(response.result);
+        console.log(brands)       
+      }catch(exception){
+        toast.error("Error while fetching brand list")
+        console.log(exception)
+      }     
+    }
+      const getCategory = async () => {
+        try{
+          // setLoading(true)
+          const response: any = await authSvc.getRequest("/category/getall" )
+          console.log(response)
+          setCategory(response.result);
+          console.log(category)
+          
+        }catch(exception){
+          toast.error("Error while fetching category list")
+          console.log(exception)
+        }
+        
+      }
+      useEffect(()=>{
+        getCategory(),
+        getBrand()
+      },[])
     const {
         control,
         handleSubmit,
@@ -37,10 +93,13 @@ const CreateProduct = () => {
             setLoading(true);
             const submitData = {
                 ...data,
-                // status:data.status.value
+                category: data.category.value,
+                brand: data.brand.value,
+                features: data.features.split(',').map((tag: string) => tag.trim())
+
             }
             console.log(submitData)
-            await authSvc.postRequest('/Product',data,{auth:true,file:true});
+            await authSvc.postRequest('/product/createProduct',submitData,{auth:true,file:true});
     
               toast.success("Product Created successfully. ")
               navigate('/admin/Product')
@@ -77,21 +136,71 @@ const CreateProduct = () => {
             />
             </div>
             <div className="sm:col-span-2">
-            {/* <InputLabel htmlFor="Status">Status</InputLabel> */}
-            {/* <StatusSelectComponent
+            <InputLabel htmlFor="description">Description</InputLabel>
+            <TextAreaInputComponent
                 control={control}
-                name="status"
-                errMsg={errors?.status?.message as string}
-                /> */}
+                name="description"
+                errMsg={errors?.description?.message as string}
+                />
             </div>
+            <div className="">
+            <InputLabel htmlFor="category">Category</InputLabel>
+  
+            <SelectComponent
+          name="category"
+          control={control}
+          options={category.map((item) => ({ label: item.title, value: item._id }))}
+          errMsg={errors.category?.message as string}
+        />
+          </div>
+            <div className="">
+            <InputLabel htmlFor="brand">Brand</InputLabel>
+
+  
+            <SelectComponent
+          name="brand"
+          control={control}
+          options={brands.map((item) => ({ label: item.title, value: item._id }))}
+          errMsg={errors.brand?.message as string}
+        />
+        </div>
+            <div className="">
+            <InputLabel htmlFor="name">Features</InputLabel>
+  
+            <TextInputComponent
+          name= "features"
+          errMsg={errors.features?.message as string}
+          defaultValue=""
+          control = {control}
+          />
+          </div>
+         
+            <div className="">
+            <InputLabel htmlFor="name">Price</InputLabel>
+  
+            <TextInputComponent
+          name= "price"
+          errMsg={errors.price?.message as string}
+          defaultValue=""
+          control = {control}
+          />
+          </div>
+            
+
+          <div className="">
+            <InputLabel htmlFor="quantity">Quantity</InputLabel>
+  
+          <TextInputComponent
+          name= "quantity"
+          errMsg={errors.quantity?.message as string}
+          defaultValue=""
+          control = {control}
+          />
+          </div>
             <div className="sm:col-span-2">
+
             <InputLabel htmlFor="Image">Image</InputLabel>
-            {/* <ImageUpload
-             name="image"
-             type={"file"}
-              control={control}
-                errMsg={errors?.image?.message as string}   
-                /> */}
+            
                 <input
                     type="file"
                     name="image"

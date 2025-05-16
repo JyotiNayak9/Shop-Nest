@@ -9,7 +9,7 @@ const brandController = require("./brand.controller");
 const { BrandCreateDTO, BrandUpdpateDTO } = require("./brand.request");
 
 brandRouter.get('/list-home', brandController.listForHome)
-
+brandRouter.get('/getall', brandController.getAllBrands)
 // TODO: brand wise list product
 // router.get("/:slug/detail", brand)
 

@@ -43,14 +43,17 @@ const LoginPage = () => {
       localStorage.setItem("_rt", response.result.token.refreshToken);
       toast.success(`Welcome to ${response.result.UserDetail.role} panel`);
       setLoggedInUser(response.result.UserDetail);
+      if(response.result.UserDetail.role === "customer"){
+        navigate("/")
+      }else{
       navigate("/" + response.result.UserDetail.role);
+      }
     } catch (exception: any) {
       toast.error(exception.data.message);
     } finally {
       setLoading(false);
     }
   };
-
  return(
     <>
       <section className="flex flex-col items-center justify-center min-h-screen">

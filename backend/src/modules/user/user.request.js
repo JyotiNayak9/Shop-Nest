@@ -18,7 +18,12 @@ const userCreateDTO = Joi.object({
     image :Joi.string(),
     role : Joi.string().regex(/^(seller|customer)$/).required().messages({
         "string.pattern.base" : "Role should be seller or customer"
-    })
+    }),
+    storeName : Joi.string(),
+    storeAddress : Joi.string(),
+    panNumber : Joi.string().regex(/^\d{9}$/).messages({
+        "string.pattern.base" : "PAN number format is invalid"
+    }),
 })
 
 PasswordUpdateDTO = Joi.object({

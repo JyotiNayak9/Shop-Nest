@@ -1,11 +1,17 @@
-import { Card } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
 import SingleCardWithImageAndTitleProps from "./single-card.contracts";
 import ProductCardProps from "./product-card.contracts";
+import { FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../../context/auth.context";
+import authSvc from "../../../pages/auth/auth.service";
 
 
 export const ImageWithTitleCard = ({data}: {data:SingleCardWithImageAndTitleProps}) =>{
     return (
         <>
+         <Link to={data.slug} className="block p-2 hover:shadow-lg">
          <Card className="max-w-sm mx-5 my-10"
       renderImage={() => <img  src= {data.image} alt="image 1" className="width={500} "/>}
     >
@@ -16,22 +22,50 @@ export const ImageWithTitleCard = ({data}: {data:SingleCardWithImageAndTitleProp
       </h5>
      
     </Card>
+    </Link>
         </>
     )
 }
 
 export const SingleProductCard = ({data}: {data:ProductCardProps})=> {
+  const { LoggedInUser } = useContext(AuthContext)
+  
+   const addToCart = async (data: {
+    productId: string;
+    quantity: number;
+    productTitle: string;
+    price: number;
+      customerId: string;
+      image:any;
+  }) => {
+    const res = await authSvc.postRequest('/cart', data);
+    return res.data;
+  };
+    const handleAdd = async () => {
+      await addToCart({
+        customerId: LoggedInUser._id,
+        productId: data._id,
+        productTitle: data.title,
+        quantity: 1,
+        price: data.price,
+        image: data.image[0]
+      });
+    };
     return (
         <>
             <Card className="max-w-sm mx-5 my-10">
-            <img alt="Gaming mouse" src={data.image} className="width={1000}" />
+
+        <Link to={data.slug} className="block p-2 hover:shadow-lg">
+
+              
+            <img  alt="Gaming mouse" src={data.image} className="width={1000} height={1000}" />
       <a href={data.slug}>
-        <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+        <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
           {data.title}
         </h5>
       </a>
       <div className="mb-5 mt-2.5 flex items-center">
-        <svg
+        {/* <svg
           className="h-5 w-5 text-yellow-300"
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -73,16 +107,18 @@ export const SingleProductCard = ({data}: {data:ProductCardProps})=> {
         </svg>
         <span className="ml-3 mr-2 rounded bg-cyan-100 px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
           5.0
-        </span>
+        </span> */}
+        
       </div>
-      <div className="flex items-center justify-between">
-        <span className="text-2xl font-bold text-gray-900 dark:text-white">599</span>
-        <a
-          href="#"
-          className="rounded-lg bg-violet-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-violet-800 "
-        >
-          Add to cart
-        </a>
+    </Link>
+
+      <div className="flex items-center justify-between ">
+        <span className="text-xl font-bold text-gray-900 dark:text-white">{data.price}</span>
+
+        <Button href="/cart" onClick={handleAdd} className="rounded-lg bg-violet-700   text-center text-sm font-medium text-white hover:bg-violet-800 ">
+          <FaShoppingCart className="mr-2 -ml-1 h-5 w-5"/> 
+        </Button>
+        
       </div>
     </Card>
         </>

@@ -1,6 +1,9 @@
 require("dotenv").config();
 const { hasValidDomain } = require("./user.request");
+const bcrypt = require("bcryptjs");
+
 const { userSvc } = require("./user.service");
+const { UserRoles, StatusType } = require("../../config/constants.config");
 
 
 class UserController{
@@ -8,7 +11,8 @@ class UserController{
     
     userCreate= async (req, res, next)=>{
             try{
-                const data = await userSvc.transformUserCreate(req);
+                const body = req.body;
+                const data = await userSvc.transformUserCreate(body);
                 const user = await userSvc.registerUser(data);
                
                 console.log("Registered Data:", user);
@@ -89,8 +93,50 @@ ForgotPasswordToken = async (req, res, next) => {
         next(exception)
     }
   }
+ registerSeller = async (req, res, next) => {
+        try {
+            const { name, email, password, phone, storeName, storeAddress, panNumber } = req.body;
 
+            console.log(req.body)
+            const userData = {
+                name: name,
+                email,
+                password:password,
+                role: UserRoles.SELLER,
+                phone: [phone],
+                store: {
+                    name: storeName,
+                    address: storeAddress,
+                    panNumber: panNumber,
+                    // status: StatusType.INACTIVE
+                }
+            };
+            console.log(userData)
+            let user = await userSvc.transformUserCreate(userData);
+            user = userSvc.generateUserActivationToken(user);
+            user = await userSvc.registerUser(user);
+            console.log("Registered Data:", user);
+
+            // Send activation email
+            // await userSvc.sendActivationEmail({
+            //     email: user.email,
+            //     name: user.name,
+            //     token: user.activationToken,
+            //     sub: "Activate your seller account"
+            // });
+
+            res.json({
+                result: null,
+                message: "Seller registration successful. Please check your email to activate your account.",
+                meta: null
+            });
+        } catch (exception) {
+            next(exception);
+        }
+    }
 }
+
+
 
 const userCtrl = new UserController()
 

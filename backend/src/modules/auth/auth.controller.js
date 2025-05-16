@@ -125,6 +125,53 @@ class AuthController {
         }
     }
 
+    registerSeller = async (req, res, next) => {
+        try {
+            const { fullName, email, password, phone, storeName, storeAddress, panNumber } = req.body;
+
+            // Check if email already exists
+            const existingUser = await userSvc.getUserByEmail(email);
+            if (existingUser) {
+                throw { status: 409, message: "Email already exists" };
+            }
+
+            // Create new user with seller role
+            const userData = {
+                name: fullName,
+                email,
+                password: bcrypt.hashSync(password, 10),
+                role: UserRoles.SELLER,
+                phone: [phone],
+                store: {
+                    name: storeName,
+                    address: storeAddress,
+                    panNumber: panNumber,
+                    status: StatusType.INACTIVE
+                }
+            };
+
+            let user = await userSvc.createUser(userData);
+            user = userSvc.generateUserActivationToken(user);
+            await user.save();
+
+            // Send activation email
+            await userSvc.sendActivationEmail({
+                email: user.email,
+                name: user.name,
+                token: user.activationToken,
+                sub: "Activate your seller account"
+            });
+
+            res.json({
+                result: null,
+                message: "Seller registration successful. Please check your email to activate your account.",
+                meta: null
+            });
+        } catch (exception) {
+            next(exception);
+        }
+    }
+
     refreshToken = async(req, res, next) =>{
         try{
             let token = req.headers['authorization'] || null;

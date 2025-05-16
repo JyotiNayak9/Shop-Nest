@@ -12,6 +12,7 @@ const multer = require("multer")
 const upload = multer()
 
 authRouter.post("/register",setPath('user'),uploadfile().single('image'), bodyValidator(userCreateDTO),  userCtrl.userCreate)
+authRouter.post("/seller/register", uploadfile().none(), bodyValidator(userCreateDTO) ,userCtrl.registerSeller)
 authRouter.get("/activate/:token",authController.activateUser)
 authRouter.get("/resend-activationToken/:token",authController.resendActivationToken)
 authRouter.post("/login",uploadfile().none(),bodyValidator(LoginDTO), authController.login);

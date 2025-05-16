@@ -35,6 +35,18 @@ class BrandService{
                     throw exception
                 }
             }
+            getAllBrands = async () =>{
+                try{    
+                    const brand = await BrandModel.find({})
+                    // .populate("createdBy", ["_id","name","email","role"])
+                    // .populate("parentId", ['_id', 'title', 'slug'])
+                    // .populate("brands", ['_id','title','slug'])
+                    // .sort({_id: "desc"})
+                    return brand
+                }catch(exception){
+                    throw exception
+                }
+            }
 
             updateBrand = async (data, id) =>{
                 try{

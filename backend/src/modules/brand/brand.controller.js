@@ -125,7 +125,19 @@ class BrandController{
             next(exception)
         }
     }
+ getAllBrands = async(req, res, next) =>{
+        try{
+            const brands = await brandService.getAllBrands()
+            res.json({
+                result: brands,
+                message: "Brands list",
+                meta: null
+            })
+        }catch(exception){
+            next(exception)
 
+        }
+    }
     listForHome = async(req, res,next)=>{
         try{
             const list = await brandService.listData({

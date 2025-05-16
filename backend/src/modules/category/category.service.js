@@ -10,7 +10,32 @@ class CategoryService{
        }
 
     }
-
+    getAllCategory = async () =>{
+        try{    
+            const category = await CategoryModel.find({})
+            // .populate("createdBy", ["_id","name","email","role"])
+            // .populate("parentId", ['_id', 'title', 'slug'])
+            // .populate("brands", ['_id','title','slug'])
+            // .sort({_id: "desc"})
+            return category
+        }catch(exception){
+            throw exception
+        }
+    }
+    categoryDetailBySlug = async(slug) => {
+        try{
+            const product = await CategoryModel.findOne({slug})
+                .populate("createdBy", ["_id","name", "email", "role"])
+                .populate("parentId", ['_id', 'title', 'slug'])
+                .populate("brands", ['_id','title','slug'])
+            if(!product){
+                throw({message: "Product not found"})
+            }
+            return product
+        }catch(exception){
+            throw(exception)
+        }
+    }
     listData = async({skip=0,limit=10, filter={}}) =>{
         try{
             const count = await CategoryModel.countDocuments(filter);

@@ -17,11 +17,11 @@ generateUserActivationToken = (data) =>{
     return data; 
 }
 transformUserCreate = async (req) =>{
-let data = req.body;
+let data = req;
         // if(req.file){
         //     data.image = req.file.filename
         // }
-        
+        console.log("Data", data)
         data.password = bcrypt.hashSync(data.password, 10)
     //    const tokenData = this.generateUserActivationToken(data)
     //    data.activationToken = tokenData.activationToken;

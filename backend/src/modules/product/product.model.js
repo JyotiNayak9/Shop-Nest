@@ -30,24 +30,32 @@ require("../../config/constants.config")
          required: true
      },
      category:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
        required: true
      },
      brand:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Brand",
        required: true
      },
      quantity: Number,
+     features: [String],
       ratings :[
         {
             star: Number,
             postedBy:{type: mongoose.Schema.Types.ObjectId, ref: "User"}
       }],
-     status:{
-         type : String,
-         enum: [...Object.values(ProductStatus)],
-         default: ProductStatus.AVAIL
-     },
+       createdBy:{
+              type: mongoose.Types.ObjectId,
+              ref: "User",
+              default: null
+          },
+    //  status:{
+    //      type : String,
+    //      enum: [...Object.values(ProductStatus)],
+    //      default: ProductStatus.AVAIL
+    //  },
      
      
  },{

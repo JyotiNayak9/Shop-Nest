@@ -10,6 +10,7 @@ class ProductService{
         if(data.title){
             data.slug = slugify(data.title)
         }
+        data.createdBy = req.authUser._id;
         const urls = []
         if (Array.isArray(files)) {
             await Promise.all(files.map(async(file)=>{
@@ -34,7 +35,35 @@ productDetailById = async(id) => {
         throw(exception)
     }
 }
+productDetailBySlug = async(slug) => {
+    try{
+        const product = await ProductModel.findOne({slug})
+            .populate("createdBy", ["_id","name", "email", "role"])
+            .populate("category", ["_id","title"])
+            .populate("brand", ["_id","title"])
+        
+        if(!product){
+            throw({message: "Product not found"})
+        }
+        return product
+    }catch(exception){
+        throw(exception)
+    }
+}
+listData = async({skip=0,limit=10, filter={}}) =>{
+    try{
+        const count = await ProductModel.countDocuments(filter);
+        const data = await ProductModel.find(filter)
+                        // .populate("createdBy", ["_id","name", "email", "role"])
+                        .sort({_id: "desc"})
+                        .limit(limit)
+                        .skip(skip)
 
+        return{count, data}
+    }catch(exception){
+        throw(exception)
+    }
+        }
 AllProductsFiltering = async(query)=>{
     try{
         const queryObj = {...query};
