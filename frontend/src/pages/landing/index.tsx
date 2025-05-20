@@ -5,6 +5,7 @@ import banner2 from "../../assets/images/banner2.png";
 import Recommendations from "../../components/recommended/recommended";
 import { useContext } from "react";
 import AuthContext from "../../context/auth.context";
+import ProductList from "../../components/ProductList";
 const LandingPage = ()=> {
   const {LoggedInUser} = useContext(AuthContext)
     return(
@@ -15,6 +16,7 @@ const LandingPage = ()=> {
       {LoggedInUser && LoggedInUser.role === "customer" && (
         <Recommendations/>
       )}
+      {/* <ProductList/> */}
     
         </>
     )

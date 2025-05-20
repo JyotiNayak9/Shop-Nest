@@ -3,18 +3,22 @@ import React from 'react';
 import authSvc from '../auth/auth.service';
 import AuthContext from '../../context/auth.context';
 import CartContext from "../../context/cart.context";   
-import { addToCart } from '../Cms/cart';
+import { addToCart } from './cart';
 import { Heading2, Heading3, HeadingWithLink } from '../../components/common/title';
 import { Button, Table, TextInput } from 'flowbite-react';
 import { RowSkeleton } from '../../components/common/table/table-skeleton';
 import { toast } from 'react-toastify';
 import { FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { number } from 'framer-motion';
+import { LoadingComponent } from '../../components/common/loading/loading-component';
+import { NavLink } from 'react-router-dom';
 
-export const CartDisplay = () => {
+const DisplayCart = () => {
 const {LoggedInUser} = useContext(AuthContext)
 const [cart, setCart] = useState<any[]>([]);
 const [loading, setLoading] = useState(true)
+const[cartTotal, setCartTotal] = useState(0);
  const getCart = async () => {
  try {
   setLoading(true)
@@ -30,8 +34,9 @@ const [loading, setLoading] = useState(true)
 }
 const total =async () => {
   try{ 
-    const response =  await authSvc.getRequest("/cart/totals/"+LoggedInUser._id)
+    const response:any =  await authSvc.getRequest("/cart/totals/"+LoggedInUser._id)
     console.log(response)
+    setCartTotal(response.totalAmount)
   }catch(exception){
     toast.error("Error getting total")
   }
@@ -53,6 +58,7 @@ const handleQuantityChange = async (row: any, newQty: number) => {
     image: row.image
   });
   getCart();
+  total();
 };
 
 const deleteItem = async (id:any)=>{
@@ -63,12 +69,13 @@ const deleteItem = async (id:any)=>{
               icon: "warning",
               showCancelButton: true,
               confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
+               cancelButtonColor: "#d33",
               confirmButtonText: "Yes, delete it!"
             })
             if(result.isConfirmed){
                 await authSvc.deleteRequest("/cart/"+id)
                 getCart()
+                total();
                 toast.success("Item deleted successfully")
             }
  }catch(exception){
@@ -133,7 +140,10 @@ return (
                    </Table.Cell>
                  </Table.Row>
                  ))
+                
+
                 }
+                 
                </> : <>
                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                <Table.Cell colSpan={5} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center">
@@ -144,16 +154,29 @@ return (
                 </>
              }
              
-             </>}
+           </>}
           
            </Table.Body>
+           
          </Table>
-         
+         <div className="flex justify-end mr-10 mt-4 ">
+  <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded shadow mr-10">
+    <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+      Total: {cartTotal}
+    </h3>
+  </div>
+  <NavLink to={"/checkout"}
+                className="inline-block shrink-0 rounded-md border border-violet-600 bg-violet-600 px-12 py-4 text-md font-medium text-white transition hover:bg-transparent hover:bg-violet-900 focus:outline-none focus:ring active:text-violet-500"                
+              >              
+                Proceed to Checkout
+              </NavLink>
+</div>
        </div>
      
            </>
        )
-   }
+      }
   
-   export default CartDisplay
+export default DisplayCart;
+
    

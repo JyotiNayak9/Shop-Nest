@@ -32,10 +32,14 @@ import ProductListingPage from "../pages/Cms/product/product-list-page";
 import CreateProduct from "../pages/Cms/product/product-create-page";
 import EditProduct from "../pages/Cms/product/product-edit-page";
 import ProductDetailPage from "../pages/allproducts/product-details";
-import ForgotPasswordPage from "../pages/auth/forget-password";
-import CartDisplay from "../pages/cart/cart.tsx";
+// import ForgotPasswordPage from "../pages/auth/forget-password";
+import DisplayCart from "../pages/cart/cart.tsx"
 import SellerRegister from "../pages/auth/register/seller-register.tsx";
 import SellerLayout from "../pages/layout/seller.page.tsx";
+import CheckoutPage from "../pages/order/checkout-page.tsx";
+import OrderHistory from "../pages/order/order-history.tsx";
+import OrderListingPage from "../pages/Cms/order/allOrderView.tsx";
+
 
 const RouterConfig = () => {
     const [LoggedInUser, setLoggedInUser] = useState<any>(null);
@@ -79,9 +83,14 @@ const RouterConfig = () => {
                 <Route path="contact" element={<ContactPage/>}/>
                 <Route path="categories/:slug" element={<CategoryDetailsPage/>}/>
                 <Route path="products/:slug" element={<ProductDetailPage/>}/>
-
+                 <Route path="/orderhistory" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                    <OrderHistory/>
+                    </CheckPermission> }/>
                 <Route path="cart" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
-                    <CartDisplay/>
+                    <DisplayCart/> 
+                    </CheckPermission> }/>
+                    <Route path="/checkout" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                    <CheckoutPage/> 
                     </CheckPermission> }/>
                 <Route path="*" element  = {<NotFoundError url="/" label="Go to Homepage"/>}/>
                 </Route>
@@ -103,6 +112,8 @@ const RouterConfig = () => {
                 <Route path="product/create" element = {<CreateProduct/>}/>
                 <Route path="product/:id/edit" element = {<EditProduct/>}/>
                 <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
+
+                <Route path="orders" element = {<OrderListingPage/>}/>
                 </Route>
 
 

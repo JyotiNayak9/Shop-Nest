@@ -21,6 +21,8 @@ const ProductListingPage = () => {
     const [Product, setProduct] =useState<any[]>([]);
     const [loading, setLoading] =useState(true);
     const [search, setSearch] = useState<string |null>();
+        const [sort, setSort] = useState<any>({});
+    const [filter, setFilter] = useState<any>({});
     const [categoryMap, setCategoryMap] = useState<{ [key: string]: string }>({});
     const [brandMap, setBrandMap] = useState<{ [key: string]: string }>({});
 
@@ -32,16 +34,20 @@ const ProductListingPage = () => {
         })
        await getAllProduct({
             page: page,
-            limit: 10
+            limit: 10,
+            search: search,
+            filter: filter,
+            sort: sort
         })
     }
 
-    const getAllProduct = async ({page = 1, limit=10, search=''}: SearchParams) => {
+    const getAllProduct = async ({page = 1, limit=10, search='', filter={}, sort={}}: SearchParams) => {
+    
       try{
         setLoading(true)
-        const response: any = await authSvc.getRequest("/product/getproducts", {auth:true , params : {limit: limit, page: page,search: search}})
+        const response: any = await authSvc.getRequest("/product/getproducts", {auth:true , params : {limit: limit, page: page, search: search, filter: filter, sort: sort}})
         console.log(response)
-        setProduct(response.result);
+        
         console.log(Product)
         setPagination({
           currentPage: response. meta.currentPage,

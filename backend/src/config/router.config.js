@@ -7,6 +7,7 @@ const CategoryRouter = require("../modules/category/category.router");
 const productRouter = require("../modules/product/product.router");
 const Cartrouter = require("../modules/cart/cart.router");
 const recommendationRouter = require("../modules/UserPreferences/recommendation.router");
+const OrderRouter = require("../modules/order/order.router");
 
 
  router.use("/auth", authRouter)
@@ -17,6 +18,7 @@ const recommendationRouter = require("../modules/UserPreferences/recommendation.
  router.use("/product", productRouter)
 router.use("/cart",Cartrouter)
 router.use("/recommendation",recommendationRouter)
+router.use("/order",OrderRouter)
 
 
  module.exports = router;

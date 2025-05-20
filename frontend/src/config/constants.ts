@@ -12,4 +12,6 @@ export interface SearchParams {
     page?: number | 1;
     limit: number|10;
     search?: string | null| undefined;
+    filter?: any;
+    sort?: any;
 }

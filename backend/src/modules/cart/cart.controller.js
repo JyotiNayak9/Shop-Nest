@@ -40,7 +40,7 @@ addToCart = async (req, res) => {
     let pref = await UserPreferenceModel.findOne({ userId: customerId });
 
     if (!pref) {
-      console.log("ajehfiuh")
+      // console.log("ajehfiuh")
       pref = new UserPreferenceModel({ userId:customerId, interactedProductIds: [productId] });
     } else {
       // Prevent duplicates
