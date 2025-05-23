@@ -54,7 +54,7 @@ listData = async({skip=0,limit=10, filter={}}) =>{
     try{
         const count = await ProductModel.countDocuments(filter);
         const data = await ProductModel.find(filter)
-                        // .populate("createdBy", ["_id","name", "email", "role"])
+                        .populate("createdBy", ["_id","name", "email", "role"])
                         .sort({_id: "desc"})
                         .limit(limit)
                         .skip(skip)
@@ -118,6 +118,7 @@ ProductDeleteById = async(id) => {
     }
 }
 }
+
 
 const productSvc = new ProductService()
 module.exports = productSvc

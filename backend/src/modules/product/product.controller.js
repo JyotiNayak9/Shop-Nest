@@ -31,6 +31,42 @@ CreateProduct = async(req, res, next) =>{
         next(exception)
     }
  }
+
+ getProductBySeller = async(req, res, next) => {
+    try{
+
+        const {id} = req.params
+        idvalidate(id)
+            const page = +req.query.page || 1
+            const limit = +req.query.limit || 10
+            const skip = (page - 1)*limit
+
+            let filter = {createdBy: id};
+            if(req.query.search){
+                filter = {
+                    title: new RegExp(req.query.search, 'i')
+                }
+            }
+
+            const {count, data} = await productSvc.listData({
+                skip: skip,
+                limit:limit,
+                filter: filter
+            });
+
+            res.json({
+                result: data,
+                message: "product list all",
+                meta: {
+                    currentPage: page,
+                    total: count,
+                    limit: limit
+                }
+            })
+        }catch(exception){
+            next(exception)
+        }
+}
  getbyslug = async(req, res, next) => {
     try{
         const {slug} = req.params
@@ -48,7 +84,7 @@ CreateProduct = async(req, res, next) =>{
     getProductByCategory = async (req, res) => {
         try {
             const { categoryId } = req.params;
-            const products = await Product
+            const products = await ProductModel
                 .find({ category: categoryId })
                 .populate("category", ["_id", "title"])
                 .populate("brand", ["_id", "title"])

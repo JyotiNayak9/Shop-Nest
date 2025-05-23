@@ -8,6 +8,7 @@ const productRouter = require("../modules/product/product.router");
 const Cartrouter = require("../modules/cart/cart.router");
 const recommendationRouter = require("../modules/UserPreferences/recommendation.router");
 const OrderRouter = require("../modules/order/order.router");
+const PaymentRouter = require("../modules/payment/payment.router");
 
 
  router.use("/auth", authRouter)
@@ -19,6 +20,7 @@ const OrderRouter = require("../modules/order/order.router");
 router.use("/cart",Cartrouter)
 router.use("/recommendation",recommendationRouter)
 router.use("/order",OrderRouter)
+router.use("/payment",PaymentRouter)
 
 
  module.exports = router;

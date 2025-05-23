@@ -39,6 +39,9 @@ import SellerLayout from "../pages/layout/seller.page.tsx";
 import CheckoutPage from "../pages/order/checkout-page.tsx";
 import OrderHistory from "../pages/order/order-history.tsx";
 import OrderListingPage from "../pages/Cms/order/allOrderView.tsx";
+import PaymentButton from "../pages/order/payment.tsx";
+import SellerProductList from "../pages/Cms/seller/product-list-seller.tsx";
+import SellerCreateProduct from "../pages/Cms/seller/product-create-seller.tsx";
 
 
 const RouterConfig = () => {
@@ -89,6 +92,9 @@ const RouterConfig = () => {
                 <Route path="cart" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
                     <DisplayCart/> 
                     </CheckPermission> }/>
+                     <Route path="/payment/:id/:amount" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                    <PaymentButton/> 
+                    </CheckPermission> }/>
                     <Route path="/checkout" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
                     <CheckoutPage/> 
                     </CheckPermission> }/>
@@ -120,8 +126,8 @@ const RouterConfig = () => {
                 <Route path="/seller" element={<CheckPermission allowedBy={UserRoles.SELLER}>
                 <SellerLayout/>                   
                 </CheckPermission>}>
-                <Route path="product" element = {<ProductListingPage/>}/>
-                <Route path="product/create" element = {<CreateProduct/>}/>
+                <Route path="product" element = {<SellerProductList/>}/>
+                <Route path="product/create" element = {<SellerCreateProduct/>}/>
                 <Route path="product/:id/edit" element = {<EditProduct/>}/>
                 <Route path="*" element  = {<NotFoundError url="/seller" label="Go to Dashboard"/>}/>
                 

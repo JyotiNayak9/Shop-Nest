@@ -29,6 +29,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: 'pending', 
   },
+  paymentInfo: {
+  method: String,
+  refId: String,
+},
+
 },
   { timestamps: true,
     autoCreate:true,

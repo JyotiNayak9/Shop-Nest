@@ -1,7 +1,7 @@
 import { Table, TextInput } from "flowbite-react"
 import { Pagination } from "flowbite-react"
 import { HeadingWithLink } from "../../../components/common/title"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { CellSkeleton, RowSkeleton } from "../../../components/common/table/table-skeleton"
 import authSvc from "../../auth/auth.service"
 import { toast } from "react-toastify"
@@ -9,10 +9,11 @@ import { SearchParams } from "../../../config/constants"
 import { NavLink } from "react-router-dom"
 import { FaPen, FaTrash } from "react-icons/fa"
 import Swal from "sweetalert2"
-import ProductSvc from "./product-service"
+import ProductSvc from "../product/product-service"
 import { ActionButtons } from "../../../components/common/table/table-actionbuttons"
 import { get, set } from "react-hook-form"
-const ProductListingPage = () => {
+import AuthContext from "../../../context/auth.context"
+const SellerProductList = () => {
     const [pagination, setPagination] = useState({
         currentPage : 1,
         totalPage: 1,
@@ -41,11 +42,12 @@ const ProductListingPage = () => {
         })
     }
 
+    const {LoggedInUser} = useContext(AuthContext)
     const getAllProduct = async ({page = 1, limit=10, search='', filter={}, sort={}}: SearchParams) => {
     
       try{
         setLoading(true)
-        const response: any = await authSvc.getRequest("/product/getproducts", {auth:true , params : {limit: limit, page: page, search: search, filter: filter, sort: sort}})
+        const response: any = await authSvc.getRequest("/product/getProductBySeller/"+LoggedInUser._id, {auth:true , params : {limit: limit, page: page, search: search, filter: filter, sort: sort}})
         console.log(response)
         setProduct(response.result);
         console.log(Product)
@@ -133,7 +135,7 @@ const ProductListingPage = () => {
     }
     return (
         <>
-        <HeadingWithLink title="Product List" link="/admin/Product/create" btnText="Add Product"/>
+        <HeadingWithLink title="Product List" link="/seller/Product/create" btnText="Add Product"/>
 
       <div className="flex justify-end items-end mb-3">
         <TextInput type="search" className="w-1/4 " onChange={(e: any) => {
@@ -221,5 +223,5 @@ const ProductListingPage = () => {
     )
 }
 
-export default ProductListingPage
+export default SellerProductList
 

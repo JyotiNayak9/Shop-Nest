@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import AuthContext from '../../../context/auth.context';
 import authSvc from '../../auth/auth.service';
+import { toast } from 'react-toastify';
 
 type OrderItem = {
   name: string;
@@ -36,8 +37,10 @@ const OrderListingPage: React.FC = () => {
         const res:any = await authSvc.getRequest('order/getAllOrders', {auth:true});
         console.log(res);
         setOrders(res);
-      } catch (err) {
-        console.error('Failed to fetch orders', err);
+      } catch (exception:any){
+        toast.error(exception)
+        console.log(exception);
+      
       }
     };
 
@@ -46,16 +49,17 @@ const OrderListingPage: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">All Orders (Admin View)</h2>
+      <h2 className="text-2xl font-bold mb-6">All Orders </h2>
 
       {orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
         orders.map((order) => (
+            console.log(order),
           <div key={order._id} className="border border-gray-300 rounded-xl mb-6 p-5 shadow-sm">
             <div className="flex justify-between mb-3">
               <h3 className="text-lg font-semibold text-blue-600">
-                Order #{order._id.slice(-6).toUpperCase()}
+                Order ID :{order._id.slice(-6).toUpperCase()}
               </h3>
               <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
                 Status: {order.status}

@@ -17,6 +17,7 @@
     "flowbite": "^2.5.1",
     "flowbite-react": "^0.10.1",
     "framer-motion": "^12.7.4",
+    "khalti-checkout-web": "^2.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.1",

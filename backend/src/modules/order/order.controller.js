@@ -4,7 +4,7 @@ const OrderModel = require("./order.model");
 const placeOrder = async (req, res) => {
   try {
     const { customerId, items, customer, totalAmount } = req.body;
-    console.log(req.body);
+    
     if (!items || !customer || !totalAmount) {
       throw Error('Missing required fields');
     }
@@ -15,7 +15,8 @@ const placeOrder = async (req, res) => {
       items,
       totalAmount,
     });
-
+    order.save();
+    console.log(order);
     res.json({ 
         message: 'Order placed successfully', 
         result:order,
@@ -43,10 +44,10 @@ const cancelOrder = async (req, res) => {
     const orderId = req.params.id;
     // const userId = req.userId;
 
-    const order = await OrderModel.findById(orderId);
+    const order = await OrderModel.findById(orderId);             
 
     if (order.status !== 'pending') {
-      return res.status(400).json({ message: 'Only pending orders can be cancelled' });
+      return res.status(400).json({message:'Only pending orders can be cancelled'});
     }
 
     order.status = 'cancelled';
@@ -66,14 +67,13 @@ const getAllOrders = async (req, res) => {
     //   .populate('items.productId', 'name c') 
       .sort({ createdAt: -1 });
 
-      console.log(orders);
-    // Populate seller info
+    //   console.log(orders);
     const fullOrders = await Promise.all(orders.map(async (order) => {
       const detailedItems = await Promise.all(order.items.map(async (item) => {
         const product = await ProductModel.findById(item.productId).populate('createdBy', 'store email role name');
         // console.log(product);
         return {
-          name: product?.name || '',
+          name: product?.title || '',
           quantity: item.quantity,
           price: item.price,
           seller: product?.seller,

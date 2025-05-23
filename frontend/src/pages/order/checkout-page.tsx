@@ -25,7 +25,7 @@ const CheckoutPage = () => {
    try {
     setLoading(true)
       const response:any = await authSvc.getRequest('/cart/'+LoggedInUser._id,{auth:true});
-      console.log(response)
+      // console.log(response)
     setCart(response.items);
   }catch(exception:any){
     toast.error(exception)
@@ -37,7 +37,7 @@ const CheckoutPage = () => {
   const total =async () => {
     try{ 
       const response:any =  await authSvc.getRequest("/cart/totals/"+LoggedInUser._id)
-      console.log(response)
+      // console.log(response)
       setCartTotal(response.totalAmount)
     }catch(exception){
       toast.error("Error getting total")
@@ -61,7 +61,7 @@ const CheckoutPage = () => {
       });
 
 
-  const handlePlaceOrder = (data:any) => {
+  const handlePlaceOrder = async(data:any) => {
 try{
   setLoading(true);
     const customer_data = {
@@ -76,11 +76,14 @@ try{
       items: cart,
       totalAmount: cartTotal
     }
-    console.log(order_data)
-    const order = authSvc.postRequest("/order/order ", order_data, {auth:true})
+    // console.log(order_data)
+    const order:any = await authSvc.postRequest("/order/order ", order_data, {auth:true})
     console.log(order)
     toast.success("Order placed successfully")
-    navigate("/orderhistory")
+     if (order && order.result._id) {
+      toast.success("Order placed successfully!");
+      navigate(`/payment/${order.result._id}/${cartTotal}`);
+     }
 }catch(exception){
     toast.error("Error placing order")
     console.log(exception)
