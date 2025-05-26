@@ -6,7 +6,7 @@ const CategoryCreateDTO = joi.object({
     // status:joi.string().valid(...Object.values(StatusType)).required(),
     parentId: joi.string(),
     brands: joi.array().items(joi.string()),
-    image: joi.string().empty(null,"").optional()
+    image: joi.string()
 });
 
 const CategoryUpdpateDTO = joi.object({
@@ -15,7 +15,7 @@ const CategoryUpdpateDTO = joi.object({
     // status:joi.string().valid(...Object.values(StatusType)).required(),
     parentId: joi.string(),
     brands: joi.array().items(joi.string()),
-    image: joi.string().empty(null, "").optional()
+    image: joi.string()
 });
 
 module.exports = {

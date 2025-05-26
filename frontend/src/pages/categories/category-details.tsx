@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import authSvc from "../auth/auth.service";
-import categorySvc from "../Cms/category/cateory.service";
 // import categorySvc from "../Cms/category/category-service";
 
 const CategoryDetailsPage = () => {
@@ -32,7 +31,7 @@ const CategoryDetailsPage = () => {
 
   const getcategoryBySlug = async () => {
     try {
-      const response: any = await categorySvc.getRequest(`/category/getcategorybyslug/${slug}`);
+      const response: any = await authSvc.getRequest(`/category/getcategorybyslug/${slug}`);
       setcategory(response.result);
     } catch (err) {
       toast.error("category not found");

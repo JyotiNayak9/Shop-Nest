@@ -22,31 +22,31 @@ const SellerSidebar = () => {
       url:"/seller/product",
       icon: <AiFillProduct className="w-6 h-4 mr-4"/>
     },
-    {
-      name:"Category Management",
-      url:"/seller/category",
-      icon: <FaSitemap className="w-6 h-4 mr-4"/>
-    },
-    {
-      name:"Brand Management",
-      url:"/seller/brand",
-      icon: <AiFillCrown className="w-6 h-4 mr-4"/> 
-    },
-    {
-      name:"User Management",
-      url:"/seller/users",
-      icon: <FaUsers className="w-6 h-4 mr-4"/>
-    },
+    // {
+    //   name:"Category Management",
+    //   url:"/seller/category",
+    //   icon: <FaSitemap className="w-6 h-4 mr-4"/>
+    // },
+    // {
+    //   name:"Brand Management",
+    //   url:"/seller/brand",
+    //   icon: <AiFillCrown className="w-6 h-4 mr-4"/> 
+    // // },
+    // {
+    //   name:"User Management",
+    //   url:"/seller/users",
+    //   icon: <FaUsers className="w-6 h-4 mr-4"/>
+    // },
     {
       name:"Order Management",
       url:"/seller/orders",
       icon: <FaShoppingCart className="w-6 h-4 mr-4"/>
     },
-    {
-      name:"Transaction Management",
-      url:"/seller/transactions",
-      icon: <FaDollarSign className="w-6 h-4 mr-4"/>
-    }
+    // {
+    //   name:"Transaction Management",
+    //   url:"/seller/transactions",
+    //   icon: <FaDollarSign className="w-6 h-4 mr-4"/>
+    // }
   ]
   return (
     <>

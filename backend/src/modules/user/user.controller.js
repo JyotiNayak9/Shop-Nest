@@ -27,14 +27,33 @@ class UserController{
             }
         }
 
-        userLists = (req, res,next)=>{
-            console.log("post after")
-            res.json({
-                result:"",
-                message:"list all user",
-                meta : null
-            })
+        
+        
+       userLists = async (req, res, next) => {
+    try {
+        const { role } = req.query; 
+        let filter = {};
+
+        if (role === "customer") {
+            filter.role = UserRoles.CUSTOMER;
+        } else if (role === "seller") {
+            filter.role = UserRoles.SELLER;
         }
+
+        const users = await userSvc.listUsers(filter); 
+        const count = await userSvc.countUsers(filter); 
+        res.json({
+            result: users,
+            message: `List of ${role || 'all'} users`,
+            meta: {
+                total: count,
+            },
+        });
+    } catch (exception) {
+        next(exception);
+    }
+};
+
 
         userdetailbyId = (req,res, next)=>{
             const params = req.params;

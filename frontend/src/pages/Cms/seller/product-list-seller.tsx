@@ -47,6 +47,7 @@ const SellerProductList = () => {
     
       try{
         setLoading(true)
+        
         const response: any = await authSvc.getRequest("/product/getProductBySeller/"+LoggedInUser._id, {auth:true , params : {limit: limit, page: page, search: search, filter: filter, sort: sort}})
         console.log(response)
         setProduct(response.result);
@@ -192,7 +193,7 @@ const SellerProductList = () => {
                 </Table.Cell>
                 <Table.Cell className="flex gap-3">
                   <ActionButtons
-                    editUrl={`/admin/Product/${row._id}/edit`}
+                    editUrl={`/seller/Product/${row._id}/edit`}
                     deleteAction={deleteData}
                     rowId={row._id}
                   />

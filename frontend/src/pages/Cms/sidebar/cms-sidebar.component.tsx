@@ -42,11 +42,11 @@ const CMSSidebar = () => {
       url:"/admin/orders",
       icon: <FaShoppingCart className="w-6 h-4 mr-4"/>
     },
-    {
-      name:"Transaction Management",
-      url:"/admin/transactions",
-      icon: <FaDollarSign className="w-6 h-4 mr-4"/>
-    }
+    // {
+    //   name:"Transaction Management",
+    //   url:"/admin/transactions",
+    //   icon: <FaDollarSign className="w-6 h-4 mr-4"/>
+    // }
   ]
   return (
     <>

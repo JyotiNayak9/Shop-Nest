@@ -1,32 +1,46 @@
-import { CancelButton, ImageUpload, InputLabel, StatusSelectComponent, SubmitButton, TextInputComponent } from "../../../components/common/form/input-component.";
-import { Heading2, Heading3 } from "../../../components/common/title"
+import { InputLabel, SubmitButton, TextInputComponent } from "../../../components/common/form/input-component.";
+import { Heading3 } from "../../../components/common/title"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import authSvc from "../../auth/auth.service";
 import { toast } from "react-toastify";
-
+import { categorySvc } from '../../../services/category.service';
+import authSvc from "../../auth/auth.service";
 
 const CreateCategory = () => {
+
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const schema = yup.object({
         title: yup.string().required(),
         image: yup
           .mixed()
           .required(),
-    //       status: yup.object({ label: yup.string().matches(/^(Publish|Unpublish)$/).required(),
-    //         value: yup.string().matches(/^(active|inactive)$/).required() }).required(),
-      });
-      const navigate = useNavigate();
-      const [loading, setLoading] = useState(false);
+        parentId: yup.string().nullable(),
+    });
+
+    const fetchCategories = async () => {
+        try {
+            const response:any = await authSvc.getRequest('/category/getall');
+            setCategories(response.result);
+        } catch (error) {
+            toast.error('Error fetching categories');
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
     const {
         control,
         handleSubmit,
         setError,
-        setValue,                                                                                                                                                                            
+        setValue,
         formState: { errors },
       } = useForm({
         resolver: yupResolver(schema),
@@ -34,13 +48,13 @@ const CreateCategory = () => {
 
       const onSubmit = async (data:any) => {
         try{
+            // console.log('kagsjs')
             setLoading(true);
             const submitData = {
                 ...data,
-                // status:data.status.value
             }
             console.log(submitData)
-            await authSvc.postRequest('/category',data,{auth:true,file:true});
+            await authSvc.postRequest('/category/', submitData, { auth: true,file:true });
     
               toast.success("Category Created successfully. ")
               navigate('/admin/category')
@@ -77,12 +91,19 @@ const CreateCategory = () => {
             />
             </div>
             <div className="sm:col-span-2">
-            {/* <InputLabel htmlFor="Status">Status</InputLabel> */}
-            {/* <StatusSelectComponent
-                control={control}
-                name="status"
-                errMsg={errors?.status?.message as string}
-                /> */}
+                <InputLabel htmlFor="parentCategory">Parent Category</InputLabel>
+                <select
+                    id="parentCategory"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-600 focus:border-violet-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-violet-500 dark:focus:border-violet-500"
+                    {...control.register('parentId')}
+                >
+                    <option value="">Select parent category (optional)</option>
+                    {categories.map((category: any) => (
+                        <option key={category._id} value={category._id}>
+                            {category.title}
+                        </option>
+                    ))}
+                </select>
             </div>
             <div className="sm:col-span-2">
             <InputLabel htmlFor="Image">Image</InputLabel>
@@ -92,7 +113,7 @@ const CreateCategory = () => {
               control={control}
                 errMsg={errors?.image?.message as string}   
                 /> */}
-                <input
+               <input
                     type="file"
                     name="image"
                     onChange={(e:any) => {

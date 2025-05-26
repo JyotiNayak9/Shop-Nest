@@ -34,18 +34,17 @@ CreateProduct = async(req, res, next) =>{
 
  getProductBySeller = async(req, res, next) => {
     try{
-
-        const {id} = req.params
-        idvalidate(id)
+        const id = req.params.id
+        console.log(id)
             const page = +req.query.page || 1
             const limit = +req.query.limit || 10
             const skip = (page - 1)*limit
-
+            
             let filter = {createdBy: id};
             if(req.query.search){
-                filter = {
-                    title: new RegExp(req.query.search, 'i')
-                }
+                
+                    filter.title= new RegExp(req.query.search, 'i') 
+                
             }
 
             const {count, data} = await productSvc.listData({
@@ -56,7 +55,7 @@ CreateProduct = async(req, res, next) =>{
 
             res.json({
                 result: data,
-                message: "product list all",
+                message: "product list by seller",
                 meta: {
                     currentPage: page,
                     total: count,
@@ -66,7 +65,7 @@ CreateProduct = async(req, res, next) =>{
         }catch(exception){
             next(exception)
         }
-}
+ }
  getbyslug = async(req, res, next) => {
     try{
         const {slug} = req.params

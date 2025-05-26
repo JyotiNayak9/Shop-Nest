@@ -10,14 +10,14 @@ const { fileFilterType } = require('../../config/constants.config')
 const productRouter= require("express").Router();
 
 const upload = multer()
-productRouter.post('/createProduct',loginCheck, hasPermission('admin'), setPath('product'), uploadfile(fileFilterType.IMAGE).array('image',10), bodyValidator(ProductCreateDTO), ProductCtrl.CreateProduct)
+productRouter.post('/createProduct',loginCheck, setPath('product'), uploadfile(fileFilterType.IMAGE).array('image',10), bodyValidator(ProductCreateDTO), ProductCtrl.CreateProduct)
 productRouter.get('/getaproduct/:id',ProductCtrl.getaproduct)
 productRouter.get('/getproductbyslug/:slug',ProductCtrl.getbyslug)
 productRouter.get('/getallproducts',ProductCtrl.getallProducts)
 productRouter.get('/getproductbycategory/:categoryId',ProductCtrl.getProductByCategory)
 productRouter.get('/getproducts',loginCheck,  ProductCtrl.index)
 productRouter.get('/getProductBySeller/:id',loginCheck, ProductCtrl.getProductBySeller)
-productRouter.patch('/updateaproduct/:id',loginCheck, hasPermission('admin'), upload.none(),bodyValidator(ProductUpdateDTO),ProductCtrl.UpdateaProduct)
+productRouter.patch('/updateaproduct/:id',loginCheck,  upload.none(),bodyValidator(ProductUpdateDTO),ProductCtrl.UpdateaProduct)
 productRouter.delete('/deleteaproduct/:id',loginCheck, hasPermission('admin'),ProductCtrl.DeleteaProduct)
 
 module.exports = productRouter

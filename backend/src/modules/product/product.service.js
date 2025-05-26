@@ -30,6 +30,9 @@ class ProductService{
 productDetailById = async(id) => {
     try{
         const product = await ProductModel.findById(id)
+        .populate("createdBy", ["_id","name", "email", "role"])
+        .populate("category", ["_id","title"])
+        .populate("brand", ["_id","title"])
         return product
     }catch(exception){
         throw(exception)

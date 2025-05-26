@@ -8,10 +8,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import authSvc from "../../auth/auth.service";
 import { toast } from "react-toastify";
-import ProductSvc from "./product-service";
+import ProductSvc from "../product/product-service";
 
-
-const EditProduct = () => {
+const SellerEditProduct = () => {
 
     const schema =yup.object({
             title: yup.string().required(),
@@ -96,7 +95,7 @@ const EditProduct = () => {
            console.log(data)
         }catch(exception){
           toast.error("Error while fetching Product list")
-          navigate('/admin/Product')
+          navigate('/seller/Product')
           console.log(exception)
         }
       }
@@ -110,10 +109,10 @@ const EditProduct = () => {
           setValue("image", detail.image);
           setValue("description", detail.description);
           setValue("price", detail.price);
-          setValue("category", { label: detail.category.title, value: detail.category._id });
+          setValue("category",{ label: detail.category.title, value: detail.category._id });
           setValue("brand", { label: detail.brand.title, value: detail.brand._id });
-          setValue("features", detail.features.join(', '));
           setValue("quantity", detail.quantity);
+          setValue("features", detail.features.join(', ')); 
         }
       }, [detail]);
       
@@ -141,7 +140,7 @@ const EditProduct = () => {
             await ProductSvc.patchRequest(`/product/updateaproduct/${params.id}`,submitData,{auth:true,file:true});
     
               toast.success("Product Edited successfully. ")
-              navigate('/admin/Product')
+              navigate('/seller/Product')
           } catch(exception : any){
             if(+exception.status === 400){
               Object.keys(exception.data.result).map((field:any) =>{
@@ -290,4 +289,4 @@ const EditProduct = () => {
     )
 }
 
-export default EditProduct;
+export default SellerEditProduct;

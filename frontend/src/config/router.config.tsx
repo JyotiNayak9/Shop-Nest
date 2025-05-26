@@ -42,6 +42,7 @@ import OrderListingPage from "../pages/Cms/order/allOrderView.tsx";
 import PaymentButton from "../pages/order/payment.tsx";
 import SellerProductList from "../pages/Cms/seller/product-list-seller.tsx";
 import SellerCreateProduct from "../pages/Cms/seller/product-create-seller.tsx";
+import SellerEditProduct from "../pages/Cms/seller/product-edit-seller.tsx";
 
 
 const RouterConfig = () => {
@@ -128,7 +129,7 @@ const RouterConfig = () => {
                 </CheckPermission>}>
                 <Route path="product" element = {<SellerProductList/>}/>
                 <Route path="product/create" element = {<SellerCreateProduct/>}/>
-                <Route path="product/:id/edit" element = {<EditProduct/>}/>
+                <Route path="product/:id/edit" element = {<SellerEditProduct/>}/>
                 <Route path="*" element  = {<NotFoundError url="/seller" label="Go to Dashboard"/>}/>
                 
                 </Route>

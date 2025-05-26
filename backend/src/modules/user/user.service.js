@@ -146,6 +146,14 @@ let data = req;
    return await user.save()
     }
 
+    listUsers= async (filter = {}) => {
+    return await UserModel.find(filter).select("-password").sort({ _id: -1 });
+}
+
+countUsers= async (filter = {}) => {
+    return await UserModel.countDocuments(filter);
+}
+
 }
 
 

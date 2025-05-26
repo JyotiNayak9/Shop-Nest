@@ -101,7 +101,7 @@ const SellerCreateProduct = () => {
             await authSvc.postRequest('/product/createProduct',submitData,{auth:true,file:true});
     
               toast.success("Product Created successfully. ")
-              navigate('/admin/Product')
+              navigate('/seller/product')
           } catch(exception : any){
             if(+exception.status === 400){
               Object.keys(exception.data.result).map((field:any) =>{

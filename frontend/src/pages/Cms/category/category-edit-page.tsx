@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import authSvc from "../../auth/auth.service";
 import { toast } from "react-toastify";
-import categorySvc from "./cateory.service";
 
 
 const EditCategory = () => {
@@ -27,7 +26,7 @@ const EditCategory = () => {
       const params = useParams();
       const getDetail = async () => {
         try{
-            const detail:any = await categorySvc.getRequest(`/category/${params.id}`, {auth:true});
+            const detail:any = await authSvc.getRequest(`/category/${params.id}`, {auth:true});
             const data = {
               title:detail.result.title,
               image:detail.result.image,

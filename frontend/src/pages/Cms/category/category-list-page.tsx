@@ -9,13 +9,12 @@ import { SearchParams } from "../../../config/constants"
 import { NavLink } from "react-router-dom"
 import { FaPen, FaTrash } from "react-icons/fa"
 import Swal from "sweetalert2"
-import categorySvc from "./cateory.service"
 import { ActionButtons } from "../../../components/common/table/table-actionbuttons"
 const CategoryListingPage = () => {
     const [pagination, setPagination] = useState({
         currentPage : 1,
         totalPage: 1,
-        limit: 10
+        limit: 5
     })
     const [category, setCategory] =useState([]);
     const [loading, setLoading] =useState(true);
@@ -28,7 +27,7 @@ const CategoryListingPage = () => {
         })
        await getAllcategory({
             page: page,
-            limit: 10
+            limit: 5
         })
     }
 
@@ -58,7 +57,7 @@ const CategoryListingPage = () => {
       const timeout = setTimeout(() =>{
         getAllcategory({
           page: 1,
-          limit: 10,
+          limit: 5,
           search: search
         })
     })
@@ -69,7 +68,7 @@ const CategoryListingPage = () => {
 
     const deleteData = async (id:string) => {
    try{
-          await categorySvc.deleteRequest('/category/'+id, {auth:true})
+          await authSvc.deleteRequest('/category/'+id, {auth:true})
           toast.success("Category deleted successfully")
           getAllcategory({
             page:1,
