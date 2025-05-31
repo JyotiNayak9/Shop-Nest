@@ -9,11 +9,12 @@ class CategoryController{
     create = async(req, res, next) =>{
         try{
             const data = req.body;
-            data.image = await uploadImage("./public/uploads/category/"+req.file.filename)
+          if(req.file)
+             { data.image = await uploadImage("./public/uploads/category/"+req.file.filename)
+            deleteFile("./public/uploads/category/"+req.file.filename)}
 
             data.slug = slugify(data.title,{lower:true})
             
-            deleteFile("./public/uploads/category/"+req.file.filename)
 
             if(!data.parentId || data.parentId ==='null' || data.parentId ===null){
                 data.parentId = null

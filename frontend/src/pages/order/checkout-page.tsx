@@ -76,12 +76,12 @@ try{
       items: cart,
       totalAmount: cartTotal
     }
-    // console.log(order_data)
-    const order:any = await authSvc.postRequest("/order/order ", order_data, {auth:true})
+    console.log(order_data)
+    const order:any = await authSvc.postRequest("/order/order ", order_data, {auth:true});
     console.log(order)
     toast.success("Order placed successfully")
      if (order && order.result._id) {
-      toast.success("Order placed successfully!");
+      // toast.success("Order placed successfully!");
       navigate(`/payment/${order.result._id}/${cartTotal}`);
      }
 }catch(exception){

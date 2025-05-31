@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
-import ProductService from '../path/to/ProductService';
+import React, { useState, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 import authSvc from '../pages/auth/auth.service';
 
 interface Product {
@@ -9,60 +9,33 @@ interface Product {
     price: number;
 }
 
-const ProductList = () => {
+interface ProductListProps {
+  products: Product[];
+}
+
+const ProductList: React.FC<ProductListProps> = ({ products }) => {
     
     const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [sortOrder, setSortOrder] = useState('asc');
-    const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-            try {
-                const response: any = await authSvc.getRequest("/product/getallproducts" )
-                console.log(response)             
-            setProducts(response.data);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            } finally {
-                setLoading(false);
-            }
-        };        
-        fetchProducts();
-    }, [searchTerm, selectedCategory, sortOrder]);
+        setLoading(false);
+    }, [products]);
 
-    // Define event parameter types
-    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-    };
-
-    const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCategory(event.target.value);
-    };
-
-    const handleSortOrderChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setSortOrder(event.target.value);
-    };
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
-        <div>
-            {loading ? (
-                <p>Loading...</p>
-            ) : (
-                <div>
-                    <input type="text" placeholder="Search products..." value={searchTerm} onChange={handleSearchChange} />
-                    <select value={selectedCategory} onChange={handleCategoryChange}>
-                        <option value="">All Categories</option>
-                        {/* Add category options here */}
-                    </select>
-                    <select value={sortOrder} onChange={handleSortOrderChange}>
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
-                </div>
-            )}
+        <div className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {products.map((product) => (
+                    <div key={product.id} className="border rounded-lg p-4">
+                        <h3 className="text-lg font-semibold">{product.name}</h3>
+                        <p className="text-gray-600">Category: {product.category}</p>
+                        <p className="mt-2 text-green-600">${product.price}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

@@ -104,7 +104,7 @@ export const HomeHeader = () => {
           >
             About
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/categories"
             className={({ isActive }: { isActive: boolean }) =>
               isActive
@@ -114,7 +114,7 @@ export const HomeHeader = () => {
             }
           >
             Categories
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/products"
             className={({ isActive }: { isActive: boolean }) =>

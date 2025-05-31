@@ -6,11 +6,12 @@ import Recommendations from "../../components/recommended/recommended";
 import { useContext } from "react";
 import AuthContext from "../../context/auth.context";
 import ProductList from "../../components/ProductList";
+import HeroSection from "../../components/hero";
 const LandingPage = ()=> {
   const {LoggedInUser} = useContext(AuthContext)
     return(
         <>
-      <img src={banner2} alt="banner" className="w-full h-60 sm:h-64 xl:h-[500px]  my-0"/>
+    <HeroSection/>
       {/* <HomeCategory/> */}
       <HomeProducts/>
       {LoggedInUser && LoggedInUser.role === "customer" && (

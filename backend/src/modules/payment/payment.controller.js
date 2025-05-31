@@ -19,7 +19,7 @@ const khaltiPayment =  async(req, res) => {
       },
       {
         headers: {
-          Authorization: `5df916c628f74ee9a77777942da1770d`, 
+          Authorization: `Key 182e993f549f4409b66c0c96c2f469fe`, 
         },
       }
     );

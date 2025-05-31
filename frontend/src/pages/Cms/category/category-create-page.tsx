@@ -18,8 +18,7 @@ const CreateCategory = () => {
     const schema = yup.object({
         title: yup.string().required(),
         image: yup
-          .mixed()
-          .required(),
+          .mixed(),
         parentId: yup.string().nullable(),
     });
 

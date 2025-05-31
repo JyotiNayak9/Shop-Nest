@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "../pages/landing";
 import AboutPage from "../pages/about/about-page";
 import CategoryPage, { AllCategory } from "../pages/categories/categories";
-import ProductsPage from "../pages/allproducts/all-products";
+import ProductsPage, { AllProducts } from "../pages/allproducts/all-products";
 import ContactPage from "../pages/contact/contact-page";
 import CategoryDetailsPage from "../pages/categories/category-details";
 import ProduuctDetailsPage from "../pages/allproducts/product-details";
@@ -83,7 +83,7 @@ const RouterConfig = () => {
                 <Route path="logout" element={<Logout/>}/>
                 <Route path="about" element={<AboutPage/>}/>
                 <Route path="categories" element={<AllCategory/>}/>
-                <Route path="products" element={<ProductsPage/>}/>
+                <Route path="products" element={<AllProducts/>}/>
                 <Route path="contact" element={<ContactPage/>}/>
                 <Route path="categories/:slug" element={<CategoryDetailsPage/>}/>
                 <Route path="products/:slug" element={<ProductDetailPage/>}/>
