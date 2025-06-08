@@ -26,15 +26,15 @@ type Order = {
   items: OrderItem[];
 };
 
-const OrderListingPage: React.FC = () => {
+const SellerOrderListing: React.FC = () => {
     const [loading, setLoading] = useState(true);
-    const {loggedInUser} = useContext(AuthContext)
+    const {LoggedInUser} = useContext(AuthContext)
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res:any = await authSvc.getRequest('order/getAllOrders', {auth:true});
+        const res:any = await authSvc.getRequest('order/getOrdersBySeller/'+LoggedInUser._id, {auth:true});
         console.log(res);
         setOrders(res.result);
       } catch (exception:any){
@@ -78,7 +78,7 @@ const OrderListingPage: React.FC = () => {
               <thead>
                 <tr className="bg-gray-100 text-left">
                   <th className="p-2 border">Product</th>
-                  <th className="p-2 border">Seller</th>
+                  {/* <th className="p-2 border">Seller</th> */}
                   <th className="p-2 border">Qty</th>
                   <th className="p-2 border">Price (Rs)</th>
                   <th className="p-2 border">Total (Rs)</th>
@@ -88,18 +88,20 @@ const OrderListingPage: React.FC = () => {
                 {order.items.map((item, idx) => (
                   <tr key={idx} className="border-t">
                     <td className="p-2 border">{item.name}</td>
-                    <td className="p-2 border">{item.seller?.shopName} <br /><small>{item.seller?.email}</small></td>
+                    {/* <td className="p-2 border">{item.seller?.shopName} <br /><small>{item.seller?.email}</small></td> */}
                     <td className="p-2 border">{item.quantity}</td>
                     <td className="p-2 border">{item.price}</td>
                     <td className="p-2 border">{item.price * item.quantity}</td>
                   </tr>
-                ))}
+                ))
+            }
               </tbody>
             </table>
 
-            <div className="text-right font-bold text-lg mt-3">
-              Order Total: Rs. {order.totalAmount}
-            </div>
+            {/* <div className="text-right font-bold text-lg mt-3">
+              Order Total: Rs. {item.price * item.quantity}
+            </div> */}
+
           </div>
         ))
       )}
@@ -107,4 +109,4 @@ const OrderListingPage: React.FC = () => {
   );
 };
 
-export default OrderListingPage;
+export default SellerOrderListing;

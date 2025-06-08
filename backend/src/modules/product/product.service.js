@@ -30,7 +30,14 @@ class ProductService{
 productDetailById = async(id) => {
     try{
         const product = await ProductModel.findById(id)
-        .populate("createdBy", ["_id","name", "email", "role"])
+        .populate({
+            path: "createdBy",
+            select: "_id name email role store",
+            populate: {
+                path: "store",
+                select: "name address panNumber"
+            }
+        })
         .populate("category", ["_id","title"])
         .populate("brand", ["_id","title"])
         return product
@@ -41,7 +48,14 @@ productDetailById = async(id) => {
 productDetailBySlug = async(slug) => {
     try{
         const product = await ProductModel.findOne({slug})
-            .populate("createdBy", ["_id","name", "email", "role"])
+            .populate({
+                path: "createdBy",
+                select: "_id name email role store",
+                populate: {
+                    path: "store",
+                    select: "name address panNumber"
+                }
+            })
             .populate("category", ["_id","title"])
             .populate("brand", ["_id","title"])
         
@@ -57,7 +71,14 @@ listData = async({skip=0,limit=10, filter={}}) =>{
     try{
         const count = await ProductModel.countDocuments(filter);
         const data = await ProductModel.find(filter)
-                        .populate("createdBy", ["_id","name", "email", "role"])
+                        .populate({
+                            path: "createdBy",
+                            select: "_id name email role store",
+                            populate: {
+                                path: "store",
+                                select: "name address panNumber"
+                            }
+                        })
                         .sort({_id: "desc"})
                         .limit(limit)
                         .skip(skip)

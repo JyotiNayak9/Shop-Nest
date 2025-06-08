@@ -11,6 +11,7 @@ const { CategoryCreateDTO, CategoryUpdpateDTO } = require("./category.request");
 CategoryRouter.get('/list-home', categoryController.listForHome)
 CategoryRouter.get('/getall', categoryController.getAllCategories)
 CategoryRouter.get('/getcategorybyslug/:slug',categoryController.getbyslug)
+CategoryRouter.get('/getcategorieswithsubcategories', categoryController.getAllCategoriesWithSubcategories)
 CategoryRouter.route('/')
     .post(loginCheck, hasPermission("admin"), setPath('category'), uploadfile(fileFilterType.IMAGE).single("image"), bodyValidator(CategoryCreateDTO),categoryController.create)
     .get(loginCheck, hasPermission('admin'), categoryController.index)

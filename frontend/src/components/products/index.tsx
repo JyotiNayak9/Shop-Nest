@@ -4,13 +4,18 @@ import authSvc from "../../pages/auth/auth.service";
 import { ImageWithTitleCard, SingleProductCard } from "../common/card/single-card";
 import { toast } from "react-toastify";
 export const Homeproduct = () => {
+  
   const [product, setproduct] = useState<any[]>([]);
   const getproduct = async () => {
     try{
       // setLoading(true)
       const response: any = await authSvc.getRequest("/product/getallproducts" )
       console.log(response)
-      setproduct(response.result);
+        const latestProducts = response.result
+  .sort((a:any, b:any ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  .slice(0, 12);
+
+                setproduct(latestProducts);
       console.log(product)
       
     }catch(exception){
@@ -27,12 +32,12 @@ export const Homeproduct = () => {
     <>
       <div className="flex justify-between mx-20 mt-10 border-b border-violet-200 pb-3">
       <Heading3><>Products List </></Heading3>
-        {/* <a
-          className="bg-violet-700 w-40 rounded-lg text-white text-center py-2.5 text-[18px]"
-          href="/categories"
+        <a
+          className="bg-violet-700 w-40 rounded-lg text-white text-center py-4 text-[20px]"
+          href="/products"
         >
-          View more &rarr;
-        </a> */}
+          View more  &rarr;
+        </a>
       </div>
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mx-20 my-10">

@@ -53,7 +53,7 @@ export const SingleProductCard = ({data}: {data:ProductCardProps})=> {
     };
     return (
         <>
-            <Card className="max-w-sm mx-5 my-10">
+            <Card className=" max-w-sm mx-5 my-10">
 
         <Link to={data.slug} className="block p-2 hover:shadow-lg">
 

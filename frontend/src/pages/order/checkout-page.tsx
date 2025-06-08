@@ -36,7 +36,7 @@ const CheckoutPage = () => {
   }
   const total =async () => {
     try{ 
-      const response:any =  await authSvc.getRequest("/cart/totals/"+LoggedInUser._id)
+      const response:any =  await authSvc.getRequest("/cart/totals/"+LoggedInUser._id, {auth:true});
       // console.log(response)
       setCartTotal(response.totalAmount)
     }catch(exception){

@@ -34,7 +34,7 @@ const[cartTotal, setCartTotal] = useState(0);
 }
 const total =async () => {
   try{ 
-    const response:any =  await authSvc.getRequest("/cart/totals/"+LoggedInUser._id)
+    const response:any =  await authSvc.getRequest("/cart/totals/"+LoggedInUser._id, {auth:true});
     console.log(response)
     setCartTotal(response.totalAmount)
   }catch(exception){
@@ -73,7 +73,7 @@ const deleteItem = async (id:any)=>{
               confirmButtonText: "Yes, delete it!"
             })
             if(result.isConfirmed){
-                await authSvc.deleteRequest("/cart/"+id)
+                await authSvc.deleteRequest("/cart/"+id,{auth:true})
                 getCart()
                 total();
                 toast.success("Item deleted successfully")

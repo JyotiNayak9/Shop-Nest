@@ -1,87 +1,108 @@
-import { Heading3 } from "../../components/common/title"
+import { Heading2, Heading3 } from "../../components/common/title"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import authSvc from "../auth/auth.service";
+import { SingleProductCard } from "../../components/common/card/single-card";
+import { get, set } from "react-hook-form";
+import CategoryDropdown from "../../components/category/cat-drop";
+import SidebarLayout from "../../components/common/sidebar/product-sidebar";
+import PriceFilter from "../../components/price/price-filter";
 // import categorySvc from "../Cms/category/category-service";
 
 const CategoryDetailsPage = () => {
-  const { slug } = useParams();
+  const {id} = useParams();
   const [category, setcategory] = useState<any>(null);
+  const[categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { categoryId } = useParams<{ categoryId: string }>();
   const [products, setProducts] = useState<any[]>([]);
+    const [filters, setFilters] = useState<{ min: number | null; max: number | null }>({
+    min: null,
+    max: null,
+  });
 //    const [categoryMap, setCategoryMap] = useState<{ [key: string]: string }>({});
 //     const [brandMap, setBrandMap] = useState<{ [key: string]: string }>({});
 
-// useEffect(() => {
-//     const fetchProducts = async () => {
-//       try {
-//         const response = await authSvc.getRequest(`/product/getproductsbycategory/${categoryId}`);
-//         setProducts(response.data);
-//       } catch (err) {
-//         toast('Failed to load products.');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
 
-//     fetchProducts();
-//   }, [categoryId]);
-
-  const getcategoryBySlug = async () => {
+  // const getcategoryBySlug = async () => {
+  //   try {
+  //     console.log("category id", id)
+  //     const response: any = await authSvc.getRequest(`/product/getproductbycategory/${id}`);
+  //     setProducts(response.result);
+  //     setcategory(response.result[0].category.title);
+  //   } catch (err) {
+  //     toast.error("products not found");
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+   const getProducts = async () => {
     try {
-      const response: any = await authSvc.getRequest(`/category/getcategorybyslug/${slug}`);
-      setcategory(response.result);
+      const params: any = {};
+      if (filters.min !== null) params.minPrice = filters.min;
+      if (filters.max !== null) params.maxPrice = filters.max;
+
+      const response: any = await authSvc.getRequest(`/product/getproductbycategory/${id}`,{params});
+      setProducts(response.result);
+      if (response.result.length > 0) {
+        setCategories(response.result[0].category.title);
+      }
     } catch (err) {
-      toast.error("category not found");
+      toast.error("Products not found");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
-  
+
+
 
   useEffect(() => {
-    getcategoryBySlug();
-  }, [slug]);
+    getProducts();
+    
+  }, [id, filters]);
+  
 
-  if (loading) return <div className="p-10 text-center">Loading...</div>;
-  if (!category) return <div className="p-10 text-center">No category found.</div>;
+ 
 
-  return (
-    <div className="bg-gray-100 flex items-center justify-center min-h-screen py-8">
-      <div className="bg-white shadow-lg rounded-lg p-6 max-w-3xl w-full">
-        <img
-          src={category.image}
-          alt={category.title}
-          className="w-full h-64 object-cover rounded-lg mb-4"
+   return (
+      <>
+      <SidebarLayout price={
+        <PriceFilter
+          onApply={(min, max) => setFilters({ min, max })}
         />
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">{category.title}</h1>
-
-        {
-           products.length === 0 ? (
-          <p>No products found in this category.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {products.map((product) => (
-              <div
-                key={product._id}
-                className="border rounded-lg p-4 shadow hover:shadow-md transition"
-              >
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-full h-40 object-cover rounded mb-2"
-                />
-                <h3 className="text-lg font-semibold">{product.title}</h3>
-                <p className="text-gray-700">${product.price}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+      }
+      >
+      {/* <CategoryDropdown/> */}
+        <div className="flex justify-between mx-20 mt-10 border-b border-violet-200 pb-3">
+      <Heading2 value={category}></Heading2>
+          {/* <a
+            className="bg-violet-700 w-40 rounded-lg text-white text-center py-2.5 text-[18px]"
+            href="/categories"
+          >
+            View more &rarr;
+          </a> */}
+        </div>
+  
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-4 my-10">
+        
+          {products.map((item) => (
+            <SingleProductCard
+              key={item._id}
+              data={{
+                _id: item._id,
+                title: item.title,
+                slug: `/products/${item.slug || item._id}`,
+                image: item.image,
+                price: item.price,
+              }}
+            />
+          ))}
+       </div>
+       </SidebarLayout>
+      </>
+    );
 };
 export default CategoryDetailsPage;

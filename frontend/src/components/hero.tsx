@@ -52,11 +52,11 @@ const navigate = useNavigate()
   return (
     <div className="relative w-full h-[90vh] flex items-center justify-center bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 text-white overflow-hidden">
       {/* Background Image with Overlay */}
-      <img
+      {/* <img
         src="/hero-bg.jpg" // Replace with your own background
-        alt="Shop Background"
+        alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-30"
-      />
+      /> */}
       <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent z-0" />
 
       {/* Content */}

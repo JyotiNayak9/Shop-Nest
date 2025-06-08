@@ -14,4 +14,4 @@
     return dot / (Math.sqrt(magA) * Math.sqrt(magB) || 1);
   }
   
-  module.exports = cosineSimilarity;
+module.exports = cosineSimilarity;

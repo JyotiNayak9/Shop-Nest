@@ -50,7 +50,7 @@ require("../../config/constants.config")
               type: mongoose.Types.ObjectId,
               ref: "User",
               default: null
-          },
+       },
     //  status:{
     //      type : String,
     //      enum: [...Object.values(ProductStatus)],

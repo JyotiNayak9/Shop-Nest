@@ -17,6 +17,7 @@ productRouter.get('/getallproducts',ProductCtrl.getallProducts)
 productRouter.get('/getproductbycategory/:categoryId',ProductCtrl.getProductByCategory)
 productRouter.get('/getproducts',  ProductCtrl.index)
 productRouter.get('/getProductBySeller/:id',loginCheck, ProductCtrl.getProductBySeller)
+// productRouter.get('/filter',ProductCtrl.getProductsByCategoryAndPrice)
 productRouter.patch('/updateaproduct/:id',loginCheck,  upload.none(),bodyValidator(ProductUpdateDTO),ProductCtrl.UpdateaProduct)
 productRouter.delete('/deleteaproduct/:id',loginCheck, hasPermission('admin'),ProductCtrl.DeleteaProduct)
 

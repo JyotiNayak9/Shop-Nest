@@ -4,7 +4,8 @@ const { StatusType } = require("../../config/constants.config")
 const CategoryCreateDTO = joi.object({
     title: joi.string().min(3).max(100).required(),
     // status:joi.string().valid(...Object.values(StatusType)).required(),
-    parentId: joi.string(),
+    parentId: joi.string().empty('').default(null),
+
     brands: joi.array().items(joi.string()),
     image: joi.string()
 });
@@ -13,7 +14,7 @@ const CategoryUpdpateDTO = joi.object({
     title: joi.string().min(3).max(100).required(),
     link: joi.string().uri().empty(null, "").optional().default(null),
     // status:joi.string().valid(...Object.values(StatusType)).required(),
-    parentId: joi.string(),
+    parentId: joi.string().empty('').default(null),
     brands: joi.array().items(joi.string()),
     image: joi.string()
 });

@@ -65,20 +65,29 @@ const getAllOrders = async (req, res) => {
     const orders = await OrderModel.find()
       .populate('customer', 'name email')
       .populate('items.productId', 'title price')
- 
+       
       .sort({ createdAt: -1 });
       
     const count = await OrderModel.countDocuments();
     //   console.log(orders);
     const fullOrders = await Promise.all(orders.map(async (order) => {
       const detailedItems = await Promise.all(order.items.map(async (item) => {
-        const product = await ProductModel.findById(item.productId).populate('createdBy', 'store email role name');
+        const product = await ProductModel.findById(item.productId)
+        .populate({
+          path:'createdBy', 
+          select:'store email role name',
+            populate:{
+            path: 'store',
+            select: 'name address panNumber',
+          }
+        });
         // console.log(product);
         return {
           name: product?.title || '',
           quantity: item.quantity,
           price: item.price,
-          seller: product?.seller,
+          seller: product?.createdBy,
+          store: product?.createdBy?.store 
         };
       }));
 
@@ -102,7 +111,7 @@ const getAllOrders = async (req, res) => {
 }
   const getOrdersForSeller = async (req, res) => {
   try {
-    const sellerId = req.user._id;
+    const sellerId = req.params.id;
 
     // Fetch all orders where at least one product was created by this seller
     const orders = await OrderModel.find()
@@ -113,6 +122,7 @@ const getAllOrders = async (req, res) => {
         populate: {
           path: 'createdBy',
           select: 'name email role store',
+          
         },
       })
       .sort({ createdAt: -1 });

@@ -10,6 +10,6 @@ OrderRouter.post('/order',loginCheck,placeOrder)
 OrderRouter.get("/getMyOrders/:id",loginCheck,getMyOrders)
 OrderRouter.patch('/cancelOrder/:id',loginCheck, cancelOrder)
 OrderRouter.get("/getAllOrders",loginCheck, hasPermission('admin'), getAllOrders)
-OrderRouter.get("/getOrdersBySeller",loginCheck, hasPermission('seller'), getOrdersForSeller)
+OrderRouter.get("/getOrdersBySeller/:id",loginCheck, hasPermission('seller'), getOrdersForSeller)
 
 module.exports = OrderRouter;

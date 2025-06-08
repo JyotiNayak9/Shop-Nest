@@ -1,4 +1,5 @@
 const idvalidate = require("../../utilities/mongo_id_validator");
+const categoryModel = require("../category/category.model");
 const UserModel = require("../user/user.model");
 const ProductModel = require("./product.model")
 const productSvc = require("./product.service")
@@ -69,35 +70,105 @@ CreateProduct = async(req, res, next) =>{
  getbyslug = async(req, res, next) => {
     try{
         const {slug} = req.params
-        // idvalidate(id)
-    const product = await productSvc.productDetailBySlug(slug)
-    res.json({
-        result : product,
-        message: `details of product Id ${slug} `,
-        meta: null
-    })
-    }catch(exception){
+        const product = await ProductModel.findOne({ slug })
+            .populate({
+                path: "createdBy",
+                select: "_id name email role store",
+                populate: {
+                    path: "store",
+                    select: "name address panNumber"
+                }
+            })
+            .populate("category", ["_id","title"])
+            .populate("brand", ["_id","title"])
+            .populate("image")
+
+        if (!product) {
+            return res.status(404).json({
+                result: null,
+                message: "Product not found",
+                meta: null
+            })
+        }
+
+        res.json({
+            result: product,
+            message: "Product details retrieved successfully",
+            meta: null
+        })
+    } catch (exception) {
         next(exception)
     }
  }
-    getProductByCategory = async (req, res) => {
-        try {
-            const { categoryId } = req.params;
-            const products = await ProductModel
-                .find({ category: categoryId })
-                .populate("category", ["_id", "title"])
-                .populate("brand", ["_id", "title"])
-                .populate("createdBy", ["_id", "name", "email", "role"])
-                .sort({ _id: "desc" });
-            res.json({
-                result: products,
-                message: "Product list by category",
-                meta: null
-            });
-        } catch (exception) {
-            next(exception);
-        }
+
+ getProductByCategory = async (req, res, next) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const { minPrice, maxPrice } = req.query;
+
+    const subcategories = await categoryModel.find({ parentId: categoryId }).select('_id');
+    const subcategoryIds = subcategories.map(sub => sub._id.toString());
+
+    // Include parent category ID as well
+    const categoryIds = [categoryId, ...subcategoryIds];
+
+    const filter = {
+      category: { $in: categoryIds }
+    };
+
+    // Add price filtering
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = parseFloat(minPrice);
+      if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
     }
+
+    const products = await ProductModel
+      .find(filter)
+      .populate("category", ["_id", "title"])
+      .populate("brand", ["_id", "title"])
+      .populate("createdBy", ["_id", "name", "email", "role"])
+      .sort({ _id: -1 });
+
+    res.json({
+      result: products,
+      message: "Product list by category (including subcategories)",
+      meta: null
+    });
+
+  } catch (exception) {
+    next(exception);
+  }
+};
+
+
+// getProductsByCategoryAndPrice = async (req, res, next) => {
+//   try {
+//     const categoryId = req.params.id;
+//     const { minPrice, maxPrice } = req.query;
+
+//     const filter = { category: categoryId };
+
+//     if (minPrice || maxPrice) {
+//       filter.price = {};
+//       if (minPrice) filter.price.$gte = parseFloat(minPrice);
+//       if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
+//     }
+
+//     const products = await ProductModel
+//       .find(filter)
+//       .populate("category", ["_id", "title"])
+//       .sort({ _id: -1 });
+
+//     res.json({ result: products, message: "Filtered products" });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+
+
+
  getallProducts = async(req,res,next) =>{
     try{
         const query = req.query
@@ -174,7 +245,6 @@ index = async(req, res, next) =>{
     }
  }
 
- 
 }
 
 const ProductCtrl = new ProductController()

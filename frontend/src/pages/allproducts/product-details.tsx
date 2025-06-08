@@ -1,9 +1,11 @@
 import { Heading3 } from "../../components/common/title"
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import authSvc from "../auth/auth.service";
 import ProductSvc from "../Cms/product/product-service";
+import AuthContext from "../../context/auth.context";
+import { Button } from "flowbite-react";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -11,12 +13,16 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
 //    const [categoryMap, setCategoryMap] = useState<{ [key: string]: string }>({});
 //     const [brandMap, setBrandMap] = useState<{ [key: string]: string }>({});
-
+const { LoggedInUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+  
 
   const getProductBySlug = async () => {
     try {
-      const response: any = await ProductSvc.getRequest(`/product/getproductbyslug/${slug}`);
+      const response:any = await ProductSvc.getRequest(`/product/getproductbyslug/${slug}`);
       setProduct(response.result);
+      console.log(product)
+      console.log('Product response:', response);
     } catch (err) {
       toast.error("Product not found");
       console.error(err);
@@ -25,7 +31,27 @@ const ProductDetailPage = () => {
     }
   };
   
-
+ const addToCart = async (data: {
+    productId: string;
+    quantity: number;
+    productTitle: string;
+    price: number;
+      customerId: string;
+      image:any;
+  }) => {
+    const res = await authSvc.postRequest('/cart', data);
+    return res.data;
+  };
+    const handleAdd = async () => {
+      await addToCart({
+        customerId: LoggedInUser._id,
+        productId: product._id,
+        productTitle: product.title,
+        quantity: 1,
+        price: product.price,
+        image: product.image[0]
+      });
+    };
   useEffect(() => {
     getProductBySlug();
   }, [slug]);
@@ -43,9 +69,9 @@ const ProductDetailPage = () => {
           alt="Lenovo Laptop"
           className="w-full h-80 object-cover rounded-xl shadow-md"
         />
-         <button className="w-full bg-violet-700  text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200 mt-10"  >
+         <Button onClick={handleAdd} href="/cart" className="w-full bg-violet-700  text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200 mt-10"  >
           Add to Cart
-        </button>
+        </Button>
         </div>
             <div className="flex flex-col justify-between">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">{product.title}</h1>
@@ -68,6 +94,14 @@ const ProductDetailPage = () => {
 
         </ul>
         </div>
+        <div className="mb-4">
+  <p className="text-gray-600 font-semibold mb-2">Store Information:</p>
+  <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+    <p className="text-gray-700"><span className="font-medium">Name:</span> {product.createdBy.store?.name || "N/A"}</p>
+    {/* <p className="text-gray-700"><span className="font-medium">Location:</span> {product.store?.location || "N/A"}</p> */}
+  </div>
+</div>
+
         </div>
        
       </div>

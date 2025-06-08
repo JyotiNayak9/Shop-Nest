@@ -11,6 +11,8 @@ abstract class httpService {
    private params ={};
 
   private setHeaders = (config: HeaderConfigProps) => {
+    this.headers = {};
+  this.params = {};
     if (config && config.auth) {
       const token = localStorage.getItem('_at') || null;
       if(!token) {

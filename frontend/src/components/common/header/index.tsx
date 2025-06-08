@@ -3,6 +3,7 @@ import logo from "../../../assets/images/logo.png";
 import { NavLink } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../../context/auth.context";
+import { FaCartArrowDown, FaCartPlus } from "react-icons/fa";
 
 export const HomeHeader = () => {
   const { LoggedInUser }: any = useContext(AuthContext);
@@ -21,8 +22,13 @@ export const HomeHeader = () => {
               <>
               {LoggedInUser.role === "customer" ? (
               <>
-              <NavLink
+              
+               <NavLink
                 to="/cart">
+                  <FaCartPlus className="text-2xl text-gray-700 hover:text-blue-600" />
+              </NavLink>
+              <NavLink
+                to="/">
                   {LoggedInUser.name}
               </NavLink>
               </>
@@ -114,7 +120,7 @@ export const HomeHeader = () => {
             }
           >
             Categories
-          </NavLink> */}
+          </NavLink>
           <NavLink
             to="/products"
             className={({ isActive }: { isActive: boolean }) =>
@@ -125,7 +131,7 @@ export const HomeHeader = () => {
             }
           >
             All Products
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/contact"
             className={({ isActive }: { isActive: boolean }) =>

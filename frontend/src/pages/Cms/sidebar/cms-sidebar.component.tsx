@@ -32,11 +32,11 @@ const CMSSidebar = () => {
       url:"/admin/brand",
       icon: <AiFillCrown className="w-6 h-4 mr-4"/> 
     },
-    {
-      name:"User Management",
-      url:"/admin/users",
-      icon: <FaUsers className="w-6 h-4 mr-4"/>
-    },
+    // {
+    //   name:"User Management",
+    //   url:"/admin/users",
+    //   icon: <FaUsers className="w-6 h-4 mr-4"/>
+    // },
     {
       name:"Order Management",
       url:"/admin/orders",

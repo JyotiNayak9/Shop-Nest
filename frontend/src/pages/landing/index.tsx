@@ -7,12 +7,14 @@ import { useContext } from "react";
 import AuthContext from "../../context/auth.context";
 import ProductList from "../../components/ProductList";
 import HeroSection from "../../components/hero";
+import CategoriesSlider from "../../components/category/category_slider";
 const LandingPage = ()=> {
   const {LoggedInUser} = useContext(AuthContext)
     return(
         <>
     <HeroSection/>
       {/* <HomeCategory/> */}
+      <CategoriesSlider/>
       <HomeProducts/>
       {LoggedInUser && LoggedInUser.role === "customer" && (
         <Recommendations/>

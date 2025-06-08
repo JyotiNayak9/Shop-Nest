@@ -1,6 +1,7 @@
 const uploadImage = require("../../config/cloudinary.config");
 const { StatusType } = require("../../config/constants.config");
 const { deleteFile } = require("../../utilities/helper");
+const categoryModel = require("./category.model");
 const categoryService = require("./category.service");
 const slugify = require('slugify')
 
@@ -125,6 +126,44 @@ class CategoryController{
 
         }
     }
+ getParentCategories = async(req, res, next) =>{
+        try{
+            const categories = await categoryService.listData({
+                filter: {
+                    parentId: null
+                }
+            })  
+            res.json({
+                result: categories,
+                message: "Parent category list",
+                meta: null
+            })
+        }catch(exception){
+            next(exception)
+        }
+    }
+    getAllCategoriesWithSubcategories = async (req, res, next) => {
+  try {
+    const allCategories = await categoryModel.find();
+
+    const parents = allCategories.filter(cat => !cat.parentId);
+    const subcategories = allCategories.filter(cat => cat.parentId);
+
+    const result = parents.map(parent => ({
+      ...parent._doc,
+      subcategories: subcategories.filter(sub => sub.parentId.toString() === parent._id.toString())
+    }));
+
+    res.json({
+      result,
+      message: "Categories with subcategories",
+      meta: null
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
     update = async(req, res, next) =>{
         try{
             const id = req.params.id;

@@ -22,6 +22,7 @@ class CategoryService{
             throw exception
         }
     }
+    
     categoryDetailBySlug = async(slug) => {
         try{
             const product = await CategoryModel.findOne({slug})
