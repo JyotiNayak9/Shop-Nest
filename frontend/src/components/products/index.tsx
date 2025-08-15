@@ -3,24 +3,21 @@ import { Heading2, Heading3 } from "../../components/common/title";
 import authSvc from "../../pages/auth/auth.service";
 import { ImageWithTitleCard, SingleProductCard } from "../common/card/single-card";
 import { toast } from "react-toastify";
+
 export const Homeproduct = () => {
   
   const [product, setproduct] = useState<any[]>([]);
   const getproduct = async () => {
-    try{
-      // setLoading(true)
-      const response: any = await authSvc.getRequest("/product/getallproducts" )
-      console.log(response)
-        const latestProducts = response.result
-  .sort((a:any, b:any ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-  .slice(0, 12);
-
-                setproduct(latestProducts);
-      console.log(product)
+    try {
+      // Fetch only approved products by adding filter
+      const response: any = await authSvc.getRequest("/product/approved-products");
       
-    }catch(exception){
-      toast.error("Error while fetching product list")
-      console.log(exception)
+      if (response && response.result) {
+        setproduct(response.result);
+      }
+    } catch (exception) {
+      toast.error("Error while fetching approved products");
+      console.error("Error fetching products:", exception);
     }
     
   }
@@ -40,7 +37,7 @@ export const Homeproduct = () => {
         </a>
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mx-20 my-10">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mx-20 my-10">
         {product.map((item) => (
           <SingleProductCard
             key={item._id}

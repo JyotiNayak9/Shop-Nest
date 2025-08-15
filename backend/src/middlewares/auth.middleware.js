@@ -10,7 +10,7 @@ const loginCheck = async (req, res, next) => {
         throw {status: 401, message: "Unauthorized access"}
     }else{
         token = token.split(" ").pop()
-
+        // console.log("sk")
         const data = jwt.verify(token, process.env.JWT_SECRET)
         
         if(data.hasOwnProperty('type')){

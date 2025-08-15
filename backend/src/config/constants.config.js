@@ -13,8 +13,20 @@ const StatusType = {
     ACTIVE: "active",
     INACTIVE: "inactive"
 }
+const ProductStatus = {
+    AVAIL: "available",
+    UNAVAIL: "unavailable",
+    OUT_OF_STOCK: "out_of_stock"
+}
+const ProductApprovalStatus = {
+    PENDING: "pending",
+    APPROVED: "approved",
+    REJECTED: "rejected"
+}
 module.exports = {
     fileFilterType,
     UserRoles,
-    StatusType
+    StatusType,
+    ProductStatus,
+    ProductApprovalStatus
 }

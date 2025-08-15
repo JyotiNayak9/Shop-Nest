@@ -6,33 +6,64 @@ import AuthContext from '../../context/auth.context';
 import { useNavigate } from 'react-router-dom';
 import { Heading3 } from '../common/title';
 import { SingleProductCard } from '../common/card/single-card';
+import { toast } from 'react-toastify';
 const Recommendations = ()  => {
     const [products, setProducts] = useState<any[]>([]);
     const {LoggedInUser} = useContext(AuthContext)
     const navigate = useNavigate()
+  const [cart, setCart] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [recLoading, setRecLoading] = useState(false);
 
-    const fetchRecommendations = async () => {
-        try {
-            const response: any = await authSvc.getRequest(`/recommendation/${LoggedInUser._id}`);
-            setProducts(response.result);
-            console.log(products)
-        } catch (error) {
-            console.error('Error fetching recommendations:', error);
-        }
-    };
-  useEffect(() => {
+ 
+
+  const getCart = async () => {
+    try {
+      setLoading(true);
+      const response: any = await authSvc.getRequest('/cart/' + LoggedInUser._id, { auth: true });
+      setCart(response.items);
+      // Fetch recommendations whenever cart changes
+      if (response.items.length > 0) {
+        fetchRecommendations(response.items);
+      }
+    } catch (exception: any) {
+      toast.error(exception);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchRecommendations = async (cartItems: any[]) => {
+    try {
+      setRecLoading(true);
+      // Get product IDs from cart
+      const productIds = cartItems.map(item => item.productId._id || item.productId);
+      
+      const ProductId = productIds.join(',');
+      const response:any = await authSvc.getRequest(`/recommendation/cart/${ProductId}`, 
+        {auth: true},
+        );
+      
+      setRecommendations(response.result || []);
+    } catch (error) {
+      console.error('Failed to fetch recommendations:', error);
+    } finally {
+      setRecLoading(false);
+    }
+  };
+   useEffect(() => {
    
-   fetchRecommendations()
-  
+    getCart()
   }, []);
-
   return (
      <><div className="flex justify-between mx-20 mt-10 border-b border-violet-200 pb-3">
       <Heading3><>Recommended for you </></Heading3>
     </div><div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mx-20 my-10">
-        {products && products.length > 0 ? <>
+        {recommendations && recommendations.length > 0 ? <>
 
-          {products.map((item) => (
+          {recommendations.map((item) => (
             <SingleProductCard
               key={item._id}
               data={{

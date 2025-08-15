@@ -1,10 +1,14 @@
-const UserPreferenceModel = require('../UserPreferences/userpreferences.model');
+const UserPreferenceModel = require('../UserPreferences/userpreferencesmodel');
 const CartModel = require('./cart.model');
 
 class CartController {
 addToCart = async (req, res) => {
   try {
     const { customerId, productId, quantity, productTitle, price ,image} = req.body;
+
+    if (!customerId || !productId || !quantity || !price) {
+  return res.status(400).json({ message: 'Missing required fields' });
+}
 
     const existingItem = await CartModel.findOne({
         customerId,
@@ -16,6 +20,8 @@ addToCart = async (req, res) => {
         existingItem.quantity += quantity;
         existingItem.amount = existingItem.quantity * existingItem.price;
         await existingItem.save();
+
+        // await this.updateUserPreference(customerId, productId);
         return res.json({
             message: 'Item quantity updated successfully',
             result: existingItem,
@@ -36,20 +42,9 @@ addToCart = async (req, res) => {
     });
 
     await newItem.save();
+    // await this.updateUserPreference(customerId, productId);
 
-    let pref = await UserPreferenceModel.findOne({ userId: customerId });
-
-    if (!pref) {
-      // console.log("ajehfiuh")
-      pref = new UserPreferenceModel({ userId:customerId, interactedProductIds: [productId] });
-    } else {
-      // Prevent duplicates
-      if (!pref.interactedProductIds.includes(productId)) {
-        pref.interactedProductIds.push(productId);
-      }
-    }
-  
-    await pref.save();
+ 
     res.json({
         message: 'Item added to cart successfully',
         result: newItem,
@@ -60,6 +55,25 @@ addToCart = async (req, res) => {
   }
 };
 
+updateUserPreference = async (userId, productId) => {
+  if (!userId || !productId) return;
+
+  let pref = await UserPreferenceModel.findOne({ userId });
+
+  if (!pref) {
+    pref = new UserPreferenceModel({
+      userId,
+      interactedProductIds: [productId]
+    });
+  } else {
+    const alreadyInteracted = pref.interactedProductIds.some(id => id.equals(productId));
+    if (!alreadyInteracted) {
+      pref.interactedProductIds.push(productId);
+    }
+  }
+
+  await pref.save();
+};
 
 getCartByCustomer = async (req, res) => {
   try {

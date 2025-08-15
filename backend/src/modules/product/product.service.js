@@ -1,31 +1,133 @@
 const uploadImage = require("../../config/cloudinary.config")
-const { deleteFile } = require("../../middlewares/uploader.middleware")
+const { deleteFile } = require("../../middlewares/uploader.middleware");
+const UserModel = require("../user/user.model");
 const ProductModel = require("./product.model")
 const slugify = require('slugify')
-class ProductService{
-     createProduct  = async (req) => {
-    try{
-        const data = req.body
-        const files = req.files
-        if(data.title){
-            data.slug = slugify(data.title)
-        }
-        data.createdBy = req.authUser._id;
-        const urls = []
-        if (Array.isArray(files)) {
-            await Promise.all(files.map(async(file)=>{
-             const images = await uploadImage("./public/uploads/product/"+ file.filename)
-             urls.push(images)
-              deleteFile("./public/uploads/product/"+ file.filename)    
-                }))
+class ProductService {
+    createProduct = async (req) => {
+        try {
+            const data = req.body;
+            const files = req.files;
+            if (data.title) {
+                data.slug = slugify(data.title);
             }
-            data.image = urls
-        const newProduct = await ProductModel.create(data)
-        return newProduct
-    }catch(exception){
-        throw(exception)
+            data.createdBy = req.authUser._id;
+            const urls = [];
+            if (Array.isArray(files)) {
+                await Promise.all(files.map(async (file) => {
+                    const images = await uploadImage("./public/uploads/product/" + file.filename);
+                    urls.push(images);
+                    deleteFile("./public/uploads/product/" + file.filename);
+                }));
+            }
+            data.image = urls;
+            const newProduct = await ProductModel.create(data);
+            return newProduct;
+        } catch (exception) {
+            throw (exception);
+        }
+    };
+
+ addReview = async (productSlug, userId, reviewData) => {
+    try {
+        const product = await this.productDetailBySlug(productSlug);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+        // const existingReview = product.reviews.find(
+        //     r => r.user.toString() === userId.toString()
+        // );
+        // if (existingReview) {
+        //     throw ({message: "You have already reviewed this product"});
+        // }
+
+       console.log(reviewData)
+        const rating = reviewData.rating;
+        console.log("Rating:", rating);
+        if (!rating)  {
+            throw new Error('Rating must be a number between 1 and 5');
+        }
+        // const user = await UserModel.findById(userId);
+        // if (!user) {
+        //     throw new Error('User not found');
+        // }  
+        // const username = user.name || "Anonymous";
+        const review = {
+            user: userId,
+            rating,
+            comment: reviewData.comment || ""
+        };
+
+        product.reviews.push(review);
+
+        // Safe averageRating calculation
+        const totalRating = product.reviews.reduce((sum, r) => sum + r.rating, 0);
+        product.averageRating = product.reviews.length > 0
+            ? totalRating / product.reviews.length
+            : 0;
+        product.reviewCount = product.reviews.length;
+
+        await product.save();
+        return product;
+    } catch (exception) {
+        throw exception;
     }
-}
+};
+
+
+    updateReview = async (productslug, reviewId, userId, reviewData) => {
+        try {
+            const product = await this.productDetailBySlug(productslug);
+            if (!product) {
+                throw new Error('Product not found');
+            }
+
+            const review = product.reviews.id(reviewId);
+            if (!review) {
+                throw new Error('Review not found');
+            }
+
+            review.rating = reviewData.rating;
+            review.comment = reviewData.comment;
+
+            const totalRating = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+            product.averageRating = totalRating / product.reviews.length;
+
+            await product.save();
+            return product;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    deleteReview = async (slug, reviewId, userId) => {
+        try {
+            const product = await this.productDetailBySlug(slug);
+            if (!product) {
+                throw new Error('Product not found');
+            }
+
+            const review = product.reviews.id(reviewId);
+            if (!review) {
+                throw new Error('Review not found');
+            }
+           
+             product.reviews = product.reviews.filter(
+                    r => r._id.toString() !== reviewId
+                );
+
+            const totalRating = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+            product.averageRating = product.reviews.length > 0 ? totalRating / product.reviews.length : 0;
+            product.reviewCount = product.reviews.length;
+
+            await product.save();
+            return product;
+        } catch (error) {
+            throw error;
+        }
+    };
+
 
 productDetailById = async(id) => {
     try{
@@ -47,7 +149,7 @@ productDetailById = async(id) => {
 }
 productDetailBySlug = async(slug) => {
     try{
-        const product = await ProductModel.findOne({slug})
+        const product = await ProductModel.findOne(slug)
             .populate({
                 path: "createdBy",
                 select: "_id name email role store",
@@ -58,7 +160,7 @@ productDetailBySlug = async(slug) => {
             })
             .populate("category", ["_id","title"])
             .populate("brand", ["_id","title"])
-        
+            .populate("reviews.user", "_id name email")
         if(!product){
             throw({message: "Product not found"})
         }

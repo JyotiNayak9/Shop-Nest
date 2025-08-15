@@ -6,6 +6,7 @@ import authSvc from "../auth/auth.service";
 import ProductSvc from "../Cms/product/product-service";
 import AuthContext from "../../context/auth.context";
 import { Button } from "flowbite-react";
+import ProductReview from "../../components/product/ProductReview";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -81,7 +82,7 @@ const { LoggedInUser } = useContext(AuthContext)
         <p className="text-gray-600 mb-1">
           <span className="font-semibold">Category:</span> {product.category.title}
         </p>
-        <p className="text-black text-xl font-bold mb-2">{product.price}</p>
+        <p className="text-black text-xl font-bold mb-2">Rs.{product.price}</p>
         <div className="mb-4">
         <p className="text-gray-600 mb-4">{product.description}</p>
         </div>
@@ -95,19 +96,26 @@ const { LoggedInUser } = useContext(AuthContext)
         </ul>
         </div>
         <div className="mb-4">
-  <p className="text-gray-600 font-semibold mb-2">Store Information:</p>
-  <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-    <p className="text-gray-700"><span className="font-medium">Name:</span> {product.createdBy.store?.name || "N/A"}</p>
+      <p className="text-gray-600 font-semibold mb-2">Store Information:</p>
+      <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+        <p className="text-gray-700"><span className="font-medium">Name:</span> {product.createdBy.store?.name || "N/A"}</p>
+      </div>
+    </div>
+
+    {/* Add Reviews Section */}
+    <div className="mt-6">
+      <ProductReview />
+    </div>
     {/* <p className="text-gray-700"><span className="font-medium">Location:</span> {product.store?.location || "N/A"}</p> */}
   </div>
 </div>
 
         </div>
-       
-      </div>
-    </div>
+         </>
+    //   </div>
+    // </div>
     
-    </>
+  
   );
 };
 export default ProductDetailPage;

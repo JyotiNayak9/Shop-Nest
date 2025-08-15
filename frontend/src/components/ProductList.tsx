@@ -32,7 +32,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                     <div key={product.id} className="border rounded-lg p-4">
                         <h3 className="text-lg font-semibold">{product.name}</h3>
                         <p className="text-gray-600">Category: {product.category}</p>
-                        <p className="mt-2 text-green-600">${product.price}</p>
+                        <p className="mt-2 text-green-600">Rs.${product.price}</p>
                     </div>
                 ))}
             </div>

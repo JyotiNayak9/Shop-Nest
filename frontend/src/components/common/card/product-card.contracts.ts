@@ -3,7 +3,7 @@ interface ProductCardProps{
     title: string,
     image: string,
     slug: string
-    price: number,
+    price: any,
     // description: string,
 }
 export default ProductCardProps;

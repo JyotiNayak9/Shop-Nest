@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "../pages/landing";
 import AboutPage from "../pages/about/about-page";
 import CategoryPage, { AllCategory } from "../pages/categories/categories";
-import ProductsPage, { AllProducts } from "../pages/allproducts/all-products";
+import { AllProducts } from "../pages/allproducts/all-products";
 import ContactPage from "../pages/contact/contact-page";
 import CategoryDetailsPage from "../pages/categories/category-details";
 import ProduuctDetailsPage from "../pages/allproducts/product-details";
@@ -43,9 +43,13 @@ import PaymentButton from "../pages/order/payment.tsx";
 import SellerProductList from "../pages/Cms/seller/product-list-seller.tsx";
 import SellerCreateProduct from "../pages/Cms/seller/product-create-seller.tsx";
 import SellerEditProduct from "../pages/Cms/seller/product-edit-seller.tsx";
-import CategoryDropdown from "../components/category/cat-drop.tsx";
 import SellerDashboard from "../pages/dashboard/seller-dashboard.tsx";
 import SellerOrderListing from "../pages/Cms/seller/order-history.tsx";
+import SellerEarnings from "../pages/Cms/seller/earnings.tsx";
+// import OrderListSeller from "../pages/Cms/seller/OrderListSeller.tsx";
+import UserListPage from "../pages/Cms/user/user-listing.tsx";
+import DashboardPage from "../pages/Cms/sales/dashboard.tsx";
+import OrderConfirmation from "../pages/order/order-confirmation.tsx";
 
 
 const RouterConfig = () => {
@@ -62,6 +66,7 @@ const RouterConfig = () => {
             setLoading(false)
         }
     }
+     
     useEffect(() => {
         getLoggedInUser();
     },[])
@@ -102,29 +107,33 @@ const RouterConfig = () => {
                     </CheckPermission> }/>
                     <Route path="/checkout" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
                     <CheckoutPage/> 
+                   
                     </CheckPermission> }/>
+                     <Route path="/order-confirmation/:orderId" element={<OrderConfirmation/>}/>
                 <Route path="*" element  = {<NotFoundError url="/" label="Go to Homepage"/>}/>
                 </Route>
 
                 <Route path="/admin" element={<CheckPermission allowedBy={UserRoles.ADMIN}>
                     <Adminlayout/>
                     </CheckPermission>}>
-                <Route index element={<AdminDashboard/>}/>
-                <Route path="category" element = {<CategoryListingPage/>}/>
-                <Route path="category/create" element = {<CreateCategory/>}/>
-                <Route path="category/:id/edit" element = {<EditCategory/>}/>
+                    <Route index element={<AdminDashboard/>}/>
+                    <Route path="category" element = {<CategoryListingPage/>}/>
+                    <Route path="category/create" element = {<CreateCategory/>}/>
+                    <Route path="category/:id/edit" element = {<EditCategory/>}/>
 
-                <Route path="brand" element = {<BrandListingPage/>}/>
-                <Route path="brand/create" element = {<CreateBrand/>}/>
-                <Route path="brand/:id/edit" element = {<EditBrand/>}/>
-                <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
+                    <Route path="brand" element = {<BrandListingPage/>}/>
+                    <Route path="brand/create" element = {<CreateBrand/>}/>
+                    <Route path="brand/:id/edit" element = {<EditBrand/>}/>
 
-                <Route path="product" element = {<ProductListingPage/>}/>
-                <Route path="product/create" element = {<CreateProduct/>}/>
-                <Route path="product/:id/edit" element = {<EditProduct/>}/>
-                <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
+                    <Route path="product" element = {<ProductListingPage/>}/>
+                    <Route path="product/create" element = {<CreateProduct/>}/>
+                    <Route path="product/:id/edit" element = {<EditProduct/>}/>
 
-                <Route path="orders" element = {<OrderListingPage/>}/>
+                    <Route path="user" element={<UserListPage />} />
+                    <Route path="SalesAnalytics" element={<DashboardPage />} />
+                    
+                    <Route path="orders" element = {<OrderListingPage/>}/>
+                    <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
                 </Route>
 
 
@@ -135,7 +144,9 @@ const RouterConfig = () => {
                 <Route path="product" element = {<SellerProductList/>}/>
                 <Route path="product/create" element = {<SellerCreateProduct/>}/>
                 <Route path="product/:id/edit" element = {<SellerEditProduct/>}/>
-                <Route path ="orders" element = {<SellerOrderListing/>}/>
+                <Route path="orders" element = {<SellerOrderListing/>}/>
+                <Route path="earnings" element = {<SellerEarnings/>}/>
+                {/* <Route path="manage-orders" element = {<OrderListSeller/>}/> */}
                 <Route path="*" element  = {<NotFoundError url="/seller" label="Go to Dashboard"/>}/>
                 
                 </Route>

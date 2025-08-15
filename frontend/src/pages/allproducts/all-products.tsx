@@ -3,14 +3,14 @@ import { Heading2, Heading3 } from "../../components/common/title";
 import authSvc from "../../pages/auth/auth.service";
 import { toast } from "react-toastify";
 import { SingleProductCard } from "../../components/common/card/single-card";
-import ProductList from "../../components/ProductList"; // Import the ProductList component
+import ProductList from "../../components/ProductList"; 
 
 export const AllProducts = () => {
   const [product, setproduct] = useState<any[]>([]);
   const getproduct = async () => {
     try{
       // setLoading(true)
-      const response: any = await authSvc.getRequest("/product/getallproducts" )
+      const response: any = await authSvc.getRequest("/product/approved-products?limit=100" )
       console.log(response)
       setproduct(response.result);
       console.log(product)
@@ -37,7 +37,7 @@ export const AllProducts = () => {
         </a> */}
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mx-20 my-10">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mx-20 my-10">
       
         {product.map((item) => (
           <SingleProductCard

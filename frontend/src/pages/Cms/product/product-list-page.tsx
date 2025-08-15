@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom"
 import { FaPen, FaTrash } from "react-icons/fa"
 import Swal from "sweetalert2"
 import ProductSvc from "./product-service"
-import { ActionButtons } from "../../../components/common/table/table-actionbuttons"
+import { ActionButtons, DeleteButton } from "../../../components/common/table/table-actionbuttons"
 import { get, set } from "react-hook-form"
 const ProductListingPage = () => {
     const [pagination, setPagination] = useState({
@@ -116,24 +116,56 @@ const ProductListingPage = () => {
       }
     },[search])
 
-    const deleteData = async (id:string) => {
-   try{
-          await ProductSvc.deleteRequest('/product/deleteaproduct/'+id, {auth:true})
-          toast.success("Product deleted successfully")
-          getAllProduct({
-            page:1,
-            limit:10,
-          })
-  
-        
-      }catch(exception){
-        console.log(exception)
-        toast.error("Error while deleting Product")
-      }
+    const deleteData = async (id: string) => {
+        try {
+            await ProductSvc.deleteRequest('/product/deleteaproduct/' + id, { auth: true })
+            toast.success("Product deleted successfully")
+            getAllProduct({
+                page: 1,
+                limit: 10,
+            })
+        } catch (exception) {
+            console.log(exception)
+            toast.error("Error while deleting product")
+        }
     }
+
+    const approveProduct = async (id: string) => {
+        try {
+            await authSvc.patchRequest(`/product/approve/${id}`, {}, { auth: true });
+            toast.success("Product approved successfully");
+            getAllProduct({
+                page: pagination.currentPage,
+                limit: pagination.limit,
+                search: search,
+                filter: filter,
+                sort: sort
+            });
+        } catch (exception) {
+            console.log(exception);
+            toast.error("Error while approving product");
+        }
+    };
+
+    const rejectProduct = async (id: string) => {
+        try {
+            await authSvc.patchRequest(`/product/reject/${id}`, { reason: 'Rejected by admin' }, { auth: true });
+            toast.success("Product rejected successfully");
+            getAllProduct({
+                page: pagination.currentPage,
+                limit: pagination.limit,
+                search: search,
+                filter: filter,
+                sort: sort
+            });
+        } catch (exception) {
+            console.log(exception);
+            toast.error("Error while rejecting product");
+        }
+    };
     return (
         <>
-        <HeadingWithLink title="Product List" link="/admin/Product/create" btnText="Add Product"/>
+        {/* <HeadingWithLink title="Product List" link="/admin/Product/create" btnText="Add Product"/> */}
 
       <div className="flex justify-end items-end mb-3">
         <TextInput type="search" className="w-1/4 " onChange={(e: any) => {
@@ -150,6 +182,7 @@ const ProductListingPage = () => {
           <Table.HeadCell className="bg-gray-900 text-white py-4">Brand</Table.HeadCell>
           <Table.HeadCell className="bg-gray-900 text-white py-4">Price</Table.HeadCell>
           <Table.HeadCell className="bg-gray-900 text-white py-4">Stock</Table.HeadCell>
+          <Table.HeadCell className="bg-gray-900 text-white py-4">Status</Table.HeadCell>
           <Table.HeadCell className="bg-gray-900 text-white py-4">
             Action
           </Table.HeadCell>
@@ -188,12 +221,38 @@ const ProductListingPage = () => {
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {row.quantity}
                 </Table.Cell>
+                <Table.Cell>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    row.approvalStatus === 'approved' ? 'bg-green-100 text-green-800' :
+                    row.approvalStatus === 'rejected' ? 'bg-red-100 text-red-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {row.approvalStatus?.toUpperCase() || 'PENDING'}
+                  </span>
+                </Table.Cell>
                 <Table.Cell className="flex gap-3">
-                  <ActionButtons
-                    editUrl={`/admin/Product/${row._id}/edit`}
-                    deleteAction={deleteData}
-                    rowId={row._id}
-                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => approveProduct(row._id)}
+                      className=" text-2xl text-green-600 hover:text-green-900 disabled:opacity-30"
+                      disabled={row.approvalStatus === 'approved'}
+                      title="Approve Product"
+                    >
+                      ✓
+                    </button>
+                    <button
+                      onClick={() => rejectProduct(row._id)}
+                      className="text-red-600 hover:text-red-900 text-2xl disabled:opacity-30 px-2"
+                      disabled={row.approvalStatus === 'rejected'}
+                      title="Reject Product"
+                    >
+                      ✕
+                    </button>
+                    <DeleteButton
+                      deleteAction={deleteData}
+                      rowId={row._id}
+                    />
+                  </div>
                 </Table.Cell>
               </Table.Row>
               ))

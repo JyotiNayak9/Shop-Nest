@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'); 
-const { ProductStatus } = require('../../config/constants.config');
+const { ProductStatus, ProductApprovalStatus } = require('../../config/constants.config');
 const { required } = require('joi');
 require("../../config/constants.config")
 
@@ -41,21 +41,62 @@ require("../../config/constants.config")
      },
      quantity: Number,
      features: [String],
-      ratings :[
+      reviews: [
         {
-            star: Number,
-            postedBy:{type: mongoose.Schema.Types.ObjectId, ref: "User"}
-      }],
+            rating: {
+                type: Number,
+                required: true,
+                min: 1,
+                max: 5
+            },
+            comment: {
+                type: String,
+                trim: true
+            },
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            },
+         
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ],
+    averageRating: {
+        type: Number,
+        default: 0
+    },
+    reviewCount: {
+        type: Number,
+        default: 0
+    },
        createdBy:{
               type: mongoose.Types.ObjectId,
               ref: "User",
               default: null
        },
-    //  status:{
-    //      type : String,
-    //      enum: [...Object.values(ProductStatus)],
-    //      default: ProductStatus.AVAIL
-    //  },
+     status: {
+         type: String,
+         enum: [...Object.values(ProductStatus)],
+         default: ProductStatus.AVAIL
+     },
+     approvalStatus: {
+         type: String,
+         enum: [...Object.values(ProductApprovalStatus)],
+         default: ProductApprovalStatus.PENDING
+     },
+     approvedBy: {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "User",
+         default: null
+     },
+     approvedAt: {
+         type: Date,
+         default: null
+     },
      
      
  },{

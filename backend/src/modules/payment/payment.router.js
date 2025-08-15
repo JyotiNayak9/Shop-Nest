@@ -1,9 +1,17 @@
 const express = require('express');
-const khaltiPayment = require('./payment.controller');
-const loginCheck = require('../../middlewares/auth.middleware');
-
 const PaymentRouter = express.Router();
+const PaymentCtrl = require('./payment.controller');
 
-PaymentRouter.post('/verify', loginCheck , khaltiPayment)
+const  loginCheck  = require('../../middlewares/auth.middleware');
+const Payment = require('./payment.model');
 
-module.exports = PaymentRouter
+
+PaymentRouter.post('/khalti/verify',loginCheck,PaymentCtrl.verifyKhaltiPayment );
+
+
+PaymentRouter.post('/cod',loginCheck, PaymentCtrl.processCashOnDelivery);
+
+
+PaymentRouter.get('/:id',loginCheck,PaymentCtrl.getPaymentDetails );
+
+module.exports = PaymentRouter;

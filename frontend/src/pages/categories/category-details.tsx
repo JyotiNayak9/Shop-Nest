@@ -21,23 +21,7 @@ const CategoryDetailsPage = () => {
     min: null,
     max: null,
   });
-//    const [categoryMap, setCategoryMap] = useState<{ [key: string]: string }>({});
-//     const [brandMap, setBrandMap] = useState<{ [key: string]: string }>({});
 
-
-  // const getcategoryBySlug = async () => {
-  //   try {
-  //     console.log("category id", id)
-  //     const response: any = await authSvc.getRequest(`/product/getproductbycategory/${id}`);
-  //     setProducts(response.result);
-  //     setcategory(response.result[0].category.title);
-  //   } catch (err) {
-  //     toast.error("products not found");
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
    const getProducts = async () => {
     try {
       const params: any = {};

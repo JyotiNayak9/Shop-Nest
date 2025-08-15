@@ -28,7 +28,7 @@ export const HomeHeader = () => {
                   <FaCartPlus className="text-2xl text-gray-700 hover:text-blue-600" />
               </NavLink>
               <NavLink
-                to="/">
+                to="/orderhistory">
                   {LoggedInUser.name}
               </NavLink>
               </>

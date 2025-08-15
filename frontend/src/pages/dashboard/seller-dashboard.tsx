@@ -4,6 +4,7 @@ import authSvc from "../auth/auth.service";
 import { toast } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/auth.context";
+import { NavLink } from "react-router-dom";
 
 const SellerDashboard = () => {
 const [ProductsCount, setProductsCount] = useState<number>(0);
@@ -29,9 +30,10 @@ const {LoggedInUser} = useContext(AuthContext)
   totalUsers()
  }, []);
     return(
-        <>
+        
          <div className=" mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <Card  className="max-w-sm bg-violet-600 hover:bg-violet-800" >
+              <NavLink to="/seller/product">
       <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
         <HiUserGroup/>
         Total Products
@@ -39,6 +41,7 @@ const {LoggedInUser} = useContext(AuthContext)
       <p className="font-bold text-white dark:text-gray-400">
        {ProductsCount}
       </p>
+      </NavLink>
     </Card>
     {/* <Card  className="max-w-sm bg-violet-600 hover:bg-violet-800" >
       <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
@@ -51,6 +54,7 @@ const {LoggedInUser} = useContext(AuthContext)
     </Card> */}
 
            <Card  className="max-w-sm bg-yellow-500 hover:bg-yellow-700" >
+            <NavLink to="/seller/orders">
       <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
         <HiShoppingCart/>
         Total Orders
@@ -58,6 +62,7 @@ const {LoggedInUser} = useContext(AuthContext)
       <p className="font-bold text-white dark:text-gray-400">
        {OrderCount}
       </p>
+      </NavLink>
     </Card>
            {/* <Card href="#" className="max-w-sm bg-red-600 hover:bg-red-800" >
       <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
@@ -78,7 +83,7 @@ const {LoggedInUser} = useContext(AuthContext)
       </p>
     </Card>          */}
      </div>
-          </>
+        
     )
 }
 export default SellerDashboard;

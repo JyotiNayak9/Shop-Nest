@@ -7,12 +7,46 @@ import authSvc from "../../auth/auth.service"
 import { toast } from "react-toastify"
 import { SearchParams } from "../../../config/constants"
 import { NavLink } from "react-router-dom"
-import { FaPen, FaTrash } from "react-icons/fa"
+import { FaPen, FaTrash, FaCheck, FaTimes, FaClock } from "react-icons/fa"
 import Swal from "sweetalert2"
 import ProductSvc from "../product/product-service"
 import { ActionButtons } from "../../../components/common/table/table-actionbuttons"
 import { get, set } from "react-hook-form"
 import AuthContext from "../../../context/auth.context"
+
+// Status badge component
+const StatusBadge = ({ status }: { status: string }) => {
+  const statusConfig = {
+    pending: {
+      icon: <FaClock className="mr-1" />,
+      bg: "bg-yellow-100 text-yellow-800",
+      text: "Pending"
+    },
+    approved: {
+      icon: <FaCheck className="mr-1" />,
+      bg: "bg-green-100 text-green-800",
+      text: "Approved"
+    },
+    rejected: {
+      icon: <FaTimes className="mr-1" />,
+      bg: "bg-red-100 text-red-800",
+      text: "Rejected"
+    }
+  };
+
+  const config = statusConfig[status as keyof typeof statusConfig] || {
+    icon: <FaClock className="mr-1" />,
+    bg: "bg-gray-100 text-gray-800",
+    text: "Unknown"
+  };
+
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.bg}`}>
+      {config.icon}
+      {config.text}
+    </span>
+  );
+};
 const SellerProductList = () => {
     const [pagination, setPagination] = useState({
         currentPage : 1,
@@ -153,6 +187,7 @@ const SellerProductList = () => {
           <Table.HeadCell className="bg-gray-900 text-white py-4">Brand</Table.HeadCell>
           <Table.HeadCell className="bg-gray-900 text-white py-4">Price</Table.HeadCell>
           <Table.HeadCell className="bg-gray-900 text-white py-4">Stock</Table.HeadCell>
+          <Table.HeadCell className="bg-gray-900 text-white py-4">Status</Table.HeadCell>
           <Table.HeadCell className="bg-gray-900 text-white py-4">
             Action
           </Table.HeadCell>
@@ -190,6 +225,9 @@ const SellerProductList = () => {
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {row.quantity}
+                </Table.Cell>
+                <Table.Cell>
+                  <StatusBadge status={row.approvalStatus || 'pending'} />
                 </Table.Cell>
                 <Table.Cell className="flex gap-3">
                   <ActionButtons
