@@ -181,7 +181,7 @@ export const ImageUpload = ({control,errMsg="",type="file",name}:ImageInputInter
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-          onChange(file); // This updates RHF state
+          onChange(file); 
         }
       };
     return(

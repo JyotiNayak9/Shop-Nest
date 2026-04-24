@@ -8,12 +8,12 @@ export default function ContactUs() {
   
         <div className="space-y-6 text-md">
           <div>
-            <h2 className="text-xl font-semibold text-violet-600 mb-1">📍 Address</h2>
+            <h2 className="text-xl font-semibold text-violet-600 mb-1"> Address</h2>
             <p>ShopNest <br />Balkumari, Lalitpur<br />Nepal</p>
           </div>
    
           <div>
-            <h2 className="text-xl font-semibold text-violet-600 mb-1">📞 Phone</h2>
+            <h2 className="text-xl font-semibold text-violet-600 mb-1"> Phone</h2>
             <p>9813829957</p>
             <p>9742310883</p>
 
@@ -33,7 +33,7 @@ export default function ContactUs() {
         </div>
   
         <p className="mt-12 text-center text-gray-500">
-          Thank you for being part of the ShopNest community 💜
+          Thank you for being part of the ShopNest community 
         </p>
       </div>
     );

@@ -48,12 +48,18 @@ const CategoriesSlider = () => {
           </div>
     <div className="relative w-full my-8">
       <div className="relative">
-        <button
+        {/* <button
           onClick={() => scroll("left")}
           className="absolute left-0 z-10 h-full bg-white/70 px-2 hover:bg-white rounded-l"
         >
           <ChevronLeft />
         </button>
+          <button
+          onClick={() => scroll("left")}
+          className="absolute left-0 z-10 h-full bg-white/70 px-2 hover:bg-white rounded-l"
+        >
+          <ChevronRight />
+        </button> */}
 
         <div
           id="category-container"
