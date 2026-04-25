@@ -8,10 +8,12 @@ const { MulterError } = require("multer");
 const { hasValidDomain } = require("../modules/user/user.request.js");
 const app = express();
 
-app.use(cors())
+app.use(cors({
+  origin: "https://shop-nest-teal-five.vercel.app/"
+}));
 
 app.use('/images', express.static('./public/uploads'))
-//parsers
+
 app.use(express.json()) ; //json content type
 app.use(express.urlencoded({    
     extended :true
