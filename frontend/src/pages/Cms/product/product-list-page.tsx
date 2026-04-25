@@ -1,17 +1,12 @@
 import { Table, TextInput } from "flowbite-react"
 import { Pagination } from "flowbite-react"
-import { HeadingWithLink } from "../../../components/common/title"
 import { useEffect, useState } from "react"
-import { CellSkeleton, RowSkeleton } from "../../../components/common/table/table-skeleton"
+import {  RowSkeleton } from "../../../components/common/table/table-skeleton"
 import authSvc from "../../auth/auth.service"
 import { toast } from "react-toastify"
 import { SearchParams } from "../../../config/constants"
-import { NavLink } from "react-router-dom"
-import { FaPen, FaTrash } from "react-icons/fa"
-import Swal from "sweetalert2"
 import ProductSvc from "./product-service"
-import { ActionButtons, DeleteButton } from "../../../components/common/table/table-actionbuttons"
-import { get, set } from "react-hook-form"
+import { DeleteButton } from "../../../components/common/table/table-actionbuttons"
 const ProductListingPage = () => {
     const [pagination, setPagination] = useState({
         currentPage : 1,
@@ -114,7 +109,7 @@ const ProductListingPage = () => {
       return () => {
         clearTimeout(timeout)
       }
-    },[search])
+    },[search, sort, filter])
 
     const deleteData = async (id: string) => {
         try {
@@ -167,11 +162,33 @@ const ProductListingPage = () => {
         <>
         {/* <HeadingWithLink title="Product List" link="/admin/Product/create" btnText="Add Product"/> */}
 
-      <div className="flex justify-end items-end mb-3">
-        <TextInput type="search" className="w-1/4 " onChange={(e: any) => {
-          setSearch(e.target.value)
-        }}/>
-        </div>
+     <div className="flex justify-end items-end mb-3 gap-2">
+  <TextInput
+    type="search"
+    className="w-1/4"
+    onChange={(e: any) => setSearch(e.target.value)}
+  />
+
+  <select
+    className="border p-2 rounded"
+    onChange={(e) => setSort({ price: e.target.value })}
+  >
+    <option value="">Sort</option>
+    <option value="asc">Price ↑</option>
+    <option value="desc">Price ↓</option>
+  </select>
+
+  <select
+    className="border p-2 rounded"
+    onChange={(e) => setFilter({ approvalStatus: e.target.value })}
+  >
+    <option value="">Status</option>
+    <option value="pending">Pending</option>
+    <option value="approved">Approved</option>
+    <option value="rejected">Rejected</option>
+  </select>
+</div>
+       
     <div className="overflow-x-auto">
       <Table striped>
         <Table.Head>

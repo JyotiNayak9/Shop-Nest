@@ -32,7 +32,7 @@ import CreateProduct from "../pages/Cms/product/product-create-page";
 import EditProduct from "../pages/Cms/product/product-edit-page";
 import ProductDetailPage from "../pages/allproducts/product-details";
 // import ForgotPasswordPage from "../pages/auth/forget-password";
-import DisplayCart from "../pages/cart/cart.tsx"
+import DisplayCart from "../pages/cart/displaycart.tsx";
 import SellerRegister from "../pages/auth/register/seller-register.tsx";
 import SellerLayout from "../pages/layout/seller.page.tsx";
 import CheckoutPage from "../pages/order/checkout-page.tsx";

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import AuthContext from '../../../context/auth.context';
+import React, {  useEffect, useState } from 'react';
 import authSvc from '../../auth/auth.service';
 import { toast } from 'react-toastify';
 

@@ -14,7 +14,6 @@ interface Search {
 
 const HeroSection = () => {
   const [search, setSearch] =  useState<string |null>();
-  const [loading, setLoading] = useState(false);
   const [Product, setProduct] = useState<any[]>([]);
 const navigate = useNavigate()
 
@@ -22,7 +21,6 @@ const navigate = useNavigate()
       
         try{
       
-          setLoading(true)
           const response: any = await authSvc.getRequest("/product/getproducts", { params : {search: search}})
           console.log(response)
           setProduct(response.result);
@@ -32,9 +30,7 @@ const navigate = useNavigate()
           toast.error("Error while fetching Product ")
           console.log(exception)
         }
-        finally{
-        setLoading(false)
-        }
+       
       }
      useEffect(()=>{
       const timeout = setTimeout(() =>{

@@ -26,10 +26,6 @@ const EditCategory = () => {
       const getDetail = async () => {
         try{
             const detail:any = await authSvc.getRequest(`/category/${params.id}`, {auth:true});
-            const data = {
-              title:detail.result.title,
-              image:detail.result.image,
-            }
             setDetail(detail.result);
            
         }catch(exception){
@@ -67,7 +63,7 @@ const EditCategory = () => {
                 // status:data.status.value
             }
             console.log(submitData)
-            await authSvc.patchRequest(`/category/${params.id}`,data,{auth:true,file:true});
+            await authSvc.patchRequest(`/category/${params.id}`,submitData,{auth:true,file:true});
     
               toast.success("Category Editd successfully. ")
               navigate('/admin/category')
