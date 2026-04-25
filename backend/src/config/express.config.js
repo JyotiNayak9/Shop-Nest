@@ -10,12 +10,7 @@ const app = express();
 
 const cors = require("cors");
 
-app.use(cors({
-  origin: [
-    "https://shop-nest-teal-five.vercel.app"
-  ],
-  credentials: true
-}));
+app.use(cors());
 
 app.use('/images', express.static('./public/uploads'))
 
