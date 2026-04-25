@@ -5,7 +5,7 @@ const server = http.createServer(app)
 
 const port = process.env.PORT  || 9005
 
-server.listen(port, '127.0.0.1',(error) =>{
+server.listen(port, '0.0.0.0',(error) =>{
     if(error){
         console.log("server error...")
         }
