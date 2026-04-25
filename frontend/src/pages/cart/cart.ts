@@ -1,4 +1,3 @@
-import axios from 'axios';
 import authSvc from '../auth/auth.service';
 
 

@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import KhaltiCheckout from 'khalti-checkout-web';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 // import { API_BASE_URL } from '../../config/constants';
 import AuthContext from '../../context/auth.context';
@@ -9,22 +8,22 @@ import khaltiLogo from '../../assets/images/khalthi1.png';
 import { Loader2 } from 'lucide-react';
 import authSvc from '../auth/auth.service';
 
-interface PaymentResponse {
-  success: boolean;
-  message: string;
-  data: {
-    paymentId: string;
-    orderId: string;
-    amount: number;
-    status: string;
-  };
-}
+// interface PaymentResponse {
+//   success: boolean;
+//   message: string;
+//   data: {
+//     paymentId: string;
+//     orderId: string;
+//     amount: number;
+//     status: string;
+//   };
+// }
 
 const Payment = () => {
   const { id: orderId, amount } = useParams<{ id: string; amount: string }>();
   const khaltiCheckout = useRef<any>(null);
   const navigate = useNavigate();
-  const { LoggedInUser, token } = useContext(AuthContext);
+  const {  token } = useContext(AuthContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'KHALTI' | 'COD' | null>(null);
 

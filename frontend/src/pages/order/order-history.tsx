@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import AuthContext from '../../context/auth.context';
 import authSvc from '../auth/auth.service';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
-import { set } from 'react-hook-form';
-import { HiHandThumbDown } from 'react-icons/hi2';
 
 type Order = {
   _id: string;

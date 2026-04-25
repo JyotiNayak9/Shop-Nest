@@ -1,16 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
-import React from 'react';
 import authSvc from '../auth/auth.service';
 import AuthContext from '../../context/auth.context';
-import CartContext from "../../context/cart.context";   
 import { addToCart } from './cart';
-import { Heading2, Heading3, HeadingWithLink } from '../../components/common/title';
-import { Button, Table, TextInput } from 'flowbite-react';
+import { Heading3 } from '../../components/common/title';
+import { Button, Table } from 'flowbite-react';
 import { RowSkeleton } from '../../components/common/table/table-skeleton';
 import { toast } from 'react-toastify';
 import { FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import { number } from 'framer-motion';
 import { LoadingComponent } from '../../components/common/loading/loading-component';
 import { NavLink } from 'react-router-dom';
 import { SingleProductCard } from '../../components/common/card/single-card';

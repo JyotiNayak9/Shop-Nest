@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
-import { SearchParams } from "../config/constants";
 import authSvc from "../pages/auth/auth.service";
 import { toast } from "react-toastify";
 import { TextInput } from "flowbite-react";
@@ -19,10 +18,10 @@ const HeroSection = () => {
   const [Product, setProduct] = useState<any[]>([]);
 const navigate = useNavigate()
 
-  const [sort, setSort] = useState<any>({});
    const getAllProduct = async ({search = ''}: Search) => {
       
         try{
+      
           setLoading(true)
           const response: any = await authSvc.getRequest("/product/getproducts", { params : {search: search}})
           console.log(response)

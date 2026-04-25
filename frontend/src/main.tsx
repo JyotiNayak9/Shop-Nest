@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import "./assets/css/main.css";
 import "flowbite" 
 import RouterConfig from './config/router.config';
-import { ClerkProvider } from '@clerk/clerk-react'
 
 
 

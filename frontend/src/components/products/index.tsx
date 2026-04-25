@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Heading2, Heading3 } from "../../components/common/title";
+import {  Heading3 } from "../../components/common/title";
 import authSvc from "../../pages/auth/auth.service";
-import { ImageWithTitleCard, SingleProductCard } from "../common/card/single-card";
+import {  SingleProductCard } from "../common/card/single-card";
 import { toast } from "react-toastify";
 
 export const Homeproduct = () => {

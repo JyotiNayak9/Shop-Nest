@@ -1,9 +1,8 @@
-import { CancelButton, ImageUpload, InputLabel, StatusSelectComponent, SubmitButton, TextInputComponent } from "../../../components/common/form/input-component.";
-import { Heading2, Heading3 } from "../../../components/common/title"
+import {InputLabel,  SubmitButton, TextInputComponent } from "../../../components/common/form/input-component.";
+import {Heading3 } from "../../../components/common/title"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import authSvc from "../../auth/auth.service";

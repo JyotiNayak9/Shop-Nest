@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Heading2, Heading3 } from "../../components/common/title";
+import {  Heading3 } from "../../components/common/title";
 import authSvc from "../../pages/auth/auth.service";
 import { ImageWithTitleCard } from "../common/card/single-card";
 import { toast } from "react-toastify";

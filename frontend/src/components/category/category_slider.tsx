@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { toast } from "react-toastify";
 import authSvc from "../../pages/auth/auth.service";
 import { Heading3 } from "../common/title";
@@ -8,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 const CategoriesSlider = () => {
   const [categories, setCategories] = useState<any[]>([]);
-  const [scrollX, setScrollX] = useState(0);
   const navigate = useNavigate()
 
   useEffect(() => {

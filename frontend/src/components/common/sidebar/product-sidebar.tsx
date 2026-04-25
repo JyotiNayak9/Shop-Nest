@@ -1,6 +1,5 @@
 import React from "react";
 import CategoryDropdown from "../../category/cat-drop";
-import PriceFilter from "../../price/price-filter";
 
 interface SidebarLayoutProps {
 //   sidebar: React.ReactNode;

@@ -1,9 +1,9 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Navbar } from "flowbite-react";
 import logo from "../../../assets/images/logo.png";
 import { NavLink } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import AuthContext from "../../../context/auth.context";
-import { FaCartArrowDown, FaCartPlus } from "react-icons/fa";
+import {  FaCartPlus } from "react-icons/fa";
 
 export const HomeHeader = () => {
   const { LoggedInUser }: any = useContext(AuthContext);

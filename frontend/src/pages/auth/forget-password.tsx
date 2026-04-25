@@ -1,9 +1,8 @@
 // ResetPassword.jsx
-import { useSearchParams, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import authSvc from "./auth.service";

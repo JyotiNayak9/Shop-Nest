@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import RegisterImage from "../../../assets/images/registration.png"
-import { InputLabel, RoleSelectComponent, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
+import { InputLabel, TextInputComponent } from "../../../components/common/form/input-component.";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import authSvc from "../auth.service";
@@ -29,7 +28,7 @@ const SellerRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const {control, handleSubmit,setError, setValue, formState: {errors}} = useForm({
+  const {control, handleSubmit,setError, formState: {errors}} = useForm({
     resolver: yupResolver(registerDTO)
   });
 

@@ -6,7 +6,6 @@ import * as yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { categorySvc } from '../../../services/category.service';
 import authSvc from "../../auth/auth.service";
 
 const CreateCategory = () => {

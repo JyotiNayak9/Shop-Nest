@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import AuthContext from '../../../context/auth.context';
 import authSvc from '../../auth/auth.service';
 import { toast } from 'react-toastify';
@@ -27,8 +26,7 @@ type Order = {
 };
 
 const OrderListingPage: React.FC = () => {
-    const [loading, setLoading] = useState(true);
-    const {loggedInUser} = useContext(AuthContext)
+
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {

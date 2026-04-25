@@ -2,14 +2,13 @@ import { Button, Card } from "flowbite-react";
 import SingleCardWithImageAndTitleProps from "./single-card.contracts";
 import ProductCardProps from "./product-card.contracts";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import AuthContext from "../../../context/auth.context";
 import authSvc from "../../../pages/auth/auth.service";
 import { toast } from "react-toastify";
 
 export const ImageWithTitleCard = ({data}: {data:SingleCardWithImageAndTitleProps}) =>{
-  const Navigate = useNavigate();
     return (
         <>
          <Link to={data.slug} className="block p-2 hover:shadow-lg">

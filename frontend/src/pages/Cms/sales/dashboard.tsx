@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import  { useContext, useEffect, useState } from 'react';
 import { Card, Title, Text, Grid, DonutChart, BarChart } from '@tremor/react';
 import authSvc from '../../auth/auth.service';
 import AuthContext from '../../../context/auth.context';
-import { Heading2, Heading3 } from '../../../components/common/title';
-import { Heading1, PinIcon } from 'lucide-react';
+import {  Heading3 } from '../../../components/common/title';
 import { HiCurrencyDollar } from 'react-icons/hi';
 import { FaBox } from 'react-icons/fa';
-import { HiMapPin, HiTrophy } from 'react-icons/hi2';
+import { HiTrophy } from 'react-icons/hi2';
 
 interface SalesData {
   dailySales: Array<{
@@ -109,7 +108,7 @@ const SalesAnalytics = () => {
     <div className="p-4 space-y-8">
       <Heading3><> Sales Performance </></Heading3>
 
-      {/* Summary Cards */}
+     
       <Grid numItemsMd={3} className="gap-6">
         <Card className="shadow-sm border border-gray-200">
           <Text className="text-gray-600 font-bold"><HiCurrencyDollar/> Total Sales</Text>
@@ -125,7 +124,7 @@ const SalesAnalytics = () => {
         </Card> */}
       </Grid>
 
-      {/* Order Status Donut Chart */}
+  
       <Card className="shadow-sm border border-gray-200">
         <Title className="text-2xl font-bold text-gray-700 mb-2">Order Status Overview</Title>
         <DonutChart
@@ -161,6 +160,19 @@ const SalesAnalytics = () => {
           layout="horizontal"
         />
       </Card>
+      <Card className="shadow-sm border border-gray-200">
+  <Title className="text-xl font-semibold text-gray-700 mb-2">
+    Daily Sales Overview
+  </Title>
+
+  <BarChart
+    className="mt-6"
+    data={salesChartData}
+    index="date"
+    categories={['Total Sales']}
+    yAxisLabel="Sales (Rs.)"
+  />
+</Card>
     </div>
   );
 };

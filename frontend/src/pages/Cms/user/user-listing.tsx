@@ -1,10 +1,9 @@
-import { Table, TextInput, Pagination } from "flowbite-react";
+import { Table, TextInput} from "flowbite-react";
 import { HeadingWithLink } from "../../../components/common/title";
 import { useEffect, useState } from "react";
 import { RowSkeleton } from "../../../components/common/table/table-skeleton";
 import authSvc from "../../auth/auth.service";
 import { toast } from "react-toastify";
-import { SearchParams } from "../../../config/constants";
 import { ActionButtons } from "../../../components/common/table/table-actionbuttons";
 
 const UserListPage = () => {

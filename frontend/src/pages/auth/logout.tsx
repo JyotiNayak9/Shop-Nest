@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthContext from "../../context/auth.context";
 import { useContext } from "react";
-import { set } from "react-hook-form";
 
 const Logout = () => {
     const navigate = useNavigate();
-    let {LoggedInUser, setLoggedInUser} = useContext(AuthContext)
+    let {setLoggedInUser} = useContext(AuthContext)
     const didLogout = useRef(false);
 
 

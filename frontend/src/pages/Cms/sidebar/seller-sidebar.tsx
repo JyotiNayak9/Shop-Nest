@@ -1,8 +1,8 @@
-import { FaDollarSign, FaShoppingCart, FaSitemap, FaUsers } from "react-icons/fa";
+import {  FaShoppingCart } from "react-icons/fa";
 import "flowbite";
-import { HiFilm, HiHome } from "react-icons/hi2";
+import {  HiHome } from "react-icons/hi2";
 import { MdDashboard } from "react-icons/md";
-import { AiFillCrown, AiFillProduct } from "react-icons/ai";
+import {  AiFillProduct } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 const SellerSidebar = () => {
   const sellerMenu = [
@@ -51,7 +51,7 @@ const SellerSidebar = () => {
   return (
     <>
       <aside
-        className="fixed top-0 left-0 z-100 pt-20 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        className="fixed top-0 left-0 z-100  w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="drawer-navigation"
         id="drawer-navigation"
       >

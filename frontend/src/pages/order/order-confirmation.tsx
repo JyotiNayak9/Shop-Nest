@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { CheckCircle, Clock, XCircle } from 'lucide-react';
+import { CheckCircle, Clock } from 'lucide-react';
 import authSvc from '../auth/auth.service';
 import { Button } from 'flowbite-react';
 // import { API_BASE_URL } from '../../config/constants';

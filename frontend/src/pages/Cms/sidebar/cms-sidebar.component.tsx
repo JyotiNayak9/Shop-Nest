@@ -1,6 +1,6 @@
-import { FaDollarSign, FaShoppingCart, FaSitemap, FaUsers } from "react-icons/fa";
+import {  FaShoppingCart, FaSitemap, FaUsers } from "react-icons/fa";
 import "flowbite";
-import { HiFilm, HiHome } from "react-icons/hi2";
+import {  HiHome } from "react-icons/hi2";
 import { MdDashboard } from "react-icons/md";
 import { AiFillCrown, AiFillProduct } from "react-icons/ai";
 import { NavLink } from "react-router-dom";

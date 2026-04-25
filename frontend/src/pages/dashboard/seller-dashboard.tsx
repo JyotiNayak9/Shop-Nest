@@ -1,5 +1,5 @@
 import { Card } from "flowbite-react";
-import { HiCash, HiCurrencyDollar, HiShoppingCart, HiUserGroup } from "react-icons/hi";
+import { HiShoppingCart, HiUserGroup } from "react-icons/hi";
 import authSvc from "../auth/auth.service";
 import { toast } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
@@ -8,7 +8,6 @@ import { NavLink } from "react-router-dom";
 
 const SellerDashboard = () => {
 const [ProductsCount, setProductsCount] = useState<number>(0);
-const [SellerCount, setSellerCount] = useState<number>(0);
 const [OrderCount, setOrderCount] = useState<number>(0);
 const {LoggedInUser} = useContext(AuthContext)
 // const [] 

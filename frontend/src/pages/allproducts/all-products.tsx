@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Heading2, Heading3 } from "../../components/common/title";
+import { Heading3 } from "../../components/common/title";
 import authSvc from "../../pages/auth/auth.service";
 import { toast } from "react-toastify";
 import { SingleProductCard } from "../../components/common/card/single-card";
-import ProductList from "../../components/ProductList"; 
 
 export const AllProducts = () => {
   const [product, setproduct] = useState<any[]>([]);

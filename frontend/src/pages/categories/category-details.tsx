@@ -1,11 +1,9 @@
-import { Heading2, Heading3 } from "../../components/common/title"
+import { Heading2 } from "../../components/common/title"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import authSvc from "../auth/auth.service";
 import { SingleProductCard } from "../../components/common/card/single-card";
-import { get, set } from "react-hook-form";
-import CategoryDropdown from "../../components/category/cat-drop";
 import SidebarLayout from "../../components/common/sidebar/product-sidebar";
 import PriceFilter from "../../components/price/price-filter";
 // import categorySvc from "../Cms/category/category-service";
@@ -13,9 +11,6 @@ import PriceFilter from "../../components/price/price-filter";
 const CategoryDetailsPage = () => {
   const {id} = useParams();
   const [category, setcategory] = useState<any>(null);
-  const[categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { categoryId } = useParams<{ categoryId: string }>();
   const [products, setProducts] = useState<any[]>([]);
     const [filters, setFilters] = useState<{ min: number | null; max: number | null }>({
     min: null,
@@ -31,13 +26,11 @@ const CategoryDetailsPage = () => {
       const response: any = await authSvc.getRequest(`/product/getproductbycategory/${id}`,{params});
       setProducts(response.result);
       if (response.result.length > 0) {
-        setCategories(response.result[0].category.title);
+        setcategory(response.result[0].category.title);
       }
     } catch (err) {
       toast.error("Products not found");
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 

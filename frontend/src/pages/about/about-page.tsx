@@ -1,9 +1,7 @@
 import { Button } from "flowbite-react";
-import { Heading3 } from "../../components/common/title"
-"use client";
+
 
 import { motion } from "framer-motion";
-import banner from "../../assets/images/banner.png";
 const AboutPage = () => {
     return (
         <div className="text-gray-800">

@@ -192,6 +192,28 @@ const ProductReview = () => {
 
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
+         <div className="flex items-center justify-between mb-4">
+    <div className="flex items-center gap-2">
+      <span className="text-xl font-semibold">
+        {averageRating.toFixed(1)}
+      </span>
+      <div className="flex">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <HiStar
+            key={star}
+            className={`h-5 w-5 ${
+              averageRating >= star
+                ? "text-yellow-400"
+                : "text-gray-300"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+    <span className="text-gray-500 text-sm">
+      {reviewCount} reviews
+    </span>
+  </div>
         {reviews.length === 0 ? (
           <p className="text-gray-500">No reviews yet</p>
         ) : (

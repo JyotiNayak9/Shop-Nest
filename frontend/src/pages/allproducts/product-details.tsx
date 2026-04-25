@@ -1,6 +1,5 @@
-import { Heading3 } from "../../components/common/title"
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import authSvc from "../auth/auth.service";
 import ProductSvc from "../Cms/product/product-service";
@@ -15,7 +14,6 @@ const ProductDetailPage = () => {
 //    const [categoryMap, setCategoryMap] = useState<{ [key: string]: string }>({});
 //     const [brandMap, setBrandMap] = useState<{ [key: string]: string }>({});
 const { LoggedInUser } = useContext(AuthContext)
-  const navigate = useNavigate()
   
 
   const getProductBySlug = async () => {

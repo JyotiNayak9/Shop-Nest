@@ -1,7 +1,6 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import logo from "../../../assets/images/logo.png";
 import "flowbite";
-import { HiBars4, HiBellAlert, HiUser } from "react-icons/hi2";
+import { HiBars4 } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../../context/auth.context";

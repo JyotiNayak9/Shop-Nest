@@ -1,5 +1,5 @@
 import { Card } from "flowbite-react";
-import { HiCash, HiCurrencyDollar, HiShoppingCart, HiUserGroup } from "react-icons/hi";
+import {  HiShoppingCart, HiUserGroup } from "react-icons/hi";
 import authSvc from "../auth/auth.service";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";

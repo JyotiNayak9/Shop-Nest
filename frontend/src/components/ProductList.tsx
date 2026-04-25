@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChangeEvent } from 'react';
-import authSvc from '../pages/auth/auth.service';
+
 
 interface Product {
     id: number;

@@ -1,11 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "../pages/landing";
 import AboutPage from "../pages/about/about-page";
-import CategoryPage, { AllCategory } from "../pages/categories/categories";
+import  { AllCategory } from "../pages/categories/categories";
 import { AllProducts } from "../pages/allproducts/all-products";
 import ContactPage from "../pages/contact/contact-page";
 import CategoryDetailsPage from "../pages/categories/category-details";
-import ProduuctDetailsPage from "../pages/allproducts/product-details";
 import HomepageLayout from "../pages/layout/home.page";
 import Adminlayout from "../pages/layout/cms.page";
 import { ToastContainer } from "react-toastify";

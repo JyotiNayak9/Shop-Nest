@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Title, Text, Metric, BarChart} from '@tremor/react';
-import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Bar } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Bar } from 'recharts';
 import { Select, SelectItem } from '@tremor/react';
 import { toast } from 'react-toastify';
 import authSvc from '../../auth/auth.service';

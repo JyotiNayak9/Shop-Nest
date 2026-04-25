@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import  { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../context/auth.context';
 import authSvc from '../auth/auth.service';
 import { toast } from 'react-toastify';
 import { InputLabel, TextInputComponent } from '../../components/common/form/input-component.';
 import * as yup from 'yup';
-import { set, useForm } from 'react-hook-form';
+import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,20 +18,16 @@ const CheckoutPage = () => {
  
   const {LoggedInUser} = useContext(AuthContext)
   const [cart, setCart] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true)
   const[cartTotal, setCartTotal] = useState(0);
   const navigate = useNavigate();
    const getCart = async () => {
    try {
-    setLoading(true)
       const response:any = await authSvc.getRequest('/cart/'+LoggedInUser._id,{auth:true});
       // console.log(response)
     setCart(response.items);
   }catch(exception:any){
     toast.error(exception)
     console.log(exception)
-    }finally{
-      setLoading(false)
     }
   }
   const total =async () => {
@@ -53,7 +49,6 @@ const CheckoutPage = () => {
   const {
         control,
         handleSubmit,
-        setError,
         setValue,                                                                                                                                                                            
         formState: { errors },
       } = useForm({
@@ -63,7 +58,6 @@ const CheckoutPage = () => {
 
   const handlePlaceOrder = async(data:any) => {
 try{
-  setLoading(true);
     const customer_data = {
       name: data.name,
       email: data.email,
