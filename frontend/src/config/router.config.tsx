@@ -91,8 +91,7 @@ const RouterConfig = () => {
                 <Route path="about" element={<AboutPage/>}/>
                 <Route path="categories" element={<AllCategory/>}/>
                 <Route path="products" element={<AllProducts/>}/>
-                <Route path="contact" element={<ContactPage/>}/>
-            
+                <Route path="contact" element={<ContactPage/>}/>           
                 <Route path="categories/:id" element={<CategoryDetailsPage/>}/>
                 <Route path="products/:slug" element={<ProductDetailPage/>}/>
                  <Route path="/orderhistory" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
@@ -111,7 +110,6 @@ const RouterConfig = () => {
                      <Route path="/order-confirmation/:orderId" element={<OrderConfirmation/>}/>
                 <Route path="*" element  = {<NotFoundError url="/" label="Go to Homepage"/>}/>
                 </Route>
-
                 <Route path="/admin" element={<CheckPermission allowedBy={UserRoles.ADMIN}>
                     <Adminlayout/>
                     </CheckPermission>}>
