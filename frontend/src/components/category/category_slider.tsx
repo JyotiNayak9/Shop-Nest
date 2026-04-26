@@ -4,7 +4,7 @@ import authSvc from "../../pages/auth/auth.service";
 import { Heading3 } from "../common/title";
 import { useNavigate } from "react-router-dom";
 
-// Swiper imports
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
