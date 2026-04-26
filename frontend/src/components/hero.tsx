@@ -45,7 +45,7 @@ const navigate = useNavigate()
       }
     },[search])
   return (
-    <div className="relative w-full h-[90vh] flex items-center justify-center bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 text-white overflow-hidden">
+    <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[90vh] flex items-center justify-center bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 text-white overflow-hidden">
       {/* Background Image with Overlay */}
       {/* <img
         src="/hero-bg.jpg" // Replace with your own background
@@ -59,29 +59,29 @@ const navigate = useNavigate()
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="relative z-10 text-center px-6 max-w-3xl"
+        className="relative z-10 text-center px-4 sm:px-6 max-w-3xl"
       >
-        <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg">
           Shop Smart, Live Better
         </h1>
-        <p className="text-lg md:text-xl mb-6 text-purple-100 font-medium">
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-6 text-purple-100 font-medium">
           Everything you need, in One Click.
         </p>
 
         {/* Search Bar */}
-        <div className="flex items-center gap-2 justify-center">
-          <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-lg w-64 sm:w-80">
+        <div className="flex flex-col sm:flex-row items-center gap-2 justify-center">
+          <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-2 shadow-lg w-full sm:w-64 md:w-80">
             <TextInput type="search"  onChange={(e: any) => {
                       setSearch(e.target.value)
                     }}/>
           </div>
-          <button className="bg-white text-purple-600 font-semibold px-5 py-2 rounded-full shadow-md hover:bg-gray-100 transition">
+          <button className="w-full sm:w-auto bg-white text-purple-600 font-semibold px-4 sm:px-5 py-2 rounded-full shadow-md hover:bg-gray-100 transition mt-2 sm:mt-0">
             Search
           </button>
         </div>
 {/* Product Results */}
        {Product.length > 0 && (
-  <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl max-h-60 overflow-y-auto mt-4">
+  <div className="bg-white/10 backdrop-blur-sm p-3 sm:p-4 rounded-xl max-h-60 overflow-y-auto mt-4 mx-4 sm:mx-auto max-w-2xl">
     <h3 className="text-white text-lg font-semibold mb-2">Results:</h3>
     <ul className="space-y-2">
       {Product.map((prod, index) => (
@@ -96,7 +96,7 @@ const navigate = useNavigate()
     </ul>
   </div>
 )}
-        <button onClick={() => navigate('/products')} className="mt-6 px-8 py-3 bg-white/10 border border-white rounded-full text-white font-medium hover:bg-white/20 transition duration-300">
+        <button onClick={() => navigate('/products')} className="mt-6 px-6 sm:px-8 py-3 bg-white/10 border border-white rounded-full text-white font-medium hover:bg-white/20 transition duration-300 text-sm sm:text-base">
           🔍 Browse All Products
         </button>
       </motion.div>

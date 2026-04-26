@@ -32,11 +32,11 @@ const CategoriesSlider = () => {
   return (
     <>
     
-      <div className="flex justify-between mx-20 mt-10 border-b border-violet-200 pb-3">
+      <div className="flex justify-between px-4 sm:px-6 lg:px-20 mt-6 lg:mt-10 border-b border-violet-200 pb-3">
         <Heading3><>Shop by category</></Heading3>
       </div>
 
-      <div className="mx-20 my-8">
+      <div className="px-4 sm:px-6 lg:px-20 my-6 lg:my-8">
         <Swiper
           modules={[Navigation]}
           spaceBetween={20}

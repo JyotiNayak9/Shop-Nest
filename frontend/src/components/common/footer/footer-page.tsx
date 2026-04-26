@@ -1,6 +1,3 @@
-
-
-
 import { Footer } from "flowbite-react";
 import logo from "../../../assets/images/logo.png"
 
@@ -12,7 +9,7 @@ const HomeFooter = () => {
         <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
           <div>
             <Footer.Brand href="/" src= ''>
-              <img src={logo} className="ml-20 h-20 sm:h-20 w-30 " alt="Logo"/>
+              <img src={logo} className="ml-2 sm:ml-4 lg:ml-20 h-16 sm:h-18 lg:h-20 w-auto" alt="Logo"/>
        
             </Footer.Brand>
           </div>

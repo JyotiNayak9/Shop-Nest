@@ -108,7 +108,7 @@ const DisplayCart = () => {
 
   return (   
     <>        
-      <div className="overflow-x-auto m-10">
+      <div className="overflow-x-auto m-4 sm:m-6 lg:m-10">
         <Table striped>
           <Table.Head>
             <Table.HeadCell className="bg-gray-900 text-white py-4">Title</Table.HeadCell>
@@ -170,15 +170,15 @@ const DisplayCart = () => {
         
       
 
-        <div className="flex justify-end mr-10 mt-4">
-          <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded shadow mr-10">
+        <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center mr-4 sm:mr-6 lg:mr-10 mt-4 gap-4">
+          <div className="bg-gray-200 dark:bg-gray-800 p-3 sm:p-4 rounded shadow w-full sm:w-auto">
             <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
               Total: {cartTotal}
             </h3>
           </div>
           <NavLink 
             to={"/checkout"}
-            className="inline-block shrink-0 rounded-md border border-violet-600 bg-violet-600 px-12 py-4 text-md font-medium text-white transition hover:bg-transparent hover:bg-violet-900 focus:outline-none focus:ring active:text-violet-500"                
+            className="w-full sm:w-auto shrink-0 rounded-md border border-violet-600 bg-violet-600 px-6 sm:px-12 py-3 sm:py-4 text-sm sm:text-md font-medium text-white transition hover:bg-transparent hover:bg-violet-900 focus:outline-none focus:ring active:text-violet-500"                
           >              
             Proceed to Checkout
           </NavLink>
@@ -190,7 +190,7 @@ const DisplayCart = () => {
             {recLoading ? (
               <LoadingComponent />
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-4">
                 {recommendations.map((item) => (
                   <SingleProductCard 
                    key={item._id}

@@ -13,10 +13,10 @@ export const HomeHeader = () => {
       <Navbar fluid rounded className=" pb-0 shadow-lg">
         <Navbar.Brand href="">
           <NavLink to="/">
-          <img src={logo} className="ml-20 h-20 sm:h-20 w-30 " alt=" Logo" />
+          <img src={logo} className="ml-2 sm:ml-4 lg:ml-20 h-16 sm:h-18 lg:h-20 w-auto" alt=" Logo" />
         </NavLink>
         </Navbar.Brand>
-        <div className="flex md:order-2 mr-10">
+        <div className="flex md:order-2 mr-2 sm:mr-4 lg:mr-10">
           <Navbar.Collapse>
             {LoggedInUser ? (
               <>

@@ -56,12 +56,12 @@ const LoginPage = () => {
   };
  return(
     <>
-      <section className="flex flex-col items-center justify-center min-h-screen">
+      <section className="flex flex-col items-center justify-center min-h-screen px-4">
         <Heading3>
           <>Login Page</>
         </Heading3>
         <form
-          className="flex w-96 flex-col bg-slate-100 p-5 rounded-lg"
+          className="flex w-full max-w-md flex-col bg-slate-100 p-5 rounded-lg"
           onSubmit={handleSubmit(login)}
         >
           <div className="mb-2">

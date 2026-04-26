@@ -86,10 +86,10 @@ try{
     
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4">Checkout</h2>
+    <div className="max-w-4xl mx-auto p-4 sm:p-6">
+      <h2 className="text-xl sm:text-2xl font-semibold mb-4">Checkout</h2>
       {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
-        <form onSubmit={handleSubmit(handlePlaceOrder)} className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit(handlePlaceOrder)} className=" grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="space-y-3">
           <InputLabel htmlFor="name"> Name</InputLabel>
                 
@@ -126,19 +126,22 @@ try{
          </div>
        
 
-        <div className="border p-4 rounded">
-          <h3 className="text-xl font-semibold mb-2">Order Summary</h3>
+        <div className="border p-3 sm:p-4 rounded">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2">Order Summary</h3>
           <ul>
             {cart.map((item) => (
-              <li key={item.productId} className="flex justify-between mb-1">
-                <img
-                  src={item.image}
-                  alt={item.productTitle}
-                  className="h-12 w-12 object-cover rounded mr-2"/>
-                <span>{item.productTitle}</span>
-                <span>{item.quantity}</span>
-
-                <span>Rs. {item.price * item.quantity}</span>
+              <li key={item.productId} className="flex flex-col sm:flex-row justify-between mb-2 sm:mb-1">
+                <div className="flex items-center mb-1 sm:mb-0">
+                  <img
+                    src={item.image}
+                    alt={item.productTitle}
+                    className="h-10 w-10 sm:h-12 sm:w-12 object-cover rounded mr-2"/>
+                  <span className="text-sm sm:text-base">{item.productTitle}</span>
+                </div>
+                <div className="flex justify-between sm:gap-4">
+                  <span className="text-sm sm:text-base">Qty: {item.quantity}</span>
+                  <span className="text-sm sm:text-base font-semibold">Rs. {item.price * item.quantity}</span>
+                </div>
               </li>
             ))}
           </ul>
@@ -149,7 +152,7 @@ try{
 
           <button
             onClick={handleSubmit(handlePlaceOrder)}
-            className="w-full bg-blue-600 text-white py-2 rounded mt-4 hover:bg-blue-700"
+            className="w-full bg-blue-600 text-white py-2 sm:py-3 rounded mt-4 hover:bg-blue-700 text-sm sm:text-base"
           >
             Place Order
           </button>
