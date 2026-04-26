@@ -3,7 +3,7 @@ import logo from "../../../assets/images/logo.png";
 import { NavLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../../../context/auth.context";
-import { FaCartPlus, FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import { FaCartPlus, FaUser,  FaBars, FaTimes } from "react-icons/fa";
 
 export const HomeHeader = () => {
   const { LoggedInUser }: any = useContext(AuthContext);
@@ -109,7 +109,7 @@ export const HomeHeader = () => {
                   <Dropdown
                     label={<FaUser className="text-xl text-gray-700" />}
                     placement="bottom-end"
-                    arrow={false}
+                    
                   >
                     <Dropdown.Item>
                       <NavLink
