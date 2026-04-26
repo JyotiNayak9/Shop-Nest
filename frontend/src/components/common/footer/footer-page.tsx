@@ -3,7 +3,6 @@ import logo from "../../../assets/images/logo.png";
 import { FaFacebook, FaTwitter, FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 
 const HomeFooter = () => {
-  const currentYear = new Date().getFullYear();
   
   return (
     <footer className="bg-gray-50 text-gray-800 border-t border-gray-200">
