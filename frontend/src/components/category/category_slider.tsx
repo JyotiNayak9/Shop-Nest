@@ -8,9 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
-// Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
+
+import "swiper/swiper-bundle.css";
 
 const CategoriesSlider = () => {
   const [categories, setCategories] = useState<any[]>([]);
@@ -32,12 +31,11 @@ const CategoriesSlider = () => {
 
   return (
     <>
-      {/* Heading */}
+    
       <div className="flex justify-between mx-20 mt-10 border-b border-violet-200 pb-3">
         <Heading3><>Shop by category</></Heading3>
       </div>
 
-      {/* Swiper Slider */}
       <div className="mx-20 my-8">
         <Swiper
           modules={[Navigation]}
@@ -56,7 +54,6 @@ const CategoriesSlider = () => {
                 onClick={() => navigate(`/categories/${category._id}`)}
                 className="cursor-pointer group transition-all duration-300 hover:scale-105"
               >
-                {/* Image */}
                 <div className="w-full h-24 flex items-center justify-center bg-gray-100 rounded-md overflow-hidden">
                   <img
                     src={category.image}
@@ -65,7 +62,6 @@ const CategoriesSlider = () => {
                   />
                 </div>
 
-                {/* Title */}
                 <div className="mt-2 text-center">
                   <h4 className="text-sm font-medium group-hover:text-violet-700 transition-colors">
                     {category.title}
