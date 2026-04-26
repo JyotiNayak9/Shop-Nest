@@ -92,41 +92,34 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
 
   return (
     <>
-      <Card className="max-w-sm mx-5 my-10">
-        <Link
-          to={data.slug}
-          className="block p-2 hover:shadow-lg"
-          onClick={() => {
-            if (LoggedInUser) {
-              trackInteraction("view");
-            }
-          }}
-        >
-          <div className="w-full h-56 overflow-hidden rounded-t-lg">
+      <Card className="max-w-sm mx-5 my-10 flex flex-col h-[380px]">
+        <Link to={data.slug} className="flex flex-col flex-grow p-2">
+          {/* Image */}
+          <div className="w-full h-40 flex items-center justify-center bg-gray-100 rounded-t-lg">
             <img
               src={data.image[0] || data.image}
               alt="Product image"
-              className="w-full h-full object-cover"
+              className="max-h-full max-w-full object-contain"
             />
           </div>
-          <a href={data.slug}>
-            <h5 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-              {data.title}
-            </h5>
-          </a>
-          <div className="mb-5 mt-2.5 flex items-center"></div>
+
+          {/* Title */}
+          <h5 className="text-lg font-semibold mt-2 text-gray-900 dark:text-white line-clamp-2">
+            {data.title}
+          </h5>
         </Link>
 
-        <div className="flex items-center justify-between">
+        {/* Bottom section (ALWAYS SAME POSITION) */}
+        <div className="flex items-center justify-between p-2">
           <span className="text-xl font-bold text-gray-900 dark:text-white">
             Rs. {data.price}
           </span>
 
           <Button
             onClick={handleAdd}
-            className="rounded-lg bg-violet-700 text-center text-sm font-medium text-white hover:bg-violet-800"
+            className="bg-violet-700 hover:bg-violet-800"
           >
-            <FaShoppingCart className="mr-2 -ml-1 h-5 w-5" />
+            <FaShoppingCart />
           </Button>
         </div>
       </Card>
