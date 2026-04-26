@@ -1,160 +1,232 @@
-import { Navbar } from "flowbite-react";
+import { Navbar, Dropdown } from "flowbite-react";
 import logo from "../../../assets/images/logo.png";
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../../../context/auth.context";
-import {  FaCartPlus } from "react-icons/fa";
+import { FaCartPlus, FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 
 export const HomeHeader = () => {
   const { LoggedInUser }: any = useContext(AuthContext);
-  console.log(LoggedInUser);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <>
-      <Navbar fluid rounded className=" pb-0 shadow-lg">
-        <Navbar.Brand href="">
-          <NavLink to="/">
-          <img src={logo} className="ml-2 sm:ml-4 lg:ml-20 h-16 sm:h-18 lg:h-20 w-auto" alt=" Logo" />
-        </NavLink>
-        </Navbar.Brand>
-        <div className="flex md:order-2 mr-2 sm:mr-4 lg:mr-10">
-          <Navbar.Collapse>
+      <Navbar fluid className="shadow-lg bg-white border-b border-gray-200">
+        <div className="flex items-center justify-between w-full px-4">
+          {/* Logo */}
+          <Navbar.Brand href="/" className="flex items-center">
+            <img 
+              src={logo} 
+              className="h-12 sm:h-14 lg:h-16 w-auto" 
+              alt="ShopNest Logo" 
+            />
+          </Navbar.Brand>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-6">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `text-sm font-medium transition-colors hover:text-violet-600 ${
+                  isActive ? "text-violet-600" : "text-gray-700"
+                }`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `text-sm font-medium transition-colors hover:text-violet-600 ${
+                  isActive ? "text-violet-600" : "text-gray-700"
+                }`
+              }
+            >
+              About
+            </NavLink>
+            <NavLink
+              to="/contact"
+              className={({ isActive }) =>
+                `text-sm font-medium transition-colors hover:text-violet-600 ${
+                  isActive ? "text-violet-600" : "text-gray-700"
+                }`
+              }
+            >
+              Contact
+            </NavLink>
+            <NavLink
+              to="/SellerRegister"
+              className={({ isActive }) =>
+                `text-sm font-medium transition-colors hover:text-violet-600 ${
+                  isActive ? "text-violet-600" : "text-gray-700"
+                }`
+              }
+            >
+              Become a Vendor
+            </NavLink>
+          </div>
+
+          {/* User Actions */}
+          <div className="flex items-center space-x-3">
             {LoggedInUser ? (
               <>
-              {LoggedInUser.role === "customer" ? (
-              <>
-              
-               <NavLink
-                to="/cart">
-                  <FaCartPlus className="text-2xl text-gray-700 hover:text-blue-600" />
-              </NavLink>
-              <NavLink
-                to="/orderhistory">
-                  {LoggedInUser.name}
-              </NavLink>
-              </>
-              ):(<NavLink
-                  to={"/" + LoggedInUser.role}
-                  className={({ isActive }: { isActive: boolean }) =>
-                    isActive
-                      ? "md:text-blue-600"
-                      : "md:text-gray-700" +
-                        "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-                  }
-                >
-                  {LoggedInUser.name}
-                </NavLink>)
-                }  
-              
+                {LoggedInUser.role === "customer" && (
+                  <NavLink
+                    to="/cart"
+                    className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
+                  >
+                    <FaCartPlus className="text-xl" />
+                  </NavLink>
+                )}
                 
-                <NavLink
-                  to="/logout"
-                  className={({ isActive }: { isActive: boolean }) =>
-                    isActive
-                      ? "md:text-blue-600"
-                      : "md:text-gray-700" +
-                        "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-                  }
-                >
-                  Logout
-                </NavLink>
+                {/* Desktop User Menu */}
+                <div className="hidden md:block">
+                  <Dropdown
+                    label={LoggedInUser.name}
+                    placement="bottom-end"
+                    className="border-violet-200"
+                  >
+                    <Dropdown.Item>
+                      <NavLink
+                        to={LoggedInUser.role === "customer" ? "/orderhistory" : "/" + LoggedInUser.role}
+                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {LoggedInUser.role === "customer" ? "Order History" : "Dashboard"}
+                      </NavLink>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <NavLink
+                        to="/logout"
+                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Logout
+                      </NavLink>
+                    </Dropdown.Item>
+                  </Dropdown>
+                </div>
+
+                {/* Mobile User Menu */}
+                <div className="md:hidden">
+                  <Dropdown
+                    label={<FaUser className="text-xl text-gray-700" />}
+                    placement="bottom-end"
+                    arrow={false}
+                  >
+                    <Dropdown.Item>
+                      <NavLink
+                        to={LoggedInUser.role === "customer" ? "/orderhistory" : "/" + LoggedInUser.role}
+                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {LoggedInUser.role === "customer" ? "Order History" : "Dashboard"}
+                      </NavLink>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <NavLink
+                        to="/logout"
+                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Logout
+                      </NavLink>
+                    </Dropdown.Item>
+                  </Dropdown>
+                </div>
               </>
             ) : (
-              <>
-                <NavLink
-                  to="/register"
-                  className={({ isActive }: { isActive: boolean }) =>
-                    isActive
-                      ? "md:text-blue-600"
-                      : "md:text-gray-700" +
-                        "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-                  }
-                >
-                  Register
-                </NavLink>
+              <div className="hidden md:flex items-center space-x-3">
                 <NavLink
                   to="/login"
-                  className={({ isActive }: { isActive: boolean }) =>
-                    isActive
-                      ? "md:text-blue-600"
-                      : "md:text-gray-700" +
-                        "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-                  }
+                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-violet-600 transition-colors"
                 >
                   Login
                 </NavLink>
-              </>
+                <NavLink
+                  to="/register"
+                  className="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+                >
+                  Register
+                </NavLink>
+              </div>
             )}
-          </Navbar.Collapse>
-          <Navbar.Toggle />
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-gray-700 hover:text-violet-600 transition-colors"
+            >
+              {isMobileMenuOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
+            </button>
+          </div>
         </div>
-        <Navbar.Collapse>
-          <NavLink
-            to="/"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive
-                ? "md:text-blue-600"
-                : "md:text-gray-700" +
-                  "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/about"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive
-                ? "md:text-blue-600"
-                : "md:text-gray-700" +
-                  "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-            }
-          >
-            About
-          </NavLink>
-          {/* <NavLink
-            to="/categories"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive
-                ? "md:text-blue-600"
-                : "md:text-gray-700" +
-                  "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-            }
-          >
-            Categories
-          </NavLink>
-          <NavLink
-            to="/products"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive
-                ? "md:text-blue-600"
-                : "md:text-gray-700" +
-                  "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-            }
-          >
-            All Products
-          </NavLink> */}
-          <NavLink
-            to="/contact"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive
-                ? "md:text-blue-600"
-                : "md:text-gray-700" +
-                  "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-            }
-          >
-            Contact
-          </NavLink>
-          <NavLink
-            to="/SellerRegister"
-            className={({ isActive }: { isActive: boolean }) =>
-              isActive
-                ? "md:text-blue-600"
-                : "md:text-gray-700" +
-                  "block py-2 px-3  text-white bg-gray-400 rounded md:bg-transparent md:text-gray-700  md:p-0 dark:text-white md:dark:text-blue-500"
-            }
-          >
-            Become a Vendor
-          </NavLink>
-        </Navbar.Collapse>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 bg-white">
+            <div className="px-4 py-3 space-y-3">
+              <NavLink
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block py-2 text-sm font-medium transition-colors ${
+                    isActive ? "text-violet-600" : "text-gray-700"
+                  }`
+                }
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block py-2 text-sm font-medium transition-colors ${
+                    isActive ? "text-violet-600" : "text-gray-700"
+                  }`
+                }
+              >
+                About
+              </NavLink>
+              <NavLink
+                to="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block py-2 text-sm font-medium transition-colors ${
+                    isActive ? "text-violet-600" : "text-gray-700"
+                  }`
+                }
+              >
+                Contact
+              </NavLink>
+              <NavLink
+                to="/SellerRegister"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block py-2 text-sm font-medium transition-colors ${
+                    isActive ? "text-violet-600" : "text-gray-700"
+                  }`
+                }
+              >
+                Become a Vendor
+              </NavLink>
+              
+              {!LoggedInUser && (
+                <div className="pt-3 border-t border-gray-200 space-y-2">
+                  <NavLink
+                    to="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block w-full py-2 px-4 text-center text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/register"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block w-full py-2 px-4 text-center text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+                  >
+                    Register
+                  </NavLink>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </Navbar>
     </>
   );
