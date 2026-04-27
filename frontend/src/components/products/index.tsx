@@ -30,10 +30,10 @@ export const Homeproduct = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 lg:px-20 mt-6 lg:mt-10 border-b border-violet-200 pb-3">
       <Heading3><>Products List </></Heading3>
         <a
-          className="bg-violet-700 w-full sm:w-40 rounded-lg text-white text-center py-3 sm:py-4 text-[16px] sm:text-[20px] mt-3 sm:mt-0"
+          className="bg-violet-700 sm:w-40 rounded-lg text-white text-center py-2 px-4 text-sm sm:py-3 sm:text-[16px] mt-3 sm:mt-0 self-end sm:self-auto"
           href="/products"
         >
-          View more  &rarr;
+          View all &rarr;
         </a>
       </div>
 
