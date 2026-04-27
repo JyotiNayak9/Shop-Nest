@@ -4,12 +4,13 @@ import "aos/dist/aos.css";
 import {  HiChartBar, HiGlobe, HiShieldCheck, HiShoppingBag } from "react-icons/hi";
 import { TbTargetArrow } from "react-icons/tb";
 import { HiRocketLaunch } from "react-icons/hi2";
+import { NavLink } from "react-router-dom";
 
 const stats = [
-  { value: "12K+", label: "Active Vendors" },
-  { value: "2.4M", label: "Products Listed" },
+  { value: "100+", label: "Active Vendors" },
+  { value: "500+", label: "Products Listed" },
   { value: "98%", label: "Happy Shoppers" },
-  { value: "160+", label: "Countries Reached" },
+  { value: "20", label: "Countries Reached" },
 ];
 
 const features = [
@@ -29,7 +30,6 @@ const AboutPage = () => {
   return (
     <div className="text-gray-800 bg-white">
 
-      {/* Hero */}
       <section className="bg-violet-700 py-20 px-6 text-center text-white">
         <h1
           data-aos="fade-down"
@@ -48,13 +48,12 @@ const AboutPage = () => {
           <a href="/" className="bg-white text-violet-700 font-bold text-sm px-7 py-3 rounded-lg hover:bg-violet-50 transition">
             Start Shopping
           </a>
-          <a href="/register" className="border-2 border-white text-white font-bold text-sm px-7 py-3 rounded-lg hover:bg-white hover:text-violet-700 transition">
+          <NavLink to={"/SellerRegister"} className="border-2 border-white text-white font-bold text-sm px-7 py-3 rounded-lg hover:bg-white hover:text-violet-700 transition">
             Become a Vendor
-          </a>
+          </NavLink>
         </div>
       </section>
 
-      {/* Stats */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {stats.map((s, i) => (
@@ -71,7 +70,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Who We Are */}
       <section className="bg-violet-50 border-y border-violet-100 py-16 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 data-aos="fade-up" className="text-3xl font-bold text-violet-700 mb-4">Who We Are</h2>
@@ -85,7 +83,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* For Shoppers / For Vendors */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
         <div className="grid md:grid-cols-2 gap-6">
           <div data-aos="fade-right" className="border-l-4 border-violet-700 bg-violet-50 rounded-xl p-6 shadow-sm">
@@ -107,7 +104,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Features */}
       <section className="bg-violet-50 border-y border-violet-100 py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <h2 data-aos="fade-up" className="text-3xl font-bold text-violet-700 text-center mb-10">
@@ -130,7 +126,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Mission */}
       <section className="py-16 px-6 max-w-3xl mx-auto text-center">
         <h2 data-aos="fade-up" className="text-3xl font-bold text-violet-700 mb-4">Our Mission</h2>
         <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed">
@@ -139,7 +134,6 @@ const AboutPage = () => {
         </p>
       </section>
 
-      {/* CTA */}
       <section className="bg-violet-700 py-16 px-6 text-center text-white">
         <h2 data-aos="fade-up" className="text-3xl font-bold mb-3">Ready to get started?</h2>
         <p data-aos="fade-up" data-aos-delay="100" className="opacity-85 mb-8 max-w-md mx-auto">
@@ -149,9 +143,9 @@ const AboutPage = () => {
           <a href="/" className="bg-white text-violet-700 font-bold text-sm px-7 py-3 rounded-lg hover:bg-violet-50 transition">
             Start Shopping
           </a>
-          <a href="/register" className="border-2 border-white text-white font-bold text-sm px-7 py-3 rounded-lg hover:bg-white hover:text-violet-700 transition">
+          <NavLink to={"/SellerRegister"} className="border-2 border-white text-white font-bold text-sm px-7 py-3 rounded-lg hover:bg-white hover:text-violet-700 transition">
             Become a Vendor
-          </a>
+          </NavLink>
         </div>
       </section>
 
