@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import {  Heading3 } from "../../components/common/title";
+import { Heading3 } from "../../components/common/title";
 import authSvc from "../../pages/auth/auth.service";
-import {  SingleProductCard } from "../common/card/single-card";
+import { SingleProductCard } from "../common/card/single-card";
 import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
 
 export const Homeproduct = () => {
-  
   const [product, setproduct] = useState<any[]>([]);
   const getproduct = async () => {
     try {
-      const response: any = await authSvc.getRequest("/product/approved-products");
-      
+      const response: any = await authSvc.getRequest(
+        "/product/approved-products",
+      );
+
       if (response && response.result) {
         setproduct(response.result);
       }
@@ -19,22 +20,22 @@ export const Homeproduct = () => {
       toast.error("Error while fetching approved products");
       console.error("Error fetching products:", exception);
     }
-    
-  }
-  useEffect(()=>{
-    getproduct()
-  },[])
+  };
+  useEffect(() => {
+    getproduct();
+  }, []);
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 lg:px-20 mt-6 lg:mt-10 border-b border-violet-200 pb-3">
-      <Heading3><>Products List </></Heading3>
-        <NavLink to="/products"> <a
-          className="bg-violet-700 sm:w-40 rounded-lg text-white text-center py-2 px-4 text-sm sm:py-3 sm:text-[16px] mt-3 sm:mt-0 self-end sm:self-auto"
-          
+      <div className="flex justify-between items-center px-4 sm:px-6 lg:px-20 mt-6 lg:mt-10 border-b border-violet-200 pb-3">
+        <Heading3>
+          <>Products List </>
+        </Heading3>
+        <NavLink
+          to="/products"
+          className="bg-violet-700 rounded-lg text-white text-center py-2 px-4 text-sm sm:py-3 sm:text-[16px]"
         >
-          View all &rarr;
-        </a>
+          View all →
         </NavLink>
       </div>
 
@@ -54,6 +55,6 @@ export const Homeproduct = () => {
       </div>
     </>
   );
-}
+};
 
 export default Homeproduct;
