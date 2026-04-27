@@ -3,13 +3,13 @@ import {  Heading3 } from "../../components/common/title";
 import authSvc from "../../pages/auth/auth.service";
 import {  SingleProductCard } from "../common/card/single-card";
 import { toast } from "react-toastify";
+import { NavLink } from "react-router-dom";
 
 export const Homeproduct = () => {
   
   const [product, setproduct] = useState<any[]>([]);
   const getproduct = async () => {
     try {
-      // Fetch only approved products by adding filter
       const response: any = await authSvc.getRequest("/product/approved-products");
       
       if (response && response.result) {
@@ -29,12 +29,13 @@ export const Homeproduct = () => {
     <>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 lg:px-20 mt-6 lg:mt-10 border-b border-violet-200 pb-3">
       <Heading3><>Products List </></Heading3>
-        <a
+        <NavLink to="/products"> <a
           className="bg-violet-700 sm:w-40 rounded-lg text-white text-center py-2 px-4 text-sm sm:py-3 sm:text-[16px] mt-3 sm:mt-0 self-end sm:self-auto"
-          href="/products"
+          
         >
           View all &rarr;
         </a>
+        </NavLink>
       </div>
 
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 px-4 sm:px-6 lg:px-20 my-6 lg:my-10 gap-4">
