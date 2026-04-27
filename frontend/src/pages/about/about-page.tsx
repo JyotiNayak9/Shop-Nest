@@ -1,157 +1,160 @@
-import { Button } from "flowbite-react";
-import { motion } from "framer-motion";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import {  HiChartBar, HiGlobe, HiShieldCheck, HiShoppingBag } from "react-icons/hi";
+import { TbTargetArrow } from "react-icons/tb";
+import { HiRocketLaunch } from "react-icons/hi2";
+
+const stats = [
+  { value: "12K+", label: "Active Vendors" },
+  { value: "2.4M", label: "Products Listed" },
+  { value: "98%", label: "Happy Shoppers" },
+  { value: "160+", label: "Countries Reached" },
+];
+
+const features = [
+  { icon: <HiShoppingBag />, title: "Multi-Vendor Marketplace", desc: "Thousands of independent sellers curated under one roof. Every niche, every style, every budget." },
+  { icon: <HiShieldCheck/> , title: "Verified & Secure", desc: "Every vendor goes through our trust verification process. Your payments and data are always protected." },
+  { icon:  <HiChartBar/> , title: "Vendor Analytics", desc: "Real-time dashboards and sales insights help vendors grow smarter and faster." },
+  { icon: <HiRocketLaunch/>, title: "Fast Fulfillment", desc: "Integrated logistics ensure reliable, speedy delivery straight to your door." },
+  { icon: <TbTargetArrow/>, title: "Targeted Promotions", desc: "Vendors can run flash deals, bundle offers, and loyalty programs to attract buyers." },
+  { icon: <HiGlobe/>, title: "Global Reach", desc: "Shop or sell across borders with multi-currency support and localised storefronts." },
+];
 
 const AboutPage = () => {
+  useEffect(() => {
+    AOS.init({ duration: 600, once: true, easing: "ease-out-cubic" });
+  }, []);
+
   return (
-    <div className="text-gray-800">
+    <div className="text-gray-800 bg-white">
 
-      {/* HERO SECTION */}
-      <div className="relative bg-gradient-to-r from-violet-700 to-indigo-600 h-[400px] flex items-center justify-center text-white">
-        <div className="text-center max-w-3xl px-4">
-          <motion.h1
-            className="text-4xl md:text-5xl font-bold mb-4"
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            Welcome to ShopNest
-          </motion.h1>
-
-          <motion.p
-            className="text-lg md:text-xl opacity-90"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            Empowering sellers. Inspiring shoppers. One platform, endless possibilities.
-          </motion.p>
-        </div>
-      </div>
-
-      {/* ABOUT */}
-      <section className="max-w-6xl mx-auto px-4 py-16 space-y-16">
-
-        {/* WHO WE ARE */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+      {/* Hero */}
+      <section className="bg-violet-700 py-20 px-6 text-center text-white">
+        <h1
+          data-aos="fade-down"
+          className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight"
         >
-          <h2 className="text-3xl font-bold text-violet-700 mb-4">
-            Who We Are
-          </h2>
-          <p className="text-lg leading-relaxed">
-            ShopNest is a modern multi-vendor eCommerce platform designed to connect
-            buyers with a diverse network of sellers. We provide a seamless digital
-            marketplace where businesses can grow and customers can discover products
-            from across categories—all in one place.
-          </p>
-        </motion.div>
+          Welcome to ShopNest
+        </h1>
+        <p
+          data-aos="fade-up"
+          data-aos-delay="100"
+          className="text-lg md:text-xl opacity-90 max-w-xl mx-auto mb-8 leading-relaxed"
+        >
+          The marketplace where vendors grow and shoppers explore endless possibilities.
+        </p>
+        <div data-aos="fade-up" data-aos-delay="200" className="flex gap-3 justify-center flex-wrap">
+          <a href="/" className="bg-white text-violet-700 font-bold text-sm px-7 py-3 rounded-lg hover:bg-violet-50 transition">
+            Start Shopping
+          </a>
+          <a href="/register" className="border-2 border-white text-white font-bold text-sm px-7 py-3 rounded-lg hover:bg-white hover:text-violet-700 transition">
+            Become a Vendor
+          </a>
+        </div>
+      </section>
 
-        {/* STATS (VERY IMPORTANT FOR IMPACT) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[
-            { label: "Products", value: "10,000+" },
-            { label: "Vendors", value: "500+" },
-            { label: "Customers", value: "50K+" },
-            { label: "Orders Delivered", value: "1L+" },
-          ].map((item, i) => (
-            <motion.div
+      {/* Stats */}
+      <section className="py-16 px-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+          {stats.map((s, i) => (
+            <div
               key={i}
-              className="p-6 bg-gray-50 rounded-xl shadow"
-              whileHover={{ scale: 1.05 }}
+              data-aos="fade-up"
+              data-aos-delay={i * 80}
+              className="border border-violet-100 bg-violet-50 rounded-xl p-6 text-center"
             >
-              <h3 className="text-2xl font-bold text-violet-600">
-                {item.value}
-              </h3>
-              <p className="text-gray-600">{item.label}</p>
-            </motion.div>
+              <div className="text-4xl font-extrabold text-violet-700 mb-1">{s.value}</div>
+              <div className="text-sm text-gray-500">{s.label}</div>
+            </div>
           ))}
         </div>
+      </section>
 
-        {/* FEATURES */}
-        <div className="grid md:grid-cols-3 gap-8">
-
-          <motion.div className="p-6 bg-white shadow rounded-xl hover:shadow-lg transition">
-            <h3 className="text-xl font-semibold text-violet-600 mb-2">
-              🛍 Wide Product Range
-            </h3>
-            <p>
-              Discover thousands of products from multiple vendors across categories.
-            </p>
-          </motion.div>
-
-          <motion.div className="p-6 bg-white shadow rounded-xl hover:shadow-lg transition">
-            <h3 className="text-xl font-semibold text-violet-600 mb-2">
-              🔒 Secure Shopping
-            </h3>
-            <p>
-              Trusted sellers, safe payments, and reliable transactions every time.
-            </p>
-          </motion.div>
-
-          <motion.div className="p-6 bg-white shadow rounded-xl hover:shadow-lg transition">
-            <h3 className="text-xl font-semibold text-violet-600 mb-2">
-              🚀 Vendor Growth
-            </h3>
-            <p>
-              Tools, analytics, and exposure to help vendors scale their business.
-            </p>
-          </motion.div>
-
-        </div>
-
-        {/* FOR USERS + VENDORS */}
-        <div className="grid md:grid-cols-2 gap-10">
-
-          <motion.div className="p-6 bg-gray-50 rounded-xl border-l-4 border-violet-500">
-            <h3 className="text-2xl font-semibold text-violet-700 mb-2">
-              👥 For Customers
-            </h3>
-            <p>
-              Shop from a wide range of categories, compare products, and enjoy
-              a seamless buying experience with fast delivery and support.
-            </p>
-          </motion.div>
-
-          <motion.div className="p-6 bg-gray-50 rounded-xl border-l-4 border-violet-500">
-            <h3 className="text-2xl font-semibold text-violet-700 mb-2">
-              🏪 For Vendors
-            </h3>
-            <p>
-              Sell your products, manage inventory, track orders, and grow your
-              brand using our powerful multi-vendor platform.
-            </p>
-          </motion.div>
-
-        </div>
-
-        {/* MISSION */}
-        <motion.div>
-          <h3 className="text-2xl font-semibold text-violet-700 mb-2">
-            Our Mission
-          </h3>
-          <p className="text-lg">
-            To build a trusted digital marketplace that empowers businesses and
-            enhances the online shopping experience for everyone.
+      {/* Who We Are */}
+      <section className="bg-violet-50 border-y border-violet-100 py-16 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 data-aos="fade-up" className="text-3xl font-bold text-violet-700 mb-4">Who We Are</h2>
+          <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed mb-4">
+            ShopNest is a dynamic multi-vendor eCommerce platform designed to empower entrepreneurs and delight shoppers.
+            We connect local and global sellers with a vast audience, making online shopping more diverse, accessible, and rewarding.
           </p>
-        </motion.div>
+          <p data-aos="fade-up" data-aos-delay="150" className="text-gray-600 leading-relaxed">
+            Our platform provides vendors with the tools they need to succeed — from analytics and promotions to logistics and customer support — all under one roof.
+          </p>
+        </div>
+      </section>
 
-        {/* CTA */}
-        <div className="text-center space-y-4 pt-10">
-          <h4 className="text-2xl font-semibold">
-            Ready to explore ShopNest?
-          </h4>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button href="/" className="bg-violet-600 hover:bg-violet-700 text-white">
-              Start Shopping
-            </Button>
-
-            <Button href="/register" className="bg-indigo-600 hover:bg-indigo-700 text-white">
-              Become a Vendor
-            </Button>
+      {/* For Shoppers / For Vendors */}
+      <section className="py-16 px-6 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div data-aos="fade-right" className="border-l-4 border-violet-700 bg-violet-50 rounded-xl p-6 shadow-sm">
+            <div className="text-3xl mb-3">🛒</div>
+            <h3 className="text-xl font-semibold text-violet-700 mb-2">For Shoppers</h3>
+            <p className="text-gray-600 leading-relaxed text-sm">
+              Explore thousands of products across countless categories. With verified vendors, exclusive deals,
+              and seamless delivery — your shopping experience just got better.
+            </p>
+          </div>
+          <div data-aos="fade-left" className="border-l-4 border-violet-700 bg-violet-50 rounded-xl p-6 shadow-sm">
+            <div className="text-3xl mb-3">📈</div>
+            <h3 className="text-xl font-semibold text-violet-700 mb-2">For Vendors</h3>
+            <p className="text-gray-600 leading-relaxed text-sm">
+              Launch, manage, and grow your business on ShopNest. Get insights, promotion tools, and a trusted
+              platform that scales with your success.
+            </p>
           </div>
         </div>
-
       </section>
+
+      {/* Features */}
+      <section className="bg-violet-50 border-y border-violet-100 py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 data-aos="fade-up" className="text-3xl font-bold text-violet-700 text-center mb-10">
+            Why Choose ShopNest?
+          </h2>
+          <div className="grid md:grid-cols-3 gap-5">
+            {features.map((f, i) => (
+              <div
+                key={i}
+                data-aos="fade-up"
+                data-aos-delay={i * 80}
+                className="bg-white border border-violet-100 rounded-xl p-5"
+              >
+                <div className="text-2xl mb-3">{f.icon}</div>
+                <h4 className="font-semibold text-gray-800 mb-2">{f.title}</h4>
+                <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mission */}
+      <section className="py-16 px-6 max-w-3xl mx-auto text-center">
+        <h2 data-aos="fade-up" className="text-3xl font-bold text-violet-700 mb-4">Our Mission</h2>
+        <p data-aos="fade-up" data-aos-delay="100" className="text-gray-600 leading-relaxed">
+          To foster an inclusive, trusted, and innovative space where buyers and sellers thrive together.
+          We champion transparency, creativity, and community — making commerce accessible for everyone, everywhere.
+        </p>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-violet-700 py-16 px-6 text-center text-white">
+        <h2 data-aos="fade-up" className="text-3xl font-bold mb-3">Ready to get started?</h2>
+        <p data-aos="fade-up" data-aos-delay="100" className="opacity-85 mb-8 max-w-md mx-auto">
+          Join thousands of vendors and millions of shoppers already on ShopNest.
+        </p>
+        <div data-aos="fade-up" data-aos-delay="200" className="flex gap-3 justify-center flex-wrap">
+          <a href="/" className="bg-white text-violet-700 font-bold text-sm px-7 py-3 rounded-lg hover:bg-violet-50 transition">
+            Start Shopping
+          </a>
+          <a href="/register" className="border-2 border-white text-white font-bold text-sm px-7 py-3 rounded-lg hover:bg-white hover:text-violet-700 transition">
+            Become a Vendor
+          </a>
+        </div>
+      </section>
+
     </div>
   );
 };
