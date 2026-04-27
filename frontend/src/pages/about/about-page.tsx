@@ -1,121 +1,159 @@
 import { Button } from "flowbite-react";
-
-
 import { motion } from "framer-motion";
+
 const AboutPage = () => {
-    return (
-        <div className="text-gray-800">
-          {/* Hero Section */}
-          <div className="relative bg-[url()] bg-cover bg-center h-96 flex items-center justify-center">
-            <div className="bg-black bg-opacity-50 p-6 rounded-lg text-white text-center max-w-3xl mx-auto">
-              <motion.h1
-                className="text-4xl md:text-5xl font-bold mb-4"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                Welcome to ShopNest
-              </motion.h1>
-              <motion.p
-                className="text-lg md:text-xl"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-              >
-                The marketplace where vendors grow and shoppers explore endless possibilities.
-              </motion.p>
-            </div>
-          </div>
-    
-          {/* Content Section */}
-          <section className="max-w-5xl mx-auto px-4 py-16 space-y-16">
-            {/* Intro */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0 },
-              }}
-            >
-              <h2 className="text-3xl font-bold text-violet-700 mb-4">Who We Are</h2>
-              <p className="text-lg">
-                ShopNest is a dynamic multi-vendor eCommerce platform designed to empower entrepreneurs and delight shoppers.
-                We connect local and global sellers with a vast audience, making online shopping more diverse, accessible, and rewarding.
-              </p>
-            </motion.div>
-    
-            {/* Two Columns */}
-            <div className="grid md:grid-cols-2 gap-12">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 200 }}
-                className="p-6 border-l-4 border-violet-500 bg-gray-50 rounded-xl shadow"
-              >
-                <h3 className="text-2xl font-semibold text-violet-600 mb-2">🛒 For Shoppers</h3>
-                <p>
-                  Explore thousands of products across countless categories. With verified vendors, exclusive deals, and seamless delivery —
-                  your shopping experience just got better.
-                </p>
-              </motion.div>
-    
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 200 }}
-                className="p-6 border-l-4 border-violet-500 bg-gray-50 rounded-xl shadow"
-              >
-                <h3 className="text-2xl font-semibold text-violet-600 mb-2">📈 For Vendors</h3>
-                <p>
-                  Launch, manage, and grow your business on ShopNest. Get insights, promotion tools, and a trusted platform that scales with your success.
-                </p>
-              </motion.div>
-            </div>
-    
-            {/* Mission */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <h3 className="text-2xl font-semibold text-violet-600 mb-2">Our Mission</h3>
-              <p className="text-lg">
-                To foster an inclusive, trusted, and innovative space where buyers and sellers thrive together. We champion transparency, creativity, and community.
-              </p>
-            </motion.div>
-    
-            {/* Why ShopNest */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <h3 className="text-2xl font-semibold text-violet-600 mb-4"> Why Choose ShopNest?</h3>
-              <ul className="list-disc list-inside space-y-2 text-lg">
-                <li>Multi-vendor marketplace with limitless variety</li>
-                <li>Verified sellers and secure transactions</li>
-                <li>Real-time analytics & business tools for vendors</li>
-                <li>Fast, reliable shipping and customer support</li>
-                <li>Community-first platform with global reach</li>
-              </ul>
-            </motion.div>
-    
-            {/* CTA */}
-            <div className="text-center space-y-4">
-              <h4 className="text-xl font-semibold">Ready to get started?</h4>
-              <div className="flex justify-center gap-4">
-                <Button href="/" className="bg-violet-600 hover:bg-violet-700 text-white">
-                  Start Shopping
-                </Button>
-                <Button href="/register" className="bg-violet-600 hover:bg-violet-700 text-white">
-                  Become a Vendor
-                </Button>
-              </div>
-            </div>
-          </section>
+  return (
+    <div className="text-gray-800">
+
+      {/* HERO SECTION */}
+      <div className="relative bg-gradient-to-r from-violet-700 to-indigo-600 h-[400px] flex items-center justify-center text-white">
+        <div className="text-center max-w-3xl px-4">
+          <motion.h1
+            className="text-4xl md:text-5xl font-bold mb-4"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            Welcome to ShopNest
+          </motion.h1>
+
+          <motion.p
+            className="text-lg md:text-xl opacity-90"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            Empowering sellers. Inspiring shoppers. One platform, endless possibilities.
+          </motion.p>
         </div>
-      );
-}
+      </div>
+
+      {/* ABOUT */}
+      <section className="max-w-6xl mx-auto px-4 py-16 space-y-16">
+
+        {/* WHO WE ARE */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-3xl font-bold text-violet-700 mb-4">
+            Who We Are
+          </h2>
+          <p className="text-lg leading-relaxed">
+            ShopNest is a modern multi-vendor eCommerce platform designed to connect
+            buyers with a diverse network of sellers. We provide a seamless digital
+            marketplace where businesses can grow and customers can discover products
+            from across categories—all in one place.
+          </p>
+        </motion.div>
+
+        {/* STATS (VERY IMPORTANT FOR IMPACT) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {[
+            { label: "Products", value: "10,000+" },
+            { label: "Vendors", value: "500+" },
+            { label: "Customers", value: "50K+" },
+            { label: "Orders Delivered", value: "1L+" },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              className="p-6 bg-gray-50 rounded-xl shadow"
+              whileHover={{ scale: 1.05 }}
+            >
+              <h3 className="text-2xl font-bold text-violet-600">
+                {item.value}
+              </h3>
+              <p className="text-gray-600">{item.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* FEATURES */}
+        <div className="grid md:grid-cols-3 gap-8">
+
+          <motion.div className="p-6 bg-white shadow rounded-xl hover:shadow-lg transition">
+            <h3 className="text-xl font-semibold text-violet-600 mb-2">
+              🛍 Wide Product Range
+            </h3>
+            <p>
+              Discover thousands of products from multiple vendors across categories.
+            </p>
+          </motion.div>
+
+          <motion.div className="p-6 bg-white shadow rounded-xl hover:shadow-lg transition">
+            <h3 className="text-xl font-semibold text-violet-600 mb-2">
+              🔒 Secure Shopping
+            </h3>
+            <p>
+              Trusted sellers, safe payments, and reliable transactions every time.
+            </p>
+          </motion.div>
+
+          <motion.div className="p-6 bg-white shadow rounded-xl hover:shadow-lg transition">
+            <h3 className="text-xl font-semibold text-violet-600 mb-2">
+              🚀 Vendor Growth
+            </h3>
+            <p>
+              Tools, analytics, and exposure to help vendors scale their business.
+            </p>
+          </motion.div>
+
+        </div>
+
+        {/* FOR USERS + VENDORS */}
+        <div className="grid md:grid-cols-2 gap-10">
+
+          <motion.div className="p-6 bg-gray-50 rounded-xl border-l-4 border-violet-500">
+            <h3 className="text-2xl font-semibold text-violet-700 mb-2">
+              👥 For Customers
+            </h3>
+            <p>
+              Shop from a wide range of categories, compare products, and enjoy
+              a seamless buying experience with fast delivery and support.
+            </p>
+          </motion.div>
+
+          <motion.div className="p-6 bg-gray-50 rounded-xl border-l-4 border-violet-500">
+            <h3 className="text-2xl font-semibold text-violet-700 mb-2">
+              🏪 For Vendors
+            </h3>
+            <p>
+              Sell your products, manage inventory, track orders, and grow your
+              brand using our powerful multi-vendor platform.
+            </p>
+          </motion.div>
+
+        </div>
+
+        {/* MISSION */}
+        <motion.div>
+          <h3 className="text-2xl font-semibold text-violet-700 mb-2">
+            Our Mission
+          </h3>
+          <p className="text-lg">
+            To build a trusted digital marketplace that empowers businesses and
+            enhances the online shopping experience for everyone.
+          </p>
+        </motion.div>
+
+        {/* CTA */}
+        <div className="text-center space-y-4 pt-10">
+          <h4 className="text-2xl font-semibold">
+            Ready to explore ShopNest?
+          </h4>
+
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button href="/" className="bg-violet-600 hover:bg-violet-700 text-white">
+              Start Shopping
+            </Button>
+
+            <Button href="/register" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+              Become a Vendor
+            </Button>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  );
+};
 
 export default AboutPage;
