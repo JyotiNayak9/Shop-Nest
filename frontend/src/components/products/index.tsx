@@ -33,7 +33,7 @@ export const Homeproduct = () => {
         </Heading3>
         <NavLink
           to="/products"
-          className="bg-violet-700 rounded-lg text-white text-center py-2 px-4 text-sm sm:py-3 sm:text-[16px]"
+          className="bg-violet-600 hover:bg-violet-700 rounded-lg text-white text-center py-2 px-4 text-sm sm:py-3 sm:text-[16px]"
         >
           View all →
         </NavLink>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { HiPhone } from "react-icons/hi";
+import { HiLocationMarker, HiMail, HiPhone } from "react-icons/hi";
 
 export default function ContactUs() {
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function ContactUs() {
             data-aos-delay="0"
             className="bg-violet-50 border border-violet-100 rounded-xl p-6 text-center"
           >
-            <div className="text-4xl mb-4">📍</div>
+            <div className="text-4xl mb-4"><HiLocationMarker/></div>
             <h2 className="text-lg font-bold text-violet-700 mb-2">Address</h2>
             <p className="text-gray-600 text-sm leading-relaxed">
               ShopNest<br />
@@ -55,7 +55,7 @@ export default function ContactUs() {
             data-aos-delay="200"
             className="bg-violet-50 border border-violet-100 rounded-xl p-6 text-center"
           >
-            <div className="text-4xl mb-4">✉️</div>
+            <div className="text-4xl mb-4"><HiMail/></div>
             <h2 className="text-lg font-bold text-violet-700 mb-2">Email</h2>
             <p className="text-gray-600 text-sm leading-relaxed">
               <a href="mailto:prerana@gmail.com" className="hover:text-violet-700 transition">prerana@gmail.com</a><br />
@@ -66,7 +66,7 @@ export default function ContactUs() {
         </div>
       </section>
 
-      <p data-aos="fade-up" className="pb-16 text-center text-gray-400 text-sm">
+      <p data-aos="fade-up" className="pb-16 text-center text-sm">
         Thank you for being part of the ShopNest community. We look forward to connecting with you!
       </p>
 

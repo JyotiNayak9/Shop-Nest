@@ -80,7 +80,6 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
         image: data.image[0],
       });
 
-      // Track add to cart interaction
       await trackInteraction("add_to_cart");
 
       toast.success("Added to cart successfully");
@@ -94,7 +93,6 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
     <>
       <Card className="max-w-sm mx-2 sm:mx-5 my-5 sm:my-10 flex flex-col h-[350px] sm:h-[380px] w-full">
         <Link to={data.slug} className="flex flex-col flex-grow p-2">
-          {/* Image */}
           <div className="w-full h-32 sm:h-40 flex items-center justify-center bg-gray-100 rounded-t-lg">
             <img
               src={data.image[0] || data.image}
@@ -103,13 +101,11 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
             />
           </div>
 
-          {/* Title */}
           <h5 className="text-sm sm:text-base lg:text-lg font-semibold mt-2 text-gray-900 dark:text-white line-clamp-2">
             {data.title}
           </h5>
         </Link>
 
-        {/* Bottom section (ALWAYS SAME POSITION) */}
         <div className="flex items-center justify-between p-2">
           <span className="text-base sm:text-lg xl:text-xl font-bold text-gray-900 dark:text-white">
             Rs. {data.price}
@@ -117,7 +113,7 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
 
           <Button
             onClick={handleAdd}
-            className="bg-violet-700 hover:bg-violet-800"
+            className="bg-violet-600 hover:bg-violet-700"
           >
             <FaShoppingCart />
           </Button>
