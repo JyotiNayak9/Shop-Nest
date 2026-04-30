@@ -1,16 +1,16 @@
-import { useContext, useEffect, useState } from 'react';
-import authSvc from '../auth/auth.service';
-import AuthContext from '../../context/auth.context';
-import { addToCart } from './cart';
-import { Heading3 } from '../../components/common/title';
-import { Button, Table } from 'flowbite-react';
-import { RowSkeleton } from '../../components/common/table/table-skeleton';
-import { toast } from 'react-toastify';
-import { FaTrash } from 'react-icons/fa';
-import Swal from 'sweetalert2';
-import { LoadingComponent } from '../../components/common/loading/loading-component';
-import { NavLink } from 'react-router-dom';
-import { SingleProductCard } from '../../components/common/card/single-card';
+import { useContext, useEffect, useState } from "react";
+import authSvc from "../auth/auth.service";
+import AuthContext from "../../context/auth.context";
+import { addToCart } from "./cart";
+import { Heading3 } from "../../components/common/title";
+import { Button, Table } from "flowbite-react";
+import { RowSkeleton } from "../../components/common/table/table-skeleton";
+import { toast } from "react-toastify";
+import { FaTrash } from "react-icons/fa";
+import Swal from "sweetalert2";
+import { LoadingComponent } from "../../components/common/loading/loading-component";
+import { NavLink } from "react-router-dom";
+import { SingleProductCard } from "../../components/common/card/single-card";
 
 const DisplayCart = () => {
   const { LoggedInUser } = useContext(AuthContext);
@@ -20,111 +20,88 @@ const DisplayCart = () => {
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [recLoading, setRecLoading] = useState(false);
 
-const getCart = async () => {
-  try {
-    setLoading(true);
+  const getCart = async () => {
+    try {
+      setLoading(true);
 
-    if (!LoggedInUser) {
-      const guestCart = JSON.parse(localStorage.getItem("cart") || "[]");
-      setCart(guestCart);
-      return;
+      if (!LoggedInUser) {
+        const guestCart = JSON.parse(localStorage.getItem("cart") || "[]");
+        setCart(guestCart);
+        return;
+      }
+
+      const response: any = await authSvc.getRequest("/cart", { auth: true });
+
+      setCart(response.items || []);
+
+      if (response.items?.length > 0) {
+        fetchRecommendations(response.items);
+      }
+    } catch (exception: any) {
+      toast.error("Failed to fetch cart");
+    } finally {
+      setLoading(false);
     }
-
-
-    const response: any = await authSvc.getRequest('/cart/' + LoggedInUser._id, { auth: true });
-    setCart(response.items);
-
-    if (response.items.length > 0) {
-      fetchRecommendations(response.items);
-    }
-
-  } catch (exception: any) {
-    toast.error("Failed to fetch cart");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const fetchRecommendations = async (cartItems: any[]) => {
     try {
       setRecLoading(true);
-      const productIds = cartItems.map(item => item.productId._id || item.productId);
-      
-      const ProductId = productIds.join(',');
-      const response:any = await authSvc.getRequest(`/recommendation/cart/${ProductId}`, 
-        {auth: true},
-        );
-      
+      const productIds = cartItems.map(
+        (item) => item.productId._id || item.productId,
+      );
+
+      const ProductId = productIds.join(",");
+      const response: any = await authSvc.getRequest(
+        `/recommendation/cart/${ProductId}`,
+        { auth: true },
+      );
+
       setRecommendations(response.result || []);
     } catch (error) {
-      console.error('Failed to fetch recommendations:', error);
+      console.error("Failed to fetch recommendations:", error);
     } finally {
       setRecLoading(false);
     }
   };
 
- const total = async () => {
-  try {
-    if (!LoggedInUser) {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const total = async () => {
+    try {
+      if (!LoggedInUser) {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-      const totalAmount = cart.reduce((acc: number, item: any) => {
-        return acc + (item.quantity * item.price);
-      }, 0);
+        const totalAmount = cart.reduce((acc: number, item: any) => {
+          return acc + item.quantity * item.price;
+        }, 0);
 
-      setCartTotal(totalAmount);
-      return;
+        setCartTotal(totalAmount);
+        return;
+      }
+
+      const response: any = await authSvc.getRequest("/cart/totals", {
+        auth: true,
+      });
+
+      setCartTotal(response.totalAmount || 0);
+    } catch (exception) {
+      toast.error("Error getting total");
     }
+  };
 
-    const response: any = await authSvc.getRequest("/cart/totals"+ LoggedInUser._id, { auth: true });
-
-    setCartTotal(response.totalAmount || 0);
-
-  } catch (exception) {
-    toast.error("Error getting total");
-  }
-};
-
-useEffect(() => {
-  getCart();
-  total();
-}, [LoggedInUser]);
-
-const handleQuantityChange = async (row: any, newQty: number) => {
-  if (newQty < 1) return;
-  if (!LoggedInUser) {
-    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-    cart = cart.map((item: any) =>
-      item.productId === row.productId
-        ? { ...item, quantity: newQty }
-        : item
-    );
-    localStorage.setItem("cart", JSON.stringify(cart));
+  useEffect(() => {
     getCart();
     total();
-    return;
-  }
+  }, [LoggedInUser]);
 
-  await addToCart({
-    customerId: LoggedInUser._id,
-    productId: row.productId._id || row.productId,
-    productTitle: row.productTitle,
-    quantity: newQty - row.quantity,
-    price: row.price,
-    image: row.image
-  });
+  const handleQuantityChange = async (row: any, newQty: number) => {
+    if (newQty < 1) return;
 
-  getCart();
-  total();
-};
-
-  const deleteItem = async (id: any, productId?: any) => {
-    try {
-         if (!LoggedInUser) {
+    if (!LoggedInUser) {
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-      cart = cart.filter((item: any) => item.productId !== productId);
+      cart = cart.map((item: any) =>
+        item.productId === row.productId ? { ...item, quantity: newQty } : item,
+      );
 
       localStorage.setItem("cart", JSON.stringify(cart));
 
@@ -132,6 +109,33 @@ const handleQuantityChange = async (row: any, newQty: number) => {
       total();
       return;
     }
+
+    await addToCart({
+      customerId: LoggedInUser._id,
+      productId: row.productId?._id || row.productId,
+      productTitle: row.productTitle,
+      quantity: newQty - row.quantity,
+      price: row.price,
+      image: row.image,
+    });
+
+    getCart();
+    total();
+  };
+
+  const deleteItem = async (id: any, productId?: any) => {
+    try {
+      if (!LoggedInUser) {
+        let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+        cart = cart.filter((item: any) => item.productId !== productId);
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        getCart();
+        total();
+        return;
+      }
       const result = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -139,7 +143,7 @@ const handleQuantityChange = async (row: any, newQty: number) => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonText: "Yes, delete it!",
       });
       if (result.isConfirmed) {
         await authSvc.deleteRequest("/cart/" + id, { auth: true });
@@ -152,16 +156,26 @@ const handleQuantityChange = async (row: any, newQty: number) => {
     }
   };
 
-  return (   
-    <>        
+  return (
+    <>
       <div className="overflow-x-auto m-4 sm:m-6 lg:m-10">
         <Table striped>
           <Table.Head>
-            <Table.HeadCell className="bg-gray-900 text-white py-4">Title</Table.HeadCell>
-            <Table.HeadCell className="bg-gray-900 text-white py-4">Image</Table.HeadCell>
-            <Table.HeadCell className="bg-gray-900 text-white py-4">Quantity</Table.HeadCell>
-            <Table.HeadCell className="bg-gray-900 text-white py-4">Price</Table.HeadCell>
-            <Table.HeadCell className="bg-gray-900 text-white py-4">Total</Table.HeadCell>
+            <Table.HeadCell className="bg-gray-900 text-white py-4">
+              Title
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-gray-900 text-white py-4">
+              Image
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-gray-900 text-white py-4">
+              Quantity
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-gray-900 text-white py-4">
+              Price
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-gray-900 text-white py-4">
+              Total
+            </Table.HeadCell>
             <Table.HeadCell className="bg-gray-900 text-white py-4">
               Action
             </Table.HeadCell>
@@ -173,19 +187,28 @@ const handleQuantityChange = async (row: any, newQty: number) => {
               <>
                 {cart && cart.length > 0 ? (
                   cart.map((row: any, index: number) => (
-                    <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                    <Table.Row
+                      key={index}
+                      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                    >
                       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         {row.productTitle}
                       </Table.Cell>
                       <Table.Cell>
-                        <img src={row.image} alt={row.title} className="h-12 w-12 object-cover rounded" />
+                        <img
+                          src={row.image}
+                          alt={row.title}
+                          className="h-12 w-12 object-cover rounded"
+                        />
                       </Table.Cell>
                       <Table.Cell>
                         <input
                           type="number"
                           min={1}
                           value={row.quantity}
-                          onChange={(e) => handleQuantityChange(row, parseInt(e.target.value))}
+                          onChange={(e) =>
+                            handleQuantityChange(row, parseInt(e.target.value))
+                          }
                           className="w-20 px-2 py-1 border rounded"
                         />
                       </Table.Cell>
@@ -196,7 +219,16 @@ const handleQuantityChange = async (row: any, newQty: number) => {
                         {row.quantity * row.price}
                       </Table.Cell>
                       <Table.Cell className="flex gap-3">
-                        <Button className='bg-red-700 hover:bg-red-900' onClick={() => deleteItem(row._id, row.productId)}>
+                        <Button
+                          className="bg-red-700 hover:bg-red-900"
+                          onClick={() =>
+                            deleteItem(
+                              row._id,
+                              row.productId?._id || row.productId,
+                            )
+                          }
+                        >
+                          {" "}
                           <FaTrash />
                         </Button>
                       </Table.Cell>
@@ -204,7 +236,10 @@ const handleQuantityChange = async (row: any, newQty: number) => {
                   ))
                 ) : (
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell colSpan={5} className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center">
+                    <Table.Cell
+                      colSpan={5}
+                      className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"
+                    >
                       No Data Found
                     </Table.Cell>
                   </Table.Row>
@@ -213,8 +248,6 @@ const handleQuantityChange = async (row: any, newQty: number) => {
             )}
           </Table.Body>
         </Table>
-        
-      
 
         <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center mr-4 sm:mr-6 lg:mr-10 mt-4 gap-4">
           <div className="bg-gray-200 dark:bg-gray-800 p-3 sm:p-4 rounded shadow w-full sm:w-auto">
@@ -222,31 +255,33 @@ const handleQuantityChange = async (row: any, newQty: number) => {
               Total: {cartTotal}
             </h3>
           </div>
-          <NavLink 
+          <NavLink
             to={"/checkout"}
-            className="w-full sm:w-auto shrink-0 rounded-md border border-violet-600 bg-violet-600 px-6 sm:px-12 py-3 sm:py-4 text-sm sm:text-md font-medium text-white transition hover:bg-transparent hover:bg-violet-900 focus:outline-none focus:ring active:text-violet-500"                
-          >              
+            className="w-full sm:w-auto shrink-0 rounded-md border border-violet-600 bg-violet-600 px-6 sm:px-12 py-3 sm:py-4 text-sm sm:text-md font-medium text-white transition hover:bg-transparent hover:bg-violet-900 focus:outline-none focus:ring active:text-violet-500"
+          >
             Proceed to Checkout
           </NavLink>
         </div>
-          {/* Recommendations Section */}
+        {/* Recommendations Section */}
         {cart.length > 0 && (
           <div className="mt-12">
-            <Heading3><>You Might Also Like</></Heading3>
+            <Heading3>
+              <>You Might Also Like</>
+            </Heading3>
             {recLoading ? (
               <LoadingComponent />
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-4">
                 {recommendations.map((item) => (
-                  <SingleProductCard 
-                   key={item._id}
-            data={{
-              _id: item._id,
-              title: item.title,
-              slug: `/products/${item.slug || item._id}`,
-              image: item.image,
-              price: item.price,
-            }}
+                  <SingleProductCard
+                    key={item._id}
+                    data={{
+                      _id: item._id,
+                      title: item.title,
+                      slug: `/products/${item.slug || item._id}`,
+                      image: item.image,
+                      price: item.price,
+                    }}
                   />
                 ))}
               </div>
@@ -256,6 +291,6 @@ const handleQuantityChange = async (row: any, newQty: number) => {
       </div>
     </>
   );
-}
+};
 
 export default DisplayCart;

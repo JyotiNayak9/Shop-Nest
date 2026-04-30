@@ -13,12 +13,12 @@ export const addToCart = async (data: {
   return res.data;
 };
 
-// export const getCart = async () => {
-//   const res = await authSvc.getRequest('/cart/:id');
+// // export const getCart = async () => {
+// //   const res = await authSvc.getRequest('/cart/:id');
+// //   return res.data;
+// // };
+
+// export const getCartTotals = async () => {
+//   const res = await authSvc.getRequest('/cart/totals/:id');
 //   return res.data;
 // };
-
-export const getCartTotals = async () => {
-  const res = await authSvc.getRequest('/cart/totals/:id');
-  return res.data;
-};
