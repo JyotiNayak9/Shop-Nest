@@ -83,6 +83,7 @@ const DisplayCart = () => {
       });
 
       setCartTotal(response.totalAmount || 0);
+      console.log("Cart Total:", response);
     } catch (exception) {
       toast.error("Error getting total");
     }
