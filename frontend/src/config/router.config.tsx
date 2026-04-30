@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "../pages/landing";
 import AboutPage from "../pages/about/about-page";
-import  { AllCategory } from "../pages/categories/categories";
+import { AllCategory } from "../pages/categories/categories";
 import { AllProducts } from "../pages/allproducts/all-products";
 import ContactPage from "../pages/contact/contact-page";
 import CategoryDetailsPage from "../pages/categories/category-details";
 import HomepageLayout from "../pages/layout/home.page";
 import Adminlayout from "../pages/layout/cms.page";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/ReactToastify.css"
+import "react-toastify/ReactToastify.css";
 import UserActivation from "../pages/auth/activation/activate-user.page";
 import { useEffect, useState } from "react";
 import AuthContext from "../context/auth.context";
@@ -50,111 +50,163 @@ import UserListPage from "../pages/Cms/user/user-listing.tsx";
 import DashboardPage from "../pages/Cms/sales/dashboard.tsx";
 import OrderConfirmation from "../pages/order/order-confirmation.tsx";
 
-
 const RouterConfig = () => {
-    const [LoggedInUser, setLoggedInUser] = useState<any>(null);
-    const [loading, setLoading] = useState(true)
-    const getLoggedInUser = async() => {
-        try {
-            const response: any = await authSvc.getRequest("/auth/me", {auth:true})
-            console.log(response)
-            setLoggedInUser(response.result);
-        } catch(exception) {
-           console.log(exception) 
-        } finally {
-            setLoading(false)
-        }
+  const [LoggedInUser, setLoggedInUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const getLoggedInUser = async () => {
+    try {
+      const response: any = await authSvc.getRequest("/auth/me", {
+        auth: true,
+      });
+      console.log(response);
+      setLoggedInUser(response.result);
+    } catch (exception) {
+      console.log(exception);
+    } finally {
+      setLoading(false);
     }
-     
-    useEffect(() => {
-        getLoggedInUser();
-    },[])
+  };
 
+  useEffect(() => {
+    getLoggedInUser();
+  }, []);
 
-
-    return (
+  return (
+    <>
+      {loading ? (
+        <>loading .... </>
+      ) : (
         <>
-        {loading? <>loading .... </> : <> 
-            <AuthContext.Provider value={{LoggedInUser, setLoggedInUser}}>
-        <ToastContainer/>
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element = {<HomepageLayout/>}>
-                <Route index element={<LandingPage/>}/>
-                <Route path="register" element={<RegisterPage/>}/>
-                <Route path="/SellerRegister" element={<SellerRegister/>}/>
-                <Route path="activate/:token" element={<UserActivation/>}/>
-                <Route path="login" element={<LoginPage/>}/>
-                <Route path="login" element={<LoginPage/>}/>
-                <Route path="resetpassword/:token" element={<ResetPassword/>}/>
-                <Route path="logout" element={<Logout/>}/>
-                <Route path="about" element={<AboutPage/>}/>
-                <Route path="categories" element={<AllCategory/>}/>
-                <Route path="products" element={<AllProducts/>}/>
-                <Route path="contact" element={<ContactPage/>}/>           
-                <Route path="categories/:id" element={<CategoryDetailsPage/>}/>
-                <Route path="products/:slug" element={<ProductDetailPage/>}/>
-                 <Route path="/orderhistory" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
-                    <OrderHistory/>
-                    </CheckPermission> }/>
-                <Route path="cart" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
-                    <DisplayCart/> 
-                    </CheckPermission> }/>
-                     <Route path="/payment/:id/:amount" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
-                    <PaymentButton/> 
-                    </CheckPermission> }/>
-                    <Route path="/checkout" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
-                    <CheckoutPage/> 
-                   
-                    </CheckPermission> }/>
-                     <Route path="/order-confirmation/:orderId" element={<OrderConfirmation/>}/>
-                <Route path="*" element  = {<NotFoundError url="/" label="Go to Homepage"/>}/>
+          <AuthContext.Provider value={{ LoggedInUser, setLoggedInUser }}>
+            <ToastContainer />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<HomepageLayout />}>
+                  <Route index element={<LandingPage />} />
+                  <Route path="register" element={<RegisterPage />} />
+                  <Route path="/SellerRegister" element={<SellerRegister />} />
+                  <Route path="activate/:token" element={<UserActivation />} />
+                  <Route path="login" element={<LoginPage />} />
+                  <Route path="login" element={<LoginPage />} />
+                  <Route
+                    path="resetpassword/:token"
+                    element={<ResetPassword />}
+                  />
+                  <Route path="logout" element={<Logout />} />
+                  <Route path="about" element={<AboutPage />} />
+                  <Route path="categories" element={<AllCategory />} />
+                  <Route path="products" element={<AllProducts />} />
+                  <Route path="contact" element={<ContactPage />} />
+                  <Route
+                    path="categories/:id"
+                    element={<CategoryDetailsPage />}
+                  />
+                  <Route
+                    path="products/:slug"
+                    element={<ProductDetailPage />}
+                  />
+                  <Route path="cart" element={<DisplayCart />} />
+                  <Route
+                    path="/orderhistory"
+                    element={
+                      <CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                        <OrderHistory />
+                      </CheckPermission>
+                    }
+                  />
+                  <Route
+                    path="/payment/:id/:amount"
+                    element={
+                      <CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                        <PaymentButton />
+                      </CheckPermission>
+                    }
+                  />
+                  <Route
+                    path="/checkout"
+                    element={
+                      <CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                        <CheckoutPage />
+                      </CheckPermission>
+                    }
+                  />
+                  <Route
+                    path="/order-confirmation/:orderId"
+                    element={<OrderConfirmation />}
+                  />
+                  <Route
+                    path="*"
+                    element={<NotFoundError url="/" label="Go to Homepage" />}
+                  />
                 </Route>
-                <Route path="/admin" element={<CheckPermission allowedBy={UserRoles.ADMIN}>
-                    <Adminlayout/>
-                    </CheckPermission>}>
-                    <Route index element={<AdminDashboard/>}/>
-                    <Route path="category" element = {<CategoryListingPage/>}/>
-                    <Route path="category/create" element = {<CreateCategory/>}/>
-                    <Route path="category/:id/edit" element = {<EditCategory/>}/>
+                <Route
+                  path="/admin"
+                  element={
+                    <CheckPermission allowedBy={UserRoles.ADMIN}>
+                      <Adminlayout />
+                    </CheckPermission>
+                  }
+                >
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="category" element={<CategoryListingPage />} />
+                  <Route path="category/create" element={<CreateCategory />} />
+                  <Route path="category/:id/edit" element={<EditCategory />} />
 
-                    <Route path="brand" element = {<BrandListingPage/>}/>
-                    <Route path="brand/create" element = {<CreateBrand/>}/>
-                    <Route path="brand/:id/edit" element = {<EditBrand/>}/>
+                  <Route path="brand" element={<BrandListingPage />} />
+                  <Route path="brand/create" element={<CreateBrand />} />
+                  <Route path="brand/:id/edit" element={<EditBrand />} />
 
-                    <Route path="product" element = {<ProductListingPage/>}/>
-                    <Route path="product/create" element = {<CreateProduct/>}/>
-                    <Route path="product/:id/edit" element = {<EditProduct/>}/>
+                  <Route path="product" element={<ProductListingPage />} />
+                  <Route path="product/create" element={<CreateProduct />} />
+                  <Route path="product/:id/edit" element={<EditProduct />} />
 
-                    <Route path="user" element={<UserListPage />} />
-                    <Route path="SalesAnalytics" element={<DashboardPage />} />
-                    
-                    <Route path="orders" element = {<OrderListingPage/>}/>
-                    <Route path="*" element  = {<NotFoundError url="/admin" label="Go to Dashboard"/>}/>
+                  <Route path="user" element={<UserListPage />} />
+                  <Route path="SalesAnalytics" element={<DashboardPage />} />
+
+                  <Route path="orders" element={<OrderListingPage />} />
+                  <Route
+                    path="*"
+                    element={
+                      <NotFoundError url="/admin" label="Go to Dashboard" />
+                    }
+                  />
                 </Route>
 
-
-                <Route path="/seller" element={<CheckPermission allowedBy={UserRoles.SELLER}>
-                <SellerLayout/>                   
-                </CheckPermission>}>
-                <Route index element={<SellerDashboard/>}/>
-                <Route path="product" element = {<SellerProductList/>}/>
-                <Route path="product/create" element = {<SellerCreateProduct/>}/>
-                <Route path="product/:id/edit" element = {<SellerEditProduct/>}/>
-                <Route path="orders" element = {<SellerOrderListing/>}/>
-                <Route path="earnings" element = {<SellerEarnings/>}/>
-                {/* <Route path="manage-orders" element = {<OrderListSeller/>}/> */}
-                <Route path="*" element  = {<NotFoundError url="/seller" label="Go to Dashboard"/>}/>
-                
+                <Route
+                  path="/seller"
+                  element={
+                    <CheckPermission allowedBy={UserRoles.SELLER}>
+                      <SellerLayout />
+                    </CheckPermission>
+                  }
+                >
+                  <Route index element={<SellerDashboard />} />
+                  <Route path="product" element={<SellerProductList />} />
+                  <Route
+                    path="product/create"
+                    element={<SellerCreateProduct />}
+                  />
+                  <Route
+                    path="product/:id/edit"
+                    element={<SellerEditProduct />}
+                  />
+                  <Route path="orders" element={<SellerOrderListing />} />
+                  <Route path="earnings" element={<SellerEarnings />} />
+                  {/* <Route path="manage-orders" element = {<OrderListSeller/>}/> */}
+                  <Route
+                    path="*"
+                    element={
+                      <NotFoundError url="/seller" label="Go to Dashboard" />
+                    }
+                  />
                 </Route>
-            </Routes>
-        </BrowserRouter>
-        </AuthContext.Provider>
+              </Routes>
+            </BrowserRouter>
+          </AuthContext.Provider>
         </>
-        }
-        
-        </>
-    ) 
-}
+      )}
+    </>
+  );
+};
 
 export default RouterConfig;

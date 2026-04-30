@@ -269,24 +269,23 @@ export const HomeHeader = () => {
               >
                 Become a Vendor
               </NavLink>
-
               {!LoggedInUser && (
                 <div className="pt-3 border-t border-gray-200 space-y-2">
-                   <NavLink
-                  to="/cart"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
-                >
-                  <div className="relative">
-                    <FaCartPlus className="text-xl" />
+                  <NavLink
+                    to="/cart"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
+                  >
+                    <div className="relative">
+                      <FaCartPlus className="text-xl" />
 
-                    {cartCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                        {cartCount}
-                      </span>
-                    )}
-                  </div>
-                </NavLink>
+                      {cartCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                          {cartCount}
+                        </span>
+                      )}
+                    </div>
+                  </NavLink>
                   <NavLink
                     to="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -303,6 +302,47 @@ export const HomeHeader = () => {
                   </NavLink>
                 </div>
               )}
+              :
+              {
+                <div className="pt-3 border-t border-gray-200 space-y-2">
+                  <NavLink
+                    to="/cart"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
+                  >
+                    <div className="relative">
+                      <FaCartPlus className="text-xl" />
+
+                      {cartCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                          {cartCount}
+                        </span>
+                      )}
+                    </div>
+                  </NavLink>
+                  
+                  <NavLink
+                    to={
+                          LoggedInUser.role === "customer"
+                            ? "/orderhistory"
+                            : "/" + LoggedInUser.role
+                        }
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block w-full py-2 px-4 text-center text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                     {LoggedInUser.role === "customer"
+                          ? "Order History"
+                          : "Dashboard"}
+                  </NavLink>
+                  <NavLink
+                    to="/logout"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block w-full py-2 px-4 text-center text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+                  >
+                    Logout
+                  </NavLink>
+                </div>
+              }
             </div>
           </div>
         )}
