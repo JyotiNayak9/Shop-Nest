@@ -51,7 +51,7 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
     image: any;
   }) => {
     const res = await authSvc.postRequest("/cart", data);
-    return res.data;
+    return res;
   };
 
   const trackInteraction = async (interactionType: "view" | "add_to_cart") => {

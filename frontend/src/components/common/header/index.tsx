@@ -43,17 +43,17 @@ export const HomeHeader = () => {
   };
   }, [LoggedInUser?._id]);
   
-  useEffect(() => {
-  const updateCart = () => {
-    if (!LoggedInUser) {
-      setCartCount(getGuestCartCount());
-    }
-  };
+//   useEffect(() => {
+//   const updateCart = () => {
+//     if (!LoggedInUser) {
+//       setCartCount(getGuestCartCount());
+//     }
+//   };
 
-  window.addEventListener("storage", updateCart);
+//   window.addEventListener("storage", updateCart);
 
-  return () => window.removeEventListener("storage", updateCart);
-}, [LoggedInUser]);
+//   return () => window.removeEventListener("storage", updateCart);
+// }, [LoggedInUser]);
   return (
     <>
       <Navbar fluid className="shadow-lg bg-white border-b border-gray-200">
