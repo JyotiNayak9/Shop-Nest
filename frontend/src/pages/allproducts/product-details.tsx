@@ -6,6 +6,7 @@ import ProductSvc from "../Cms/product/product-service";
 import AuthContext from "../../context/auth.context";
 import { Button } from "flowbite-react";
 import ProductReview from "../../components/product/ProductReview";
+import { addToCart } from "../cart/cart";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -30,30 +31,73 @@ const { LoggedInUser } = useContext(AuthContext)
     }
   };
   
- const addToCart = async (data: {
-    productId: string;
-    quantity: number;
-    productTitle: string;
-    price: number;
-      customerId: string;
-      image:any;
-  }) => {
-    const res = await authSvc.postRequest('/cart', data);
-    return res.data;
+
+
+  useEffect(() => {
+    getProductBySlug();
+  }, [slug]);
+
+  useEffect(() => {
+    if (LoggedInUser?._id && product?._id) {
+      trackInteraction("view");
+    }
+  }, [LoggedInUser?._id, product?._id]);
+
+  const trackInteraction = async (interactionType: "view" | "add_to_cart") => {
+    try {
+      await authSvc.postRequest(
+        "/recommendation/interaction",
+        {
+          userId: LoggedInUser._id,
+          productId: product._id,
+          interactionType,
+        },
+        { auth: true },
+      );
+    } catch (error) {
+      console.error("Failed to track interaction:", error);
+    }
   };
-    const handleAdd = async () => {
+
+  const handleAdd = async () => {
+    try {
+      if (!LoggedInUser) {
+        let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+        const existing = cart.find((item: any) => item.productId === product._id);
+
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          cart.push({
+            productId: product._id,
+            productTitle: product.title,
+            quantity: 1,
+            price: product.price,
+            image: product.image[0],
+          });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        window.dispatchEvent(new Event("cartUpdated"));
+        toast.success("Added to cart");
+        return;
+      }
       await addToCart({
-        customerId: LoggedInUser._id,
         productId: product._id,
         productTitle: product.title,
         quantity: 1,
         price: product.price,
-        image: product.image[0]
+        image: product.image[0],
       });
-    };
-  useEffect(() => {
-    getProductBySlug();
-  }, [slug]);
+      await trackInteraction("add_to_cart");
+
+      toast.success("Added to cart successfully");
+    } catch (error) {
+      toast.error("Failed to add to cart");
+      console.error(error);
+    }
+  };
 
   if (loading) return <div className="p-10 text-center">Loading...</div>;
   if (!product) return <div className="p-10 text-center">No product found.</div>;
@@ -68,7 +112,7 @@ const { LoggedInUser } = useContext(AuthContext)
           alt="Lenovo Laptop"
           className="w-full h-80 object-cover rounded-xl shadow-md"
         />
-         <Button onClick={handleAdd} href="/cart" className="w-full bg-violet-700  text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200 mt-10"  >
+         <Button onClick={handleAdd} className="w-full bg-violet-700  text-white py-2 rounded-lg hover:bg-violet-800 transition duration-200 mt-10">
           Add to Cart
         </Button>
         </div>

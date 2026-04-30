@@ -117,13 +117,12 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
           <span className="text-base sm:text-lg xl:text-xl font-bold text-gray-900 dark:text-white">
             Rs. {data.price}
           </span>
-          <NavLink
-            to="/register"
+          <button
             onClick={handleAdd}
             className="px-2 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
           >
             <FaShoppingCart />
-          </NavLink>
+          </button>
         </div>
       </Card>
     </>

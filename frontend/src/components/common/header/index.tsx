@@ -127,8 +127,7 @@ export const HomeHeader = () => {
                   <Dropdown 
                     label={LoggedInUser.name}
                     placement="bottom-end"
-                    className="px-2 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
-                            
+                    className="border-violet-200"
                   >
                     <Dropdown.Item>
                       <NavLink
@@ -156,7 +155,7 @@ export const HomeHeader = () => {
                 </div>
 
                 {/* Mobile User Menu */}
-                <div className="md:hidden">
+                <div className="md:hidden block w-full py-2 px-4 text-center text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors">
                   <Dropdown
                     label={<FaUser className="text-xl text-gray-700" />}
                     placement="bottom-end"
