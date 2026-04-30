@@ -35,6 +35,18 @@ export const HomeHeader = () => {
 
     fetchCartCount();
   }, [LoggedInUser?._id]);
+  
+  useEffect(() => {
+  const updateCart = () => {
+    if (!LoggedInUser) {
+      setCartCount(getGuestCartCount());
+    }
+  };
+
+  window.addEventListener("storage", updateCart);
+
+  return () => window.removeEventListener("storage", updateCart);
+}, [LoggedInUser]);
   return (
     <>
       <Navbar fluid className="shadow-lg bg-white border-b border-gray-200">

@@ -20,25 +20,34 @@ const DisplayCart = () => {
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [recLoading, setRecLoading] = useState(false);
 
-  const getCart = async () => {
-    try {
-      setLoading(true);
-      const response: any = await authSvc.getRequest('/cart/' + LoggedInUser._id, { auth: true });
-      setCart(response.items);
-      if (response.items.length > 0) {
-        fetchRecommendations(response.items);
-      }
-    } catch (exception: any) {
-      toast.error(exception);
-    } finally {
-      setLoading(false);
+const getCart = async () => {
+  try {
+    setLoading(true);
+
+    if (!LoggedInUser) {
+      const guestCart = JSON.parse(localStorage.getItem("cart") || "[]");
+      setCart(guestCart);
+      return;
     }
-  };
+
+
+    const response: any = await authSvc.getRequest('/cart/' + LoggedInUser._id, { auth: true });
+    setCart(response.items);
+
+    if (response.items.length > 0) {
+      fetchRecommendations(response.items);
+    }
+
+  } catch (exception: any) {
+    toast.error("Failed to fetch cart");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const fetchRecommendations = async (cartItems: any[]) => {
     try {
       setRecLoading(true);
-      // Get product IDs from cart
       const productIds = cartItems.map(item => item.productId._id || item.productId);
       
       const ProductId = productIds.join(',');
@@ -54,37 +63,75 @@ const DisplayCart = () => {
     }
   };
 
-  const total = async () => {
-    try { 
-      const response: any = await authSvc.getRequest("/cart/totals/" + LoggedInUser._id, { auth: true });
-      setCartTotal(response.totalAmount);
-    } catch (exception) {
-      toast.error("Error getting total");
+ const total = async () => {
+  try {
+    if (!LoggedInUser) {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+      const totalAmount = cart.reduce((acc: number, item: any) => {
+        return acc + (item.quantity * item.price);
+      }, 0);
+
+      setCartTotal(totalAmount);
+      return;
     }
-  };
 
-  useEffect(() => {
+    const response: any = await authSvc.getRequest("/cart/totals", { auth: true });
+
+    setCartTotal(response.totalAmount || 0);
+
+  } catch (exception) {
+    toast.error("Error getting total");
+  }
+};
+
+useEffect(() => {
+  getCart();
+  total();
+}, [LoggedInUser]);
+
+const handleQuantityChange = async (row: any, newQty: number) => {
+  if (newQty < 1) return;
+  if (!LoggedInUser) {
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    cart = cart.map((item: any) =>
+      item.productId === row.productId
+        ? { ...item, quantity: newQty }
+        : item
+    );
+    localStorage.setItem("cart", JSON.stringify(cart));
     getCart();
     total();
-  }, []);
+    return;
+  }
 
-  const handleQuantityChange = async (row: any, newQty: number) => {
-    if (newQty < 1) return;
-    
-    await addToCart({
-      customerId: LoggedInUser._id,
-      productId: row.productId._id || row.productId,
-      productTitle: row.productTitle,
-      quantity: newQty - row.quantity,
-      price: row.price,
-      image: row.image
-    });
-    getCart();
-    total();
-  };
+  await addToCart({
+    customerId: LoggedInUser._id,
+    productId: row.productId._id || row.productId,
+    productTitle: row.productTitle,
+    quantity: newQty - row.quantity,
+    price: row.price,
+    image: row.image
+  });
 
-  const deleteItem = async (id: any) => {
+  getCart();
+  total();
+};
+
+  const deleteItem = async (id: any, productId?: any) => {
     try {
+         if (!LoggedInUser) {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+      cart = cart.filter((item: any) => item.productId !== productId);
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      getCart();
+      total();
+      return;
+    }
       const result = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -149,7 +196,7 @@ const DisplayCart = () => {
                         {row.quantity * row.price}
                       </Table.Cell>
                       <Table.Cell className="flex gap-3">
-                        <Button className='bg-red-700 hover:bg-red-900' onClick={() => deleteItem(row._id)}>
+                        <Button className='bg-red-700 hover:bg-red-900' onClick={() => deleteItem(row._id, row.productId)}>
                           <FaTrash />
                         </Button>
                       </Table.Cell>
