@@ -25,7 +25,6 @@ const DisplayCart = () => {
       setLoading(true);
       const response: any = await authSvc.getRequest('/cart/' + LoggedInUser._id, { auth: true });
       setCart(response.items);
-      // Fetch recommendations whenever cart changes
       if (response.items.length > 0) {
         fetchRecommendations(response.items);
       }
