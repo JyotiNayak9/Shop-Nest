@@ -25,6 +25,7 @@ export const HomeHeader = () => {
             { auth: true },
           );
           setCartCount(response.total || 0);
+          console.log("Cart:", response);
         } else {
           setCartCount(getGuestCartCount());
         }
