@@ -4,8 +4,8 @@ const CartModel = require('./cart.model');
 class CartController {
 addToCart = async (req, res) => {
   try {
-    const { productId, quantity, productTitle, price ,image} = req.body;
-    const customerId = req.userId;
+    const {customerId, productId, quantity, productTitle, price ,image} = req.body;
+   
 
     if ( !productId || !quantity || !price) {
   return res.status(400).json({ message: 'Missing required fields' });
@@ -149,7 +149,7 @@ clearCart = async (req, res) => {
 
 getCartTotals = async (req, res) => {
   try {
-    const customerId = req.userId;
+    const customerId = req.params.customerId;
     const cartItems = await CartModel.find({ customerId, status: 'pending' });
     const totals = cartItems.reduce(
       (acc, item) => {
