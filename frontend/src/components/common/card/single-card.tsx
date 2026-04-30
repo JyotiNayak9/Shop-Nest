@@ -85,19 +85,19 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
       toast.success("Added to cart");
       return;
     }
+console.log("jyoti cart")
+//     await addToCart({
+//       customerId: LoggedInUser._id,
+//       productId: data._id,
+//       productTitle: data.title,
+//       quantity: 1,
+//       price: data.price,
+//       image: data.image[0],
+//     });
+// window.dispatchEvent(new Event("cartUpdated"));
+//     await trackInteraction("add_to_cart");
 
-    await addToCart({
-      customerId: LoggedInUser._id,
-      productId: data._id,
-      productTitle: data.title,
-      quantity: 1,
-      price: data.price,
-      image: data.image[0],
-    });
-window.dispatchEvent(new Event("cartUpdated"));
-    await trackInteraction("add_to_cart");
-
-    toast.success("Added to cart successfully");
+//     toast.success("Added to cart successfully");
   } catch (error) {
     toast.error("Failed to add to cart");
     console.error(error);
