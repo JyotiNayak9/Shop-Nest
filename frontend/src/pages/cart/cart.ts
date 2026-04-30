@@ -11,7 +11,9 @@ export const addToCart = async (data: {
 }) => {
   const res = await authSvc.postRequest('/cart', data);
   window.dispatchEvent(new Event("cartUpdated"));
-  return res;
+  console.log("jyoti add to cart")
+  return res.data;
+
 };
 
 // // export const getCart = async () => {
