@@ -21,7 +21,7 @@ export const HomeHeader = () => {
       try {
         if (LoggedInUser?._id) {
           const response: any = await authSvc.getRequest(
-            "/cart/" + LoggedInUser._id,
+            "/cart" ,
             { auth: true },
           );
           setCartCount(response.total || 0);
@@ -34,6 +34,12 @@ export const HomeHeader = () => {
     };
 
     fetchCartCount();
+
+      window.addEventListener("cartUpdated", fetchCartCount);
+
+  return () => {
+    window.removeEventListener("cartUpdated", fetchCartCount);
+  };
   }, [LoggedInUser?._id]);
   
   useEffect(() => {
@@ -126,7 +132,7 @@ export const HomeHeader = () => {
                 )}
 
                 {/* Desktop User Menu */}
-                <div className="hidden md:block">
+                <div className="hidden md:block bg-violet-600 hover:bg-violet-800">
                   <Dropdown
                     label={LoggedInUser.name}
                     placement="bottom-end"

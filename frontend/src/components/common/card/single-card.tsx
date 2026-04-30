@@ -51,6 +51,7 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
     image: any;
   }) => {
     const res = await authSvc.postRequest("/cart", data);
+    window.dispatchEvent(new Event("cartUpdated"));
     return res.data;
   };
 
@@ -90,7 +91,7 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
-
+      window.dispatchEvent(new Event("cartUpdated"));
       toast.success("Added to cart");
       return;
     }
@@ -136,7 +137,7 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
 
           <Button
             onClick={handleAdd}
-            className="bg-violet-600 hover:bg-violet-700"
+            className="bg-violet-600  hover:bg-violet-800"
           >
             <FaShoppingCart />
           </Button>

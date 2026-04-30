@@ -10,6 +10,7 @@ export const addToCart = async (data: {
     image:string
 }) => {
   const res = await authSvc.postRequest('/cart', data);
+  window.dispatchEvent(new Event("cartUpdated"));
   return res.data;
 };
 
