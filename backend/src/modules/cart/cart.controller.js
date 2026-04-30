@@ -4,7 +4,8 @@ const CartModel = require('./cart.model');
 class CartController {
 addToCart = async (req, res) => {
   try {
-    const {customerId, productId, quantity, productTitle, price ,image} = req.body;
+    const customerId = req.authUser._id;
+    const {productId, quantity, productTitle, price ,image} = req.body;
    
 
     if ( !productId || !quantity || !price) {
@@ -78,7 +79,7 @@ updateUserPreference = async (userId, productId) => {
 
 getCartByCustomer = async (req, res) => {
   try {
-    const customerId = req.params.customerId;
+    const customerId = req.authUser._id;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     
@@ -139,7 +140,8 @@ deleteCartItem = async (req, res) => {
 
 clearCart = async (req, res) => {
   try {
-    await CartModel.deleteMany({ customerId : req.params.customerId, status: 'pending' });
+    const customerId = req.authUser._id;
+    await CartModel.deleteMany({ customerId, status: 'pending' });
     res.json({ message: 'Cart cleared' });
   } catch (exception) {
     console.log(exception);
@@ -149,7 +151,7 @@ clearCart = async (req, res) => {
 
 getCartTotals = async (req, res) => {
   try {
-    const customerId = req.params.customerId;
+    const customerId = req.authUser._id;
     const cartItems = await CartModel.find({ customerId, status: 'pending' });
     const totals = cartItems.reduce(
       (acc, item) => {

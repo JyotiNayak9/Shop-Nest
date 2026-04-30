@@ -43,17 +43,7 @@ export const HomeHeader = () => {
   };
   }, [LoggedInUser?._id]);
   
-//   useEffect(() => {
-//   const updateCart = () => {
-//     if (!LoggedInUser) {
-//       setCartCount(getGuestCartCount());
-//     }
-//   };
 
-//   window.addEventListener("storage", updateCart);
-
-//   return () => window.removeEventListener("storage", updateCart);
-// }, [LoggedInUser]);
   return (
     <>
       <Navbar fluid className="shadow-lg bg-white border-b border-gray-200">
@@ -133,11 +123,12 @@ export const HomeHeader = () => {
                 )}
 
                 {/* Desktop User Menu */}
-                <div className="hidden md:block bg-violet-600 hover:bg-violet-800">
-                  <Dropdown
+                <div className="hidden md:block">
+                  <Dropdown 
                     label={LoggedInUser.name}
                     placement="bottom-end"
-                    className="border-violet-200"
+                    className="px-2 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+                            
                   >
                     <Dropdown.Item>
                       <NavLink

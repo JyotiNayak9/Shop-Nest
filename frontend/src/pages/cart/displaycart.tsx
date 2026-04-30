@@ -112,7 +112,6 @@ const DisplayCart = () => {
     }
 
     await addToCart({
-      customerId: LoggedInUser._id,
       productId: row.productId?._id || row.productId,
       productTitle: row.productTitle,
       quantity: newQty - row.quantity,

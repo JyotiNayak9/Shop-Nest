@@ -6,12 +6,11 @@ export const addToCart = async (data: {
   quantity: number;
   productTitle: string;
   price: number;
-    customerId: string;
     image:string
 }) => {
-  const res = await authSvc.postRequest('/cart', data);
+  const res = await authSvc.postRequest('/cart', data, {auth:true});
   window.dispatchEvent(new Event("cartUpdated"));
-  console.log("jyoti add to cart")
+  console.log("add to cart ",res)
   return res.data;
 
 };

@@ -2,7 +2,7 @@ import { Button, Card } from "flowbite-react";
 import SingleCardWithImageAndTitleProps from "./single-card.contracts";
 import ProductCardProps from "./product-card.contracts";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import AuthContext from "../../../context/auth.context";
 import authSvc from "../../../pages/auth/auth.service";
@@ -35,15 +35,11 @@ export const ImageWithTitleCard = ({
 export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
   const { LoggedInUser } = useContext(AuthContext);
 
-  
   useEffect(() => {
     if (LoggedInUser?._id) {
       trackInteraction("view");
     }
   }, [LoggedInUser?._id, data._id]);
-
-  
- 
 
   const trackInteraction = async (interactionType: "view" | "add_to_cart") => {
     try {
@@ -62,46 +58,44 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
   };
 
   const handleAdd = async () => {
-  try {
-    if (!LoggedInUser) {
-      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    try {
+      if (!LoggedInUser) {
+        let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-      const existing = cart.find((item: any) => item.productId === data._id);
+        const existing = cart.find((item: any) => item.productId === data._id);
 
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        cart.push({
-          productId: data._id,
-          productTitle: data.title,
-          quantity: 1,
-          price: data.price,
-          image: data.image[0],
-        });
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          cart.push({
+            productId: data._id,
+            productTitle: data.title,
+            quantity: 1,
+            price: data.price,
+            image: data.image[0],
+          });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        window.dispatchEvent(new Event("cartUpdated"));
+        toast.success("Added to cart");
+        return;
       }
+      await addToCart({
+        productId: data._id,
+        productTitle: data.title,
+        quantity: 1,
+        price: data.price,
+        image: data.image[0],
+      });
+      await trackInteraction("add_to_cart");
 
-      localStorage.setItem("cart", JSON.stringify(cart));
-      window.dispatchEvent(new Event("cartUpdated"));
-      toast.success("Added to cart");
-      return;
+      toast.success("Added to cart successfully");
+    } catch (error) {
+      toast.error("Failed to add to cart");
+      console.error(error);
     }
-     addToCart({
-      customerId: LoggedInUser._id,
-      productId: data._id,
-      productTitle: data.title,
-      quantity: 1,
-      price: data.price,
-      image: data.image[0],
-    });
-window.dispatchEvent(new Event("cartUpdated"));
-    await trackInteraction("add_to_cart");
-
-    toast.success("Added to cart successfully");
-  } catch (error) {
-    toast.error("Failed to add to cart");
-    console.error(error);
-  }
-};
+  };
   return (
     <>
       <Card className="max-w-sm mx-2 sm:mx-5 my-5 sm:my-10 flex flex-col h-[350px] sm:h-[380px] w-full">
@@ -123,14 +117,13 @@ window.dispatchEvent(new Event("cartUpdated"));
           <span className="text-base sm:text-lg xl:text-xl font-bold text-gray-900 dark:text-white">
             Rs. {data.price}
           </span>
-
-          <Button
-          className="bg-violet-600  hover:bg-violet-800"
+          <NavLink
+            to="/register"
             onClick={handleAdd}
-            
+            className="px-2 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
           >
             <FaShoppingCart />
-          </Button>
+          </NavLink>
         </div>
       </Card>
     </>
