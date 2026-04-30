@@ -7,7 +7,6 @@ import { useContext, useEffect } from "react";
 import AuthContext from "../../../context/auth.context";
 import authSvc from "../../../pages/auth/auth.service";
 import { toast } from "react-toastify";
-import { addToCart } from "../../../pages/cart/cart";
 
 export const ImageWithTitleCard = ({
   data,
