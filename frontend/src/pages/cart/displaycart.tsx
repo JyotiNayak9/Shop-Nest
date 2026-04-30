@@ -31,7 +31,7 @@ const getCart = async () => {
     }
 
 
-    const response: any = await authSvc.getRequest('/cart/' + LoggedInUser._id, { auth: true });
+    const response: any = await authSvc.getRequest('/cart/' , { auth: true });
     setCart(response.items);
 
     if (response.items.length > 0) {

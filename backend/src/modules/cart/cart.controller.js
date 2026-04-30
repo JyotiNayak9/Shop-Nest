@@ -5,7 +5,7 @@ class CartController {
 addToCart = async (req, res) => {
   try {
     const { productId, quantity, productTitle, price ,image} = req.body;
-    const customerId = req.userId; 
+    const customerId = req.userId;
 
     if ( !productId || !quantity || !price) {
   return res.status(400).json({ message: 'Missing required fields' });
