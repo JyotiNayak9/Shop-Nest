@@ -34,13 +34,14 @@ export const ImageWithTitleCard = ({
 export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
   const { LoggedInUser } = useContext(AuthContext);
 
-  // Track product view when component mounts
+  
   useEffect(() => {
-    if (LoggedInUser) {
+    if (LoggedInUser?._id) {
       trackInteraction("view");
     }
-  }, [LoggedInUser, data._id]);
+  }, [LoggedInUser?._id, data._id]);
 
+  
   const addToCart = async (data: {
     productId: string;
     quantity: number;
@@ -70,25 +71,47 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
   };
 
   const handleAdd = async () => {
-    try {
-      await addToCart({
-        customerId: LoggedInUser._id,
-        productId: data._id,
-        productTitle: data.title,
-        quantity: 1,
-        price: data.price,
-        image: data.image[0],
-      });
+  try {
+    if (!LoggedInUser) {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-      await trackInteraction("add_to_cart");
+      const existing = cart.find((item: any) => item.productId === data._id);
 
-      toast.success("Added to cart successfully");
-    } catch (error) {
-      toast.error("Failed to add to cart");
-      console.error(error);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({
+          productId: data._id,
+          productTitle: data.title,
+          quantity: 1,
+          price: data.price,
+          image: data.image[0],
+        });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      toast.success("Added to cart");
+      return;
     }
-  };
 
+    await addToCart({
+      customerId: LoggedInUser._id,
+      productId: data._id,
+      productTitle: data.title,
+      quantity: 1,
+      price: data.price,
+      image: data.image[0],
+    });
+
+    await trackInteraction("add_to_cart");
+
+    toast.success("Added to cart successfully");
+  } catch (error) {
+    toast.error("Failed to add to cart");
+    console.error(error);
+  }
+};
   return (
     <>
       <Card className="max-w-sm mx-2 sm:mx-5 my-5 sm:my-10 flex flex-col h-[350px] sm:h-[380px] w-full">

@@ -4,9 +4,10 @@ const CartModel = require('./cart.model');
 class CartController {
 addToCart = async (req, res) => {
   try {
-    const { customerId, productId, quantity, productTitle, price ,image} = req.body;
+    const { productId, quantity, productTitle, price ,image} = req.body;
+    const customerId = req.userId; 
 
-    if (!customerId || !productId || !quantity || !price) {
+    if ( !productId || !quantity || !price) {
   return res.status(400).json({ message: 'Missing required fields' });
 }
 
@@ -37,8 +38,8 @@ addToCart = async (req, res) => {
       productTitle,
       price,
       amount,
-      image
-      
+      image,
+      status: 'pending'
     });
 
     await newItem.save();
@@ -138,7 +139,7 @@ deleteCartItem = async (req, res) => {
 
 clearCart = async (req, res) => {
   try {
-    await CartModel.deleteMany({ customer: req.params.customerId, status: 'pending' });
+    await CartModel.deleteMany({ customerId : req.params.customerId, status: 'pending' });
     res.json({ message: 'Cart cleared' });
   } catch (exception) {
     console.log(exception);
@@ -148,8 +149,8 @@ clearCart = async (req, res) => {
 
 getCartTotals = async (req, res) => {
   try {
-    const customer = req.userId;
-    const cartItems = await CartModel.find({ customer, status: 'pending' });
+    const customerId = req.userId;
+    const cartItems = await CartModel.find({ customerId, status: 'pending' });
     const totals = cartItems.reduce(
       (acc, item) => {
         acc.totalQuantity += item.quantity;
