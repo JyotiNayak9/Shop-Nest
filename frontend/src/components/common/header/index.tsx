@@ -123,7 +123,7 @@ export const HomeHeader = () => {
                 )}
 
                 {/* Desktop User Menu */}
-                <div className="hidden md:block px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+                <div className="hidden px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
     > 
                   <Dropdown 
                     label={LoggedInUser.name}

@@ -9,6 +9,7 @@ import authSvc from "../auth.service";
 import { toast } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../../context/auth.context";
+import Swal from "sweetalert2";
 
 const LoginPage = () => {
   const loginDTO = yup.object({
@@ -93,14 +94,35 @@ const LoginPage = () => {
               to={"#"}
               onClick={ async(e) => {
                 e.preventDefault();
-                try{
-                  setLoading(true);
-                   await authSvc.postRequest("/user/forgotpasswordtoken", {email: control._formValues.email});
-                  toast.success(`Password reset link has been sent to your email`);
-                  navigate("/login");
+                const email = control._formValues.email;
+                
+                if (!email) {
+                  toast.error("Please enter your email address first");
+                  return;
                 }
-                catch(exception: any) {
-                  toast.error(exception.data.message);
+
+                const result = await Swal.fire({
+                  title: "Reset Password?",
+                  text: `We will send a password reset link to: ${email}`,
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonColor: "#7c3aed",
+                  cancelButtonColor: "#6b7280",
+                  confirmButtonText: "Yes, send it!",
+                  cancelButtonText: "Cancel"
+                });
+
+                if (result.isConfirmed) {
+                  try{
+                    setLoading(true);
+                    await authSvc.postRequest("/user/forgotpasswordtoken", {email: email});
+                    toast.success(`Password reset link has been sent to your email`);
+                  }
+                  catch(exception: any) {
+                    toast.error(exception.data?.message || "Failed to send reset link");
+                  } finally {
+                    setLoading(false);
+                  }
                 }
               }
             }
