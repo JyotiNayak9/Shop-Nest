@@ -2,7 +2,7 @@ import { Card } from "flowbite-react";
 import SingleCardWithImageAndTitleProps from "./single-card.contracts";
 import ProductCardProps from "./product-card.contracts";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link, NavLink } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useContext, useEffect } from "react";
 import AuthContext from "../../../context/auth.context";
 import authSvc from "../../../pages/auth/auth.service";
