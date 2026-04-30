@@ -7,6 +7,7 @@ import { useContext, useEffect } from "react";
 import AuthContext from "../../../context/auth.context";
 import authSvc from "../../../pages/auth/auth.service";
 import { toast } from "react-toastify";
+import { addToCart } from "../../../pages/cart/cart";
 
 export const ImageWithTitleCard = ({
   data,
@@ -42,17 +43,7 @@ export const SingleProductCard = ({ data }: { data: ProductCardProps }) => {
   }, [LoggedInUser?._id, data._id]);
 
   
-  const addToCart = async (data: {
-    productId: string;
-    quantity: number;
-    productTitle: string;
-    price: number;
-    customerId: string;
-    image: any;
-  }) => {
-    const res = await authSvc.postRequest("/cart", data);
-    return res;
-  };
+ 
 
   const trackInteraction = async (interactionType: "view" | "add_to_cart") => {
     try {
