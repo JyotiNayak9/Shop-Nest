@@ -123,7 +123,8 @@ export const HomeHeader = () => {
                 )}
 
                 {/* Desktop User Menu */}
-                <div className="hidden md:block">
+                <div className="hidden md:block px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+    > 
                   <Dropdown 
                     label={LoggedInUser.name}
                     placement="bottom-end"
@@ -155,7 +156,7 @@ export const HomeHeader = () => {
                 </div>
 
                 {/* Mobile User Menu */}
-                <div className="md:hidden block w-full py-2 px-4 text-center text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors">
+                <div className="md:hidden">
                   <Dropdown
                     label={<FaUser className="text-xl text-gray-700" />}
                     placement="bottom-end"
