@@ -61,57 +61,54 @@ class AuthController {
         }
     }
 
-    login = async (req, res, next) =>{
-        try{
-            const {email, password} = req.body
+    login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        console.log("Login attempt - email:", email);
+        console.log("Login attempt - password entered:", password);
 
-            const user = await userSvc.getSingleUserByFilter({
-                email:email
-            })
+        const user = await userSvc.getSingleUserByFilter({ email: email });
+        console.log("Login attempt - hash in DB:", user.password);
 
-            if(bcrypt.compareSync(password, user.password)){
-                
+        const isMatch = bcrypt.compareSync(password, user.password);
+        console.log("Login attempt - bcrypt result:", isMatch);
 
-                    const token = jwt.sign({
-                        sub: user._id
-                    }, process.env.JWT_SECRET,
-                    {
-                       expiresIn: "1 day"
-                }
-                );
+        if (isMatch) {
+            const token = jwt.sign(
+                { sub: user._id },
+                process.env.JWT_SECRET,
+                { expiresIn: "1 day" }
+            );
 
-                const refreshToken = jwt.sign({
-                    sub: user._id,
-                    type: "refresh"
-                }, process.env.JWT_SECRET,{
-                    expiresIn: "2 day"
-                })
+            const refreshToken = jwt.sign(
+                { sub: user._id, type: "refresh" },
+                process.env.JWT_SECRET,
+                { expiresIn: "2 day" }
+            );
 
-                res.json({
-                    result: {
-                        UserDetail:{
-                            _id: user._id,
-                            name: user.name,
-                            email: user.email,
-                            role:user.role
-                        },
-                        token: {
-                            token:token,
-                            refreshToken: refreshToken
-                        }
+            res.json({
+                result: {
+                    UserDetail: {
+                        _id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role
                     },
-                        message: "login successful",
-                        meta: null
-                    })
-              
-            }else{
-                throw {status: 422, message:"Credentials doesnot match"}
-            }
-        }catch(exception){
-            next(exception)
+                    token: {
+                        token: token,
+                        refreshToken: refreshToken
+                    }
+                },
+                message: "login successful",
+                meta: null
+            });
+        } else {
+            throw { status: 422, message: "Credentials doesnot match" };
         }
+    } catch (exception) {
+        next(exception);
     }
-    
+}    
     getloggedinUser = (req, res, next) =>{
         try{
             res.json({

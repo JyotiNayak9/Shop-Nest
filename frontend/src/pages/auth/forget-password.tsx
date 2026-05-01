@@ -60,7 +60,7 @@ const ResetPassword = () => {
              name="password"
              errMsg={errors.password?.message as string}/>
 
-            <InputLabel htmlFor="Confirm Password">New Password</InputLabel> 
+            <InputLabel htmlFor="Confirm Password">Confirm Password</InputLabel> 
 
                <TextInputComponent
              type="password" 

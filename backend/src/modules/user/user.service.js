@@ -140,22 +140,31 @@ let data = req;
         }
     }
 
-    ResetPassword = async(req) => {
-        const {password} = req.body;
-    const {token} = req.params;
-    const user = await UserModel.findOne({
-        passwordResetToken : token
-    })
-    if(!user){
-        throw({message: "No such reset password found"})
-    }else if (user.passwordResetExpires < Date.now()){
-        throw({message: "Token expired. Please try again"})
+   ResetPassword = async(req) => {
+    const { password } = req.body;
+    const { token } = req.params;
+
+    console.log("Reset password - plain password received:", password); // add this
+
+    const user = await UserModel.findOne({ passwordResetToken: token });
+
+    if (!user) {
+        throw({ message: "No such reset password found" });
+    } else if (user.passwordResetExpires < Date.now()) {
+        throw({ message: "Token expired. Please try again" });
     }
-    user.password = bcrypt.hashSync(password, 10)
+
+    const hashed = bcrypt.hashSync(password, 10);
+    console.log("Hashed password being saved:", hashed); // add this
+
+    user.password = hashed;
     user.passwordResetExpires = null;
     user.passwordResetToken = null;
-   return await user.save()
-    }
+
+    const saved = await user.save();
+    console.log("Password in DB after save:", saved.password); // add this
+    return saved;
+}
 
     listUsers= async (filter = {}) => {
     return await UserModel.find(filter).select("-password").sort({ _id: -1 });
