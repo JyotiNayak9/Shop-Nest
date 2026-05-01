@@ -104,6 +104,12 @@ const LoginPage = () => {
                   return;
                 }
 
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                  toast.error("Please enter a valid email address");
+                  return;
+                }
+
                 const result = await Swal.fire({
                   title: "Reset Password?",
                   text: `We will send a password reset link to: ${email}`,
