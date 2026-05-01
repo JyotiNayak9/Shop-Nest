@@ -18,7 +18,7 @@ class MailService {
         },
         {
           headers: {
-            'api-key':process.env.B,
+            'api-key':process.env.BREVO_API_KEY,
             'Content-Type': 'application/json'
           }
         }
