@@ -120,7 +120,7 @@ let data = req;
                 message : `
                 Dear ${name}, <br/>
                 <p> Please click on the link below or copy and paste the url in the browser to reset your password: </p>
-                <a href = "${process.env.FRONTEND_URL}/resetpassword/${token}">${process.env.FRONTEND_URL+'resetpassword/'+token}</a>
+                <a href = "${process.env.FRONTEND_URL}resetpassword/${token}">${process.env.FRONTEND_URL}resetpassword/${token}</a>
                 <p>This link is valid till 30 minutes</p>
                 <br>
                 <p>----------------------------------------------------</p>
