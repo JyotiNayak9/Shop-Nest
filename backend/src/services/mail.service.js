@@ -9,30 +9,31 @@ class MailService {
         try{
             const config = {
                 host: process.env.SMTP_HOST,
-                port: process.env.SMTP_PORT,
+                port: Number(process.env.SMTP_PORT),
+                secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for 587
                 auth:{
                     user: process.env.SMTP_USER,
                     pass : process.env.SMTP_PASSWORD
-                }
+                },
+                connectionTimeout: 10000,
+                greetingTimeout: 10000,
+                socketTimeout: 10000,
             }
+
             if(process.env.SMTP_PROVIDER === 'gmail'){
                 config['service'] = 'gmail'
             }
-        this.#transport = nodemailer.createTransport(config)
-        console.log("smtp server connected successfully")
+
+            this.#transport = nodemailer.createTransport(config)
+            console.log("SMTP transport created successfully")
         }catch(exception){
             console.log(exception)
-            console.log("Error connecting to mail server")
-            // process.exit(1)
+            console.log("Error creating mail transport")
         }
     }
 
     sendEmail = async ({to, sub, message, attachments = null}) =>{
         try{
-            console.log("Verifying SMTP connection...");
-            await this.#transport.verify();
-            console.log("SMTP verified");
-            
             const msgOpts = {
                 to: to, 
                 from: process.env.SMTP_FROM,
@@ -41,13 +42,12 @@ class MailService {
             }
 
             if(attachments){
-                msgOpts ['attachments'] = attachments;
+                msgOpts['attachments'] = attachments;
             }
             
-            // Send with timeout
             const sendPromise = this.#transport.sendMail(msgOpts);
             const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error("Email timeout - check SMTP settings")), 10000)
+                setTimeout(() => reject(new Error("Email timeout - check SMTP settings")), 15000)
             );
             
             const response = await Promise.race([sendPromise, timeoutPromise]);
@@ -55,7 +55,7 @@ class MailService {
             return response;
         }catch(exception){
             console.error("Email send failed:", exception.message);
-            throw{status:500, message: "Email failed: " + exception.message, detail:exception}
+            throw { status: 500, message: "Email failed: " + exception.message, detail: exception }
         }
     }
 }
