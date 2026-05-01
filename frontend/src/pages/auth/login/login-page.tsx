@@ -135,12 +135,16 @@ const LoginPage = () => {
                         `Password reset link has been sent to your email`,
                     );
                   } catch (exception: any) {
-                    console.error("Forgot password error:", exception);
-                    toast.error(
-                      exception.response?.data?.message ||
-                        exception.message ||
-                        "Failed to send reset link",
-                    );
+  console.error("Forgot password error:", exception);
+
+  const errorMessage =
+    exception?.response?.data?.message ||
+    exception?.response?.data?.detail?.message ||
+    exception?.message ||
+    "Failed to send reset link";
+
+  toast.error(errorMessage);
+}
                   } finally {
                     setLoading(false);
                   }
