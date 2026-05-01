@@ -144,9 +144,14 @@ let data = req;
     const { password } = req.body;
     const { token } = req.params;
 
-    console.log("Reset password - plain password received:", password); // add this
+    console.log("token from params:", JSON.stringify(token));
+
+    const allUsers = await UserModel.find({ passwordResetToken: { $ne: null } }, { email: 1, passwordResetToken: 1, passwordResetExpires: 1 });
+    console.log("All users with reset tokens:", JSON.stringify(allUsers));
 
     const user = await UserModel.findOne({ passwordResetToken: token });
+    console.log("user found:", user ? user.email : "NOT FOUND");
+
 
     if (!user) {
         throw({ message: "No such reset password found" });
