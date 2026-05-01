@@ -83,8 +83,9 @@ userdeletebyId = (req,res, next)=>{
 
 ForgotPasswordToken = async (req, res, next) => {
     try {
+        console.log("ForgotPasswordToken controller - req.body:", req.body);
         const user = await userSvc.generateForgotPasswordToken(req)
-        console.log("1", user.passwordResetToken);
+        console.log("1 - User token generated:", user.passwordResetToken);
         await userSvc.ResetPasswordEmail({
             name: user.name,
             email: user.email,
@@ -97,6 +98,7 @@ ForgotPasswordToken = async (req, res, next) => {
         meta: null,
       });
     } catch (exception) {
+      console.error("ForgotPasswordToken ERROR:", exception);
       next(exception);
     }
   };

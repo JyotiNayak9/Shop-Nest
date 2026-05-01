@@ -34,6 +34,8 @@ class MailService {
 
   sendEmail = async ({ to, sub, message, attachments = null }) => {
     try {
+      console.log("sendEmail called with:", { to, from: process.env.SMTP_FROM, sub });
+      
       const msgOpts = {
         to: to,
         from: process.env.SMTP_FROM,
@@ -44,12 +46,20 @@ class MailService {
       if (attachments) {
         msgOpts["attachments"] = attachments;
       }
+      
+      console.log("Sending mail with options:", JSON.stringify(msgOpts, null, 2));
+      console.log("Transport status:", this.#transport ? "Initialized" : "Not initialized");
+      
       const response = await this.#transport.sendMail(msgOpts);
+      console.log("Email sent successfully:", response);
       return response;
     } catch (exception) {
-      console.log(exception);
-      console.log("error sending email");
-      throw { status: 500, message: "error sending email", detail: exception };
+      console.error("SEND EMAIL ERROR:");
+      console.error("Error code:", exception.code);
+      console.error("Error message:", exception.message);
+      console.error("Error stack:", exception.stack);
+      console.error("Full error:", exception);
+      throw { status: 500, message: "error sending email: " + exception.message, detail: exception };
     }
   };
 }
