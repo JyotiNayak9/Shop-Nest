@@ -29,6 +29,10 @@ class MailService {
 
     sendEmail = async ({to, sub, message, attachments = null}) =>{
         try{
+            console.log("Verifying SMTP connection...");
+            await this.#transport.verify();
+            console.log("SMTP verified");
+            
             const msgOpts = {
                 to: to, 
                 from: process.env.SMTP_FROM,
@@ -39,12 +43,19 @@ class MailService {
             if(attachments){
                 msgOpts ['attachments'] = attachments;
             }
-    const response = await this.#transport.sendMail(msgOpts);
-    return response;
+            
+            // Send with timeout
+            const sendPromise = this.#transport.sendMail(msgOpts);
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error("Email timeout - check SMTP settings")), 10000)
+            );
+            
+            const response = await Promise.race([sendPromise, timeoutPromise]);
+            console.log("Email sent:", response.messageId);
+            return response;
         }catch(exception){
-            console.log(exception);
-            console.log("error sending email")
-            throw{status:500, message :"error sending email",detail:exception}
+            console.error("Email send failed:", exception.message);
+            throw{status:500, message: "Email failed: " + exception.message, detail:exception}
         }
     }
 }
