@@ -94,7 +94,9 @@ let data = req;
     }
 
     ForgotPasswordToken = async(req) => {
+
         const { email } = req.body;
+        console.log(`Received forgot password request for email: ${email}`);
       let user = await UserModel.findOne({ email });
 
       if (!user) {

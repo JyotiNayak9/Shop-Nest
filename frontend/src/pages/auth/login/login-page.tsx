@@ -116,6 +116,7 @@ const LoginPage = () => {
                   try{
                     setLoading(true);
                     const response: any = await authSvc.postRequest("/user/forgotpasswordtoken", {email: email});
+                    console.log(email);
                     console.log("Forgot password response:", response);
                     toast.success(response.message || `Password reset link has been sent to your email`);
                   }
