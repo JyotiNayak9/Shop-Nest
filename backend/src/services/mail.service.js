@@ -19,27 +19,28 @@ class MailService {
     }
 }
 
-    sendEmail = async ({ to, sub, message }) => {
+sendEmail = async ({ to, sub, message }) => {
     try {
-        const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-
-        sendSmtpEmail.to = [{ email: to }];
-        sendSmtpEmail.sender = {
-            email: process.env.SMTP_FROM,
-            name: "ShopNest"
+        const emailData = {
+            sender: {
+                email: process.env.SMTP_FROM,
+                name: "ShopNest"
+            },
+            to: [{ email: to }],
+            subject: sub,
+            htmlContent: message
         };
-        sendSmtpEmail.subject = sub;
-        sendSmtpEmail.htmlContent = message;
 
-        const response = await this.#apiInstance.sendTransacEmail(sendSmtpEmail);
+        const response = await this.#apiInstance.sendTransacEmail(emailData);
 
-        console.log("Email sent:", response);
+        console.log("Email sent successfully:", response);
         return response;
+
     } catch (exception) {
         console.error("Email send failed:", exception);
         throw { status: 500, message: "Email failed", detail: exception };
     }
-}
+};
 }
 
 const mailSvc = new MailService();
