@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
-import { InputLabel,TextInputComponent,} from "../../../components/common/form/input-component.";
+import {
+  InputLabel,
+  TextInputComponent,
+} from "../../../components/common/form/input-component.";
 import { Heading3 } from "../../../components/common/title";
 import { Button } from "flowbite-react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -27,14 +30,14 @@ const LoginPage = () => {
   });
   const navigate = useNavigate();
 
-  let {LoggedInUser, setLoggedInUser} = useContext(AuthContext)
+  let { LoggedInUser, setLoggedInUser } = useContext(AuthContext);
   useEffect(() => {
-    if(LoggedInUser){
-      console.log(LoggedInUser)
-      toast.info("You are already logged in.")
-      navigate("/"+LoggedInUser.role)
+    if (LoggedInUser) {
+      console.log(LoggedInUser);
+      toast.info("You are already logged in.");
+      navigate("/" + LoggedInUser.role);
     }
-  },[LoggedInUser])
+  }, [LoggedInUser]);
 
   const login = async (data: any) => {
     try {
@@ -44,10 +47,10 @@ const LoginPage = () => {
       localStorage.setItem("_rt", response.result.token.refreshToken);
       toast.success(`Welcome to ${response.result.UserDetail.role} panel`);
       setLoggedInUser(response.result.UserDetail);
-      if(response.result.UserDetail.role === "customer"){
-        navigate("/")
-      }else{
-      navigate("/" + response.result.UserDetail.role);
+      if (response.result.UserDetail.role === "customer") {
+        navigate("/");
+      } else {
+        navigate("/" + response.result.UserDetail.role);
       }
     } catch (exception: any) {
       toast.error(exception.data.message);
@@ -55,7 +58,7 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
- return(
+  return (
     <>
       <section className="flex flex-col items-center justify-center min-h-screen px-4">
         <Heading3>
@@ -92,10 +95,10 @@ const LoginPage = () => {
             <NavLink
               className={"text-sm text-gray-900 hover:text-violet-800"}
               to={"#"}
-              onClick={ async(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
                 const email = control._formValues.email;
-                
+
                 if (!email) {
                   toast.error("Please enter your email address first");
                   return;
@@ -109,26 +112,34 @@ const LoginPage = () => {
                   confirmButtonColor: "#7c3aed",
                   cancelButtonColor: "#6b7280",
                   confirmButtonText: "Yes, send it!",
-                  cancelButtonText: "Cancel"
+                  cancelButtonText: "Cancel",
                 });
 
                 if (result.isConfirmed) {
-                  try{
+                  try {
                     setLoading(true);
-                    const response: any = await authSvc.postRequest("/user/forgotpasswordtoken", {email: email});
+                    const response: any = await authSvc.postRequest(
+                      "/user/forgotpasswordtoken",
+                      { email: email },
+                    );
                     console.log(email);
                     console.log("Forgot password response:", response);
-                    toast.success(response.message || `Password reset link has been sent to your email`);
-                  }
-                  catch(exception: any) {
+                    toast.success(
+                      response.message ||
+                        `Password reset link has been sent to your email`,
+                    );
+                  } catch (exception: any) {
                     console.error("Forgot password error:", exception);
-                    toast.error(exception.data?.message || exception.message || "Failed to send reset link. Please try again.");
+                    toast.error(
+                      exception.response?.data?.message ||
+                        exception.message ||
+                        "Failed to send reset link",
+                    );
                   } finally {
                     setLoading(false);
                   }
                 }
-              }
-            }
+              }}
             >
               {" "}
               Forgot Password?
@@ -144,7 +155,7 @@ const LoginPage = () => {
         </form>
       </section>
     </>
- );
+  );
 };
 
 export default LoginPage;

@@ -93,16 +93,18 @@ let data = req;
         return data;
     }
 
-    ForgotPasswordToken = async(req) => {
+    generateForgotPasswordToken = async(req) => {
 
         const { email } = req.body;
-        console.log(`Received forgot password request for email: ${email}`);
+       
       let user = await UserModel.findOne({ email });
 
       if (!user) {
         throw { message: "User doesnot exist" };
       }
       user = userSvc.GeneratePasswordResetToken(user);
+        console.log("2", user.passwordResetToken);
+
       return await user.save();
     }
 
@@ -118,7 +120,7 @@ let data = req;
                 message : `
                 Dear ${name}, <br/>
                 <p> Please click on the link below or copy and paste the url in the browser to reset your password: </p>
-                <a href = "${process.env.FRONTEND_URL+'resetpassword/'+token}">${process.env.FRONTEND_URL+'resetpassword/'+token}</a>
+                <a href = "${process.env.FRONTEND_URL}/resetpassword/${token}">${process.env.FRONTEND_URL+'resetpassword/'+token}</a>
                 <p>This link is valid till 30 minutes</p>
                 <br>
                 <p>----------------------------------------------------</p>
