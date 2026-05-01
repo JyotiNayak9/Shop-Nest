@@ -34,6 +34,13 @@ class MailService {
 
     sendEmail = async ({to, sub, message, attachments = null}) =>{
         try{
+            console.log("sendEmail called for:", to);  // add this
+        console.log("SMTP config:", {
+            user: process.env.SMTP_USER,
+            from: process.env.SMTP_FROM,
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
+        });
             const msgOpts = {
                 to: to, 
                 from: process.env.SMTP_FROM,
