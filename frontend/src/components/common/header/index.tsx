@@ -156,21 +156,7 @@ export const HomeHeader = () => {
 
                 {/* Mobile Cart & User Icons */}
                 <div className="md:hidden flex items-center space-x-1">
-                  {LoggedInUser.role === "customer" && (
-                    <NavLink
-                      to="/cart"
-                      className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
-                    >
-                      <div className="relative">
-                        <FaCartPlus className="text-xl" />
-                        {cartCount > 0 && (
-                          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
-                            {cartCount}
-                          </span>
-                        )}
-                      </div>
-                    </NavLink>
-                  )}
+                  
                   <button
                     onClick={() => setIsMobileMenuOpen(true)}
                     className="p-2 text-gray-700 hover:text-violet-600 transition-colors"
@@ -274,9 +260,7 @@ export const HomeHeader = () => {
               </NavLink>
               {LoggedInUser ? (
                 <div className="pt-3 border-t border-gray-200 space-y-2">
-                  <div className="px-4 py-2 text-sm font-medium text-violet-600">
-                    Hello, {LoggedInUser.name}
-                  </div>
+                  
                   {LoggedInUser.role === "customer" && (
                     <NavLink
                       to="/cart"
