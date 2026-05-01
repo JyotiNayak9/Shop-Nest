@@ -115,11 +115,13 @@ const LoginPage = () => {
                 if (result.isConfirmed) {
                   try{
                     setLoading(true);
-                    await authSvc.postRequest("/user/forgotpasswordtoken", {email: email});
-                    toast.success(`Password reset link has been sent to your email`);
+                    const response: any = await authSvc.postRequest("/user/forgotpasswordtoken", {email: email});
+                    console.log("Forgot password response:", response);
+                    toast.success(response.message || `Password reset link has been sent to your email`);
                   }
                   catch(exception: any) {
-                    toast.error(exception.data?.message || "Failed to send reset link");
+                    console.error("Forgot password error:", exception);
+                    toast.error(exception.data?.message || exception.message || "Failed to send reset link. Please try again.");
                   } finally {
                     setLoading(false);
                   }

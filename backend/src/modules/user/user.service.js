@@ -106,7 +106,11 @@ let data = req;
 
     ResetPasswordEmail = async ({name, email, token, sub = "Password Reset Token"}) =>{
         try{
-            await mailSvc.sendEmail({
+            console.log(`Attempting to send reset email to: ${email}`);
+            console.log(`FRONTEND_URL: ${process.env.FRONTEND_URL}`);
+            console.log(`SMTP_FROM: ${process.env.SMTP_FROM}`);
+            
+            const result = await mailSvc.sendEmail({
                 to: email,
                 sub: sub ,
                 message : `
@@ -123,8 +127,11 @@ let data = req;
                 <small><i>Please do not reply to this email</i></small>
                 </p>               
                 `
-            })
+            });
+            console.log(`Reset email sent successfully:`, result);
+            return result;
         }catch(exception){
+            console.error(`Failed to send reset email to ${email}:`, exception);
             throw exception
         }
     }
