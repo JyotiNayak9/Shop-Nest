@@ -21,11 +21,10 @@ export const HomeHeader = () => {
       try {
         if (LoggedInUser?._id) {
           const response: any = await authSvc.getRequest(
-            "/cart" ,
-            { auth: true },
+            "/cart",
+            { auth: true }
           );
           setCartCount(response.total || 0);
-          console.log("Cart:", response);
         } else {
           setCartCount(getGuestCartCount());
         }
@@ -36,13 +35,12 @@ export const HomeHeader = () => {
 
     fetchCartCount();
 
-      window.addEventListener("cartUpdated", fetchCartCount);
+    window.addEventListener("cartUpdated", fetchCartCount);
 
-  return () => {
-    window.removeEventListener("cartUpdated", fetchCartCount);
-  };
+    return () => {
+      window.removeEventListener("cartUpdated", fetchCartCount);
+    };
   }, [LoggedInUser?._id]);
-  
 
   return (
     <>
@@ -59,44 +57,27 @@ export const HomeHeader = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `text-sm font-medium transition-colors hover:text-violet-600 ${
-                  isActive ? "text-violet-600" : "text-gray-700"
-                }`
-              }
-            >
+            <NavLink to="/" className={({ isActive }) =>
+              `text-sm font-medium hover:text-violet-600 ${isActive ? "text-violet-600" : "text-gray-700"}`
+            }>
               Home
             </NavLink>
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `text-sm font-medium transition-colors hover:text-violet-600 ${
-                  isActive ? "text-violet-600" : "text-gray-700"
-                }`
-              }
-            >
+
+            <NavLink to="/about" className={({ isActive }) =>
+              `text-sm font-medium hover:text-violet-600 ${isActive ? "text-violet-600" : "text-gray-700"}`
+            }>
               About
             </NavLink>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `text-sm font-medium transition-colors hover:text-violet-600 ${
-                  isActive ? "text-violet-600" : "text-gray-700"
-                }`
-              }
-            >
+
+            <NavLink to="/contact" className={({ isActive }) =>
+              `text-sm font-medium hover:text-violet-600 ${isActive ? "text-violet-600" : "text-gray-700"}`
+            }>
               Contact
             </NavLink>
-            <NavLink
-              to="/SellerRegister"
-              className={({ isActive }) =>
-                `text-sm font-medium transition-colors hover:text-violet-600 ${
-                  isActive ? "text-violet-600" : "text-gray-700"
-                }`
-              }
-            >
+
+            <NavLink to="/SellerRegister" className={({ isActive }) =>
+              `text-sm font-medium hover:text-violet-600 ${isActive ? "text-violet-600" : "text-gray-700"}`
+            }>
               Become a Vendor
             </NavLink>
           </div>
@@ -106,29 +87,25 @@ export const HomeHeader = () => {
             {LoggedInUser ? (
               <>
                 {LoggedInUser.role === "customer" && (
-                  <NavLink
-                    to="/cart"
-                    className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
-                  >
-                    <div className="relative">
-                      <FaCartPlus className="text-xl" />
-
-                      {cartCount > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                          {cartCount}
-                        </span>
-                      )}
-                    </div>
+                  <NavLink to="/cart" className="relative p-2 text-gray-700 hover:text-violet-600">
+                    <FaCartPlus className="text-xl" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                        {cartCount}
+                      </span>
+                    )}
                   </NavLink>
                 )}
 
-                {/* Desktop User Menu */}
-                <div className="hidden px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
-    > 
-                  <Dropdown 
-                    label={LoggedInUser.name}
+                {/* Desktop Dropdown FIXED */}
+                <div className="hidden md:block">
+                  <Dropdown
+                    label={
+                      <span className="px-4 py-2 bg-violet-600 text-white rounded-lg">
+                        {LoggedInUser.name}
+                      </span>
+                    }
                     placement="bottom-end"
-                    className="border-violet-200"
                   >
                     <Dropdown.Item>
                       <NavLink
@@ -137,25 +114,20 @@ export const HomeHeader = () => {
                             ? "/orderhistory"
                             : "/" + LoggedInUser.role
                         }
-                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         {LoggedInUser.role === "customer"
                           ? "Order History"
                           : "Dashboard"}
                       </NavLink>
                     </Dropdown.Item>
+
                     <Dropdown.Item>
-                      <NavLink
-                        to="/logout"
-                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        Logout
-                      </NavLink>
+                      <NavLink to="/logout">Logout</NavLink>
                     </Dropdown.Item>
                   </Dropdown>
                 </div>
 
-                {/* Mobile User Menu */}
+                {/* Mobile User Icon */}
                 <div className="md:hidden">
                   <Dropdown
                     label={<FaUser className="text-xl text-gray-700" />}
@@ -168,192 +140,94 @@ export const HomeHeader = () => {
                             ? "/orderhistory"
                             : "/" + LoggedInUser.role
                         }
-                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         {LoggedInUser.role === "customer"
                           ? "Order History"
                           : "Dashboard"}
                       </NavLink>
                     </Dropdown.Item>
+
                     <Dropdown.Item>
-                      <NavLink
-                        to="/logout"
-                        className="block w-full text-left py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        Logout
-                      </NavLink>
+                      <NavLink to="/logout">Logout</NavLink>
                     </Dropdown.Item>
                   </Dropdown>
                 </div>
               </>
             ) : (
               <div className="hidden md:flex items-center space-x-3">
-                <NavLink
-                  to="/cart"
-                  className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
-                >
-                  <div className="relative">
-                    <FaCartPlus className="text-xl" />
+                <NavLink to="/cart" className="relative p-2 text-gray-700 hover:text-violet-600">
+                  <FaCartPlus className="text-xl" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                      {cartCount}
+                    </span>
+                  )}
+                </NavLink>
 
-                    {cartCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                        {cartCount}
-                      </span>
-                    )}
-                  </div>
-                </NavLink>
-                <NavLink
-                  to="/login"
-                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-violet-600 transition-colors"
-                >
-                  Login
-                </NavLink>
-                <NavLink
-                  to="/register"
-                  className="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
-                >
+                <NavLink to="/login">Login</NavLink>
+
+                <NavLink to="/register" className="px-4 py-2 bg-violet-600 text-white rounded-lg">
                   Register
                 </NavLink>
               </div>
             )}
 
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-violet-600 transition-colors"
-            >
-              {isMobileMenuOpen ? (
-                <FaTimes className="text-xl" />
-              ) : (
-                <FaBars className="text-xl" />
-              )}
+            {/* Mobile Toggle */}
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden">
+              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* MOBILE MENU FIXED */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 bg-white">
-            <div className="px-4 py-3 space-y-3">
-              <NavLink
-                to="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block py-2 text-sm font-medium transition-colors ${
-                    isActive ? "text-violet-600" : "text-gray-700"
-                  }`
-                }
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/about"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block py-2 text-sm font-medium transition-colors ${
-                    isActive ? "text-violet-600" : "text-gray-700"
-                  }`
-                }
-              >
-                About
-              </NavLink>
-              <NavLink
-                to="/contact"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block py-2 text-sm font-medium transition-colors ${
-                    isActive ? "text-violet-600" : "text-gray-700"
-                  }`
-                }
-              >
-                Contact
-              </NavLink>
-              <NavLink
-                to="/SellerRegister"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block py-2 text-sm font-medium transition-colors ${
-                    isActive ? "text-violet-600" : "text-gray-700"
-                  }`
-                }
-              >
-                Become a Vendor
-              </NavLink>
-              {!LoggedInUser && (
-                <div className="pt-3 border-t border-gray-200 space-y-2">
-                  <NavLink
-                    to="/cart"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
-                  >
-                    <div className="relative">
-                      <FaCartPlus className="text-xl" />
+          <div className="md:hidden border-t bg-white px-4 py-3 space-y-3">
 
-                      {cartCount > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                          {cartCount}
-                        </span>
-                      )}
-                    </div>
-                  </NavLink>
-                  <NavLink
-                    to="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block w-full py-2 px-4 text-center text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    Login
-                  </NavLink>
-                  <NavLink
-                    to="/register"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block w-full py-2 px-4 text-center text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
-                  >
-                    Register
-                  </NavLink>
-                </div>
-              )}
-              :
-              {
-                <div className="pt-3 border-t border-gray-200 space-y-2">
-                  <NavLink
-                    to="/cart"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="relative p-2 text-gray-700 hover:text-violet-600 transition-colors"
-                  >
-                    <div className="relative">
-                      <FaCartPlus className="text-xl" />
+            <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
+            <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink>
+            <NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</NavLink>
+            <NavLink to="/SellerRegister" onClick={() => setIsMobileMenuOpen(false)}>Become a Vendor</NavLink>
 
-                      {cartCount > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                          {cartCount}
-                        </span>
-                      )}
-                    </div>
-                  </NavLink>
-                  
-                  <NavLink
-                    to={
-                          LoggedInUser.role === "customer"
-                            ? "/orderhistory"
-                            : "/" + LoggedInUser.role
-                        }
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block w-full py-2 px-4 text-center text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                     {LoggedInUser.role === "customer"
-                          ? "Order History"
-                          : "Dashboard"}
-                  </NavLink>
-                  <NavLink
-                    to="/logout"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block w-full py-2 px-4 text-center text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
-                  >
-                    Logout
-                  </NavLink>
-                </div>
-              }
-            </div>
+            {!LoggedInUser ? (
+              <div className="pt-3 border-t space-y-2">
+
+                <NavLink to="/cart" onClick={() => setIsMobileMenuOpen(false)}>
+                  Cart ({cartCount})
+                </NavLink>
+
+                <NavLink to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  Login
+                </NavLink>
+
+                <NavLink to="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                  Register
+                </NavLink>
+              </div>
+            ) : (
+              <div className="pt-3 border-t space-y-2">
+
+                <NavLink to="/cart" onClick={() => setIsMobileMenuOpen(false)}>
+                  Cart ({cartCount})
+                </NavLink>
+
+                <NavLink
+                  to={
+                    LoggedInUser.role === "customer"
+                      ? "/orderhistory"
+                      : "/" + LoggedInUser.role
+                  }
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {LoggedInUser.role === "customer"
+                    ? "Order History"
+                    : "Dashboard"}
+                </NavLink>
+
+                <NavLink to="/logout" onClick={() => setIsMobileMenuOpen(false)}>
+                  Logout
+                </NavLink>
+              </div>
+            )}
           </div>
         )}
       </Navbar>
