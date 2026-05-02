@@ -1,4 +1,4 @@
-import {  InputLabel, SelectComponent,  SubmitButton, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
+import {  InputLabel, NumberInputComponent, SelectComponent,  SubmitButton, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
 import { Heading3 } from "../../../components/common/title"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,7 +17,7 @@ const CreateProduct = () => {
           .mixed()
           .required(),
           description: yup.string().required(),
-          price: yup.number().required(),
+          price: yup.number().max(1000000).required(),
           category: yup.object({
             label: yup.string().required(),
             value: yup
@@ -162,7 +162,7 @@ const CreateProduct = () => {
         />
         </div>
             <div className="">
-            <InputLabel htmlFor="name">Features</InputLabel>
+            <InputLabel htmlFor="features">Features</InputLabel>
   
             <TextInputComponent
           name= "features"
@@ -173,9 +173,9 @@ const CreateProduct = () => {
           </div>
          
             <div className="">
-            <InputLabel htmlFor="name">Price</InputLabel>
+            <InputLabel htmlFor="price" >Price</InputLabel>
   
-            <TextInputComponent
+            <NumberInputComponent
           name= "price"
           errMsg={errors.price?.message as string}
           defaultValue=""
@@ -187,7 +187,7 @@ const CreateProduct = () => {
           <div className="">
             <InputLabel htmlFor="quantity">Quantity</InputLabel>
   
-          <TextInputComponent
+          <NumberInputComponent
           name= "quantity"
           errMsg={errors.quantity?.message as string}
           defaultValue=""

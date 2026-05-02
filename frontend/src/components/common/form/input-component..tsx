@@ -48,6 +48,27 @@ export const TextInputComponent = ({type="text",control,name, defaultValue, errM
     )
 }
 
+export const NumberInputComponent = ({type="number",control,name, defaultValue, errMsg=null}: TextInputInterface) => {
+    const {field} = useController({
+        control: control,
+        name:name,
+        defaultValue: defaultValue,
+      
+    })
+    return(
+        <>
+        <input
+              type={type}           
+              {...field}
+            className={`mt-1 w-full rounded-md  ${errMsg? 'border-red-500' : 'border-gray-200'} bg-white text-sm text-gray-700 shadow-sm focus:border-violet-600 focus:ring-violet-600`}
+            />
+            <span className="text-sm italic text-red-800">
+             {errMsg}
+            </span>
+        </>
+    )
+}
+
 export const TextAreaInputComponent = ({row=5,control,name, defaultValue,  errMsg=null}: TextInputInterface) => {
     const {field} = useController({
         control: control,

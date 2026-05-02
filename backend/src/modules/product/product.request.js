@@ -8,7 +8,7 @@ const ProductCreateDTO = joi.object({
     slug: joi.string(),
     description: joi.string().required(),
     quantity : joi.number().required(),
-    price: joi.number().required(),
+    price: joi.number().max(1000000).required(),
     category : joi.string(),
     brand: joi.string(),
     ratings: [{
