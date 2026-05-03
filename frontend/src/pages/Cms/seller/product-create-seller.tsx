@@ -1,4 +1,4 @@
-import {  InputLabel, SelectComponent, SubmitButton, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
+import {  InputLabel, NumberInputComponent, SelectComponent, SubmitButton, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
 import {  Heading3 } from "../../../components/common/title"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -21,7 +21,7 @@ const SellerCreateProduct = () => {
           )
           .typeError("Price must be a number")
           .min(1, "Price must be greater than 0")
-          .max(1000000, "Price cannot exceed 1,000,000")
+          .max(1000000, "Price cannot exceed 1000000")
           .required("Price is required"),
         category: yup
           .object({
@@ -42,6 +42,7 @@ const SellerCreateProduct = () => {
           )
           .typeError("Quantity must be a number")
           .min(0, "Quantity cannot be negative")
+          .max(10000, "Quantity cannot exceed 10000")
           .integer("Quantity must be a whole number")
           .required("Quantity is required"),
         features: yup.string(),
@@ -186,7 +187,7 @@ const SellerCreateProduct = () => {
             <div className="">
             <InputLabel htmlFor="name">Price</InputLabel>
   
-            <TextInputComponent
+            <NumberInputComponent
           name= "price"
           errMsg={errors.price?.message as string}
           defaultValue=""
@@ -197,8 +198,8 @@ const SellerCreateProduct = () => {
 
           <div className="">
             <InputLabel htmlFor="quantity">Quantity</InputLabel>
-  
-          <TextInputComponent
+
+          <NumberInputComponent
           name= "quantity"
           errMsg={errors.quantity?.message as string}
           defaultValue=""

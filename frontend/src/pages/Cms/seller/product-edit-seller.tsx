@@ -22,7 +22,7 @@ const SellerEditProduct = () => {
           )
           .typeError("Price must be a number")
           .min(1, "Price must be greater than 0")
-          .max(1000000, "Price cannot exceed 1,000,000")
+          .max(1000000, "Price cannot exceed 1000000")
           .required("Price is required"),
         category: yup
           .object({
@@ -43,6 +43,7 @@ const SellerEditProduct = () => {
           )
           .typeError("Quantity must be a number")
           .min(0, "Quantity cannot be negative")
+          .max(10000, "Quantity cannot exceed 10000")
           .integer("Quantity must be a whole number")
           .required("Quantity is required"),
         features: yup.string(),
