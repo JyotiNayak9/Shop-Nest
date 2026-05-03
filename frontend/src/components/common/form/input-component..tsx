@@ -52,7 +52,7 @@ export const NumberInputComponent = ({type="number",control,name, defaultValue, 
     const {field} = useController({
         control: control,
         name:name,
-        defaultValue: defaultValue,
+        defaultValue: defaultValue?? undefined,
       
     })
     return(
