@@ -133,7 +133,7 @@ const CreateProduct = () => {
     <>
       <div className="overflow-x-auto mt-5 mb-5">
         <Heading3>
-          <>Create Product</>
+          <>Create Product  ABDDDDDDD</>
         </Heading3>
         <hr />
       </div>
