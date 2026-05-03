@@ -24,6 +24,7 @@ const features = [
 
 const AboutPage = () => {
   useEffect(() => {
+    console.log("VERSION 12345");
     AOS.init({ duration: 600, once: true, easing: "ease-out-cubic" });
   }, []);
 
