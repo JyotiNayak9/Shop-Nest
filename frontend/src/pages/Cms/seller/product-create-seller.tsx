@@ -12,29 +12,41 @@ const SellerCreateProduct = () => {
 
     const schema = yup.object({
         title: yup.string().required(),
-        image: yup
-          .mixed()
+        image: yup.mixed().required(),
+        description: yup.string().required(),
+        price: yup
+          .number()
+          .transform((value, originalValue) =>
+            originalValue === "" ? undefined : value,
+          )
+          .typeError("Price must be a number")
+          .min(1, "Price must be greater than 0")
+          .max(1000000, "Price cannot exceed 1,000,000")
+          .required("Price is required"),
+        category: yup
+          .object({
+            label: yup.string().required(),
+            value: yup.string().required(),
+          })
           .required(),
-          description: yup.string().required(),
-          price: yup.number().required(),
-          category: yup.object({
+        brand: yup
+          .object({
             label: yup.string().required(),
-            value: yup
-              .string()
-              .required()
-          }).required(),
-          brand: yup.object({
-            label: yup.string().required(),
-            value: yup
-              .string()
-              .required()
-             
-          }).required(),
-          quantity: yup.number().required(),
-          features:yup.string(),
-    //       status: yup.object({ label: yup.string().matches(/^(Publish|Unpublish)$/).required(),
-    //         value: yup.string().matches(/^(active|inactive)$/).required() }).required(),
+            value: yup.string().required(),
+          })
+          .required(),
+        quantity: yup
+          .number()
+          .transform((value, originalValue) =>
+            originalValue === "" ? undefined : value,
+          )
+          .typeError("Quantity must be a number")
+          .min(0, "Quantity cannot be negative")
+          .integer("Quantity must be a whole number")
+          .required("Quantity is required"),
+        features: yup.string(),
       });
+    
       const navigate = useNavigate();
       const [loading, setLoading] = useState(false);
       const [category, setCategory] = useState<any[]>([]);

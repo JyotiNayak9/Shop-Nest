@@ -1,4 +1,4 @@
-import { InputLabel, SelectComponent, SubmitButton, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
+import { InputLabel, NumberInputComponent, SelectComponent, SubmitButton, TextAreaInputComponent, TextInputComponent } from "../../../components/common/form/input-component.";
 import {  Heading3 } from "../../../components/common/title"
 import {  useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,33 +11,43 @@ import ProductSvc from "../product/product-service";
 
 const SellerEditProduct = () => {
 
-    const schema =yup.object({
-            title: yup.string().required(),
-            image: yup
-              .mixed()
-              .required(),
-              description: yup.string().required(),
-              price: yup.number().required(),
-              category: yup.object({
-                label: yup.string().required("Label is required"),
-                value: yup
-                  .string()
-                  .required("Value is required") 
-                  .matches(/^[a-f\d]{24}$/, "Invalid category ID"),
-              }).required("Category is required"),
-              brand: yup.object({
-                label: yup.string().required("Label is required"),
-                value: yup
-                  .string()
-                  .required("Value is required")
-                  .matches(/^[a-f\d]{24}$/, "Invalid brand ID"),
-              }).required("Brand is required"),
-              quantity: yup.number().required(),
-              features:yup.string(),
-              // status: yup.object({ label: yup.string().matches(/^(Publish|Unpublish)$/).required(),
-                // value: yup.string().matches(/^(active|inactive)$/).required() }).required(),
-          });
-
+    const schema = yup.object({
+        title: yup.string().required(),
+        image: yup.mixed().required(),
+        description: yup.string().required(),
+        price: yup
+          .number()
+          .transform((value, originalValue) =>
+            originalValue === "" ? undefined : value,
+          )
+          .typeError("Price must be a number")
+          .min(1, "Price must be greater than 0")
+          .max(1000000, "Price cannot exceed 1,000,000")
+          .required("Price is required"),
+        category: yup
+          .object({
+            label: yup.string().required(),
+            value: yup.string().required(),
+          })
+          .required(),
+        brand: yup
+          .object({
+            label: yup.string().required(),
+            value: yup.string().required(),
+          })
+          .required(),
+        quantity: yup
+          .number()
+          .transform((value, originalValue) =>
+            originalValue === "" ? undefined : value,
+          )
+          .typeError("Quantity must be a number")
+          .min(0, "Quantity cannot be negative")
+          .integer("Quantity must be a whole number")
+          .required("Quantity is required"),
+        features: yup.string(),
+      });
+    
           const navigate = useNavigate();
           const [loading, setLoading] = useState(false);
           const [detail, setDetail] = useState<any>();
@@ -214,7 +224,7 @@ const SellerEditProduct = () => {
                 <div className="">
                 <InputLabel htmlFor="name">Price</InputLabel>
       
-                <TextInputComponent
+                <NumberInputComponent
               name= "price"
               errMsg={errors.price?.message as string}
               defaultValue=""
@@ -226,7 +236,7 @@ const SellerEditProduct = () => {
               <div className="">
                 <InputLabel htmlFor="quantity">Quantity</InputLabel>
       
-              <TextInputComponent
+              <NumberInputComponent
               name= "quantity"
               errMsg={errors.quantity?.message as string}
               defaultValue=""
