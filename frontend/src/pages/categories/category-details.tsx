@@ -23,7 +23,7 @@ const CategoryDetailsPage = () => {
       if (filters.min !== null) params.minPrice = filters.min;
       if (filters.max !== null) params.maxPrice = filters.max;
 
-      const response: any = await authSvc.getRequest(`/product/getproductbycategory/${id}`,{params});
+      const response: any = await authSvc.getRequest(`/products/category/${id}`,{params});
       setProducts(response.result);
       if (response.result.length > 0) {
         setcategory(response.result[0].category.title);

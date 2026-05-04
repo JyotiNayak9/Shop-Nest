@@ -36,7 +36,7 @@ const ResetPassword = () => {
   const onSubmit = async (data:any) => {
     try {
         console.log(data)
-      await authSvc.patchRequest("/user/resetpassword/" + token, data);
+      await authSvc.patchRequest("/user/reset-password/" + token, data);
       toast.success("Password reset successful!");
       navigate("/login");
     } catch (err) {

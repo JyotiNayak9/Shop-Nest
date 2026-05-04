@@ -63,7 +63,7 @@ const EditProduct = () => {
   const getBrand = async () => {
     try {
       // setLoading(true)
-      const response: any = await authSvc.getRequest("/brand/getall");
+      const response: any = await authSvc.getRequest("/brands/all");
       console.log(response);
       setBrands(response.result);
       console.log(brands);
@@ -75,7 +75,7 @@ const EditProduct = () => {
   const getCategory = async () => {
     try {
       // setLoading(true)
-      const response: any = await authSvc.getRequest("/category/getall");
+      const response: any = await authSvc.getRequest("/categories/all");
       console.log(response);
       setCategory(response.result);
       console.log(category);
@@ -90,10 +90,7 @@ const EditProduct = () => {
 
   const getDetail = async () => {
     try {
-      const detail: any = await ProductSvc.getRequest(
-        `/product/getaproduct/${params.id}`,
-        { auth: true },
-      );
+      const detail: any = await ProductSvc.getRequest(`/products/${params.id}`, { auth: true });
       const data = {
         title: detail.result.title,
         image: detail.result.image,
@@ -153,11 +150,7 @@ const EditProduct = () => {
         features: data.features.split(",").map((tag: string) => tag.trim()),
       };
       console.log(submitData);
-      await ProductSvc.patchRequest(
-        `/product/updateaproduct/${params.id}`,
-        submitData,
-        { auth: true, file: true },
-      );
+      await ProductSvc.patchRequest(`/products/${params.id}`, submitData, { auth: true, file: true });
 
       toast.success("Product Edited successfully. ");
       navigate("/admin/Product");

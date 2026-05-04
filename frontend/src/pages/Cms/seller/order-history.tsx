@@ -64,7 +64,7 @@ const SellerOrderListing: React.FC = () => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const res: any = await authSvc.getRequest('order/getOrdersBySeller/' + LoggedInUser._id, { auth: true });
+        const res: any = await authSvc.getRequest('orders/seller/' + LoggedInUser._id, { auth: true });
         setOrders(res.result);
       } catch (exception: any) {
         console.error('Error fetching orders:', exception);
@@ -83,7 +83,7 @@ const SellerOrderListing: React.FC = () => {
     try {
       setUpdatingStatus(orderId);
       await authSvc.patchRequest(
-        `order/update-status/${orderId}`,
+        `orders/${orderId}/status`,
         { status: newStatus },
         { auth: true }
       );

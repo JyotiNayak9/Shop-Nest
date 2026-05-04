@@ -16,7 +16,7 @@ const UserListPage = () => {
     const getAllUsers = async () => {
         try {
             setLoading(true);
-            const response: any = await authSvc.getRequest("/user/", {auth: true });
+            const response: any = await authSvc.getRequest("/users/", {auth: true });
             setUsers(response.result);
            
         } catch (exception) {
@@ -35,7 +35,7 @@ const UserListPage = () => {
 
     const deleteUser = async (id: string) => {
         try {
-            await authSvc.deleteRequest('/user/' + id, { auth: true });
+            await authSvc.deleteRequest('/users/' + id, { auth: true });
             toast.success("User deleted successfully");
             getAllUsers();
         } catch (exception) {

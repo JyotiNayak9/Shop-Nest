@@ -89,7 +89,7 @@ const RouterConfig = () => {
                   <Route path="login" element={<LoginPage />} />
                   <Route path="login" element={<LoginPage />} />
                   <Route
-                    path="resetpassword/:token"
+                    path="reset-password/:token"
                     element={<ResetPassword />}
                   />
                   <Route path="logout" element={<Logout />} />

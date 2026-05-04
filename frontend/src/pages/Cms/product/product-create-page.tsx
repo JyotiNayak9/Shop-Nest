@@ -60,7 +60,7 @@ const CreateProduct = () => {
 
   const getBrand = async () => {
     try {
-      const response: any = await authSvc.getRequest("/brand/getall");
+      const response: any = await authSvc.getRequest("/brands/all");
       setBrands(response.result);
     } catch (exception) {
       toast.error("Error while fetching brand list");
@@ -70,7 +70,7 @@ const CreateProduct = () => {
 
   const getCategory = async () => {
     try {
-      const response: any = await authSvc.getRequest("/category/getall");
+      const response: any = await authSvc.getRequest("/categories/all");
       setCategory(response.result);
     } catch (exception) {
       toast.error("Error while fetching category list");
@@ -111,7 +111,7 @@ const CreateProduct = () => {
           ? data.features.split(",").map((tag: string) => tag.trim())
           : [],
       };
-      await authSvc.postRequest("/product/createProduct", submitData, {
+      await authSvc.postRequest("/products", submitData, {
         auth: true,
         file: true,
       });

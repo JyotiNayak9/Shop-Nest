@@ -17,7 +17,7 @@ const HeroSection = () => {
 
   const getAllProduct = async ({ search = "" }: Search) => {
     try {
-      const response: any = await authSvc.getRequest("/product/getproducts", {
+      const response: any = await authSvc.getRequest("/products", {
         params: { search: search },
       });
       console.log(response);

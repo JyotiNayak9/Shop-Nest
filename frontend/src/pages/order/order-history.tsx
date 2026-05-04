@@ -30,7 +30,7 @@ const {LoggedInUser} = useContext(AuthContext)
 
 const fetchOrders = async () => {
       try {
-        const res:any = await authSvc.getRequest('order/getMyOrders/'+LoggedInUser._id, {auth:true});
+        const res:any = await authSvc.getRequest('orders/my/'+LoggedInUser._id, {auth:true});
         setOrders(res);
         console.log(orders);
         console.log(res.data);
@@ -56,7 +56,7 @@ const fetchOrders = async () => {
               confirmButtonText: "Yes, delete it!"
             })
             if(result.isConfirmed){
-                await authSvc.patchRequest("order/cancelOrder/"+orderId, {auth:true})
+                await authSvc.patchRequest("orders/"+orderId+"/cancel", {auth:true})
                 toast.success("Order Cancelled successfully")
                 fetchOrders();
             }

@@ -34,7 +34,7 @@ const ProductReview = () => {
 
   const getReviews = async () => {
     try {
-      const response : any = await ProductSvc.getRequest(`/product/getreview/:${slug}`);
+      const response : any = await ProductSvc.getRequest(`/products/${slug}/reviews`);
       setReviews(response.result.reviews);
       setAverageRating(response.result.averageRating);
       setReviewCount(response.result.reviewCount);
@@ -76,7 +76,7 @@ const ProductReview = () => {
       
       if (editingReviewId) {
         await ProductSvc.patchRequest(
-          `/product/updatereview/${slug}/${editingReviewId}`, 
+          `/products/${slug}/reviews/${editingReviewId}`, 
           reviewData, 
           { auth: true }
         );
@@ -84,7 +84,7 @@ const ProductReview = () => {
         setEditingReviewId(null);
       } else {
         await ProductSvc.postRequest(
-          `/product/addreview/${slug}`, 
+          `/products/${slug}/reviews`, 
           reviewData,
           { auth: true }
         );
@@ -129,7 +129,7 @@ const ProductReview = () => {
   const handleDeleteReview = async (reviewId: string) => {
     if (window.confirm("Are you sure you want to delete this review?")) {
       try {
-        await ProductSvc.deleteRequest(`/product/deletereview/${slug}/${reviewId}`, { auth: true });
+        await ProductSvc.deleteRequest(`/products/${slug}/reviews/${reviewId}`, { auth: true });
         toast.success("Review deleted successfully");
         getReviews();
       } catch (error) {

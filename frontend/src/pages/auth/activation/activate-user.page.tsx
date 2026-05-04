@@ -36,7 +36,7 @@ const UserActivation = () => {
 
     const resendToken = async() => {
         try{
-            await authSvc.getRequest("/auth/resend-activationToken/"+params.token)
+            await authSvc.getRequest('/auth/resend-activation/' + params.token)
             setMsg("A new token has been forwarded in your email. Please check your email ")
             setLoading(false)
             setOpenModal(false)

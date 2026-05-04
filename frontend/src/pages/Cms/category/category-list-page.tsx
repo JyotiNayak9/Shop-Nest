@@ -31,7 +31,7 @@ const CategoryListingPage = () => {
     const getAllcategory = async ({page = 1, limit=10, search=''}: SearchParams) => {
       try{
         setLoading(true)
-        const response: any = await authSvc.getRequest("/category/", {auth:true , params : {limit: limit, page: page,search: search}})
+        const response: any = await authSvc.getRequest("/categories", {auth:true , params : {limit: limit, page: page,search: search}})
         console.log(response)
         setCategory(response.result);
         console.log(category)
@@ -66,7 +66,7 @@ const CategoryListingPage = () => {
 
     const deleteData = async (id:string) => {
    try{
-          await authSvc.deleteRequest('/category/'+id, {auth:true})
+          await authSvc.deleteRequest('/categories/'+id, {auth:true})
           toast.success("Category deleted successfully")
           getAllcategory({
             page:1,

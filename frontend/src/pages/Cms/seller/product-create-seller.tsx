@@ -60,7 +60,7 @@ const SellerCreateProduct = () => {
     const getBrand = async () => {
       try{
         // setLoading(true)
-        const response: any = await authSvc.getRequest("/brand/getall" )
+        const response: any = await authSvc.getRequest("/brands/all" )
         console.log(response)
         setBrands(response.result);
         console.log(brands)       
@@ -72,7 +72,7 @@ const SellerCreateProduct = () => {
       const getCategory = async () => {
         try{
           // setLoading(true)
-          const response: any = await authSvc.getRequest("/category/getall" )
+          const response: any = await authSvc.getRequest("/categories/all" )
           console.log(response)
           setCategory(response.result);
           console.log(category)
@@ -108,7 +108,7 @@ const SellerCreateProduct = () => {
 
             }
             console.log(submitData)
-            await authSvc.postRequest('/product/createProduct',submitData,{auth:true,file:true});
+            await authSvc.postRequest('/products',submitData,{auth:true,file:true});
     
               toast.success("Product Created successfully. ")
               navigate('/seller/product')

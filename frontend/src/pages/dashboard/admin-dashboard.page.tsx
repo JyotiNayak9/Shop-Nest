@@ -13,7 +13,7 @@ const [OrderCount, setOrderCount] = useState<number>(0);
   try{
     const response: any = await authSvc .getRequest("/user?role=customer", {auth:true});
     const seller: any = await authSvc .getRequest("/user?role=seller", {auth:true});
-    const order: any = await authSvc .getRequest("/order/getAllOrders", {auth:true});
+    const order: any = await authSvc .getRequest("/orders", {auth:true});
     setUsersCount(response.meta.total);
     setSellerCount(seller.meta.total);
     setOrderCount(order.meta.total);

@@ -87,7 +87,7 @@ const SellerProductList = () => {
       setLoading(true);
 
       const response: any = await authSvc.getRequest(
-        "/product/getProductBySeller/" + LoggedInUser._id,
+        "/products/seller/" + LoggedInUser._id,
         {
           auth: true,
           params: {
@@ -127,7 +127,7 @@ const SellerProductList = () => {
   //   }
   const getAllCategories = async () => {
     try {
-      const response: any = await authSvc.getRequest("/category/getall", {
+      const response: any = await authSvc.getRequest("/categories/all", {
         auth: true,
       });
       const map: { [key: string]: string } = {};
@@ -142,7 +142,7 @@ const SellerProductList = () => {
   };
   const getAllBrand = async () => {
     try {
-      const response: any = await authSvc.getRequest("/brand/getall", {
+      const response: any = await authSvc.getRequest("/brands/all", {
         auth: true,
       });
       const map: { [key: string]: string } = {};
@@ -171,7 +171,7 @@ useEffect(() => {
 
   const deleteData = async (id: string) => {
     try {
-      await ProductSvc.deleteRequest("/product/deleteaproduct/" + id, {
+      await ProductSvc.deleteRequest("/products/" + id, {
         auth: true,
       });
       toast.success("Product deleted successfully");

@@ -18,7 +18,7 @@ const CategoriesSlider = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res: any = await authSvc.getRequest("/category/getall");
+        const res: any = await authSvc.getRequest("/categories/all");
         setCategories(res.result || []);
       } catch (err) {
         toast.error("Failed to load categories");

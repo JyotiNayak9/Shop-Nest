@@ -8,17 +8,13 @@ const bodyValidator = require("../../middlewares/validator.middleware");
 const brandController = require("./brand.controller");
 const { BrandCreateDTO, BrandUpdpateDTO } = require("./brand.request");
 
-brandRouter.get('/list-home', brandController.listForHome)
-brandRouter.get('/getall', brandController.getAllBrands)
-// TODO: brand wise list product
-// router.get("/:slug/detail", brand)
+// Brand routes - RESTful design
+brandRouter.get('/home', brandController.listForHome)
+brandRouter.get('/', loginCheck, hasPermission('admin'), brandController.index)
+brandRouter.post('/', loginCheck, hasPermission("admin"), setPath('brand'), uploadfile(fileFilterType.IMAGE).single("image"), bodyValidator(BrandCreateDTO), brandController.create)
+brandRouter.get('/all', brandController.getAllBrands)
 
-brandRouter.route('/')
-    .post(loginCheck, hasPermission("admin"), setPath('brand'), uploadfile(fileFilterType.IMAGE).single("image"), bodyValidator(BrandCreateDTO),brandController.create)
-    .get(loginCheck, hasPermission('admin'), brandController.index)
-
-brandRouter.route('/:id')
-.get(loginCheck, hasPermission('admin'), brandController.show)
-.patch(loginCheck, hasPermission("admin"), setPath('brand'), uploadfile(fileFilterType.IMAGE).single("image"), bodyValidator(BrandUpdpateDTO), brandController.update)
-.delete(loginCheck, hasPermission('admin'), brandController.delete)
+brandRouter.get('/:id', loginCheck, hasPermission('admin'), brandController.show)
+brandRouter.patch('/:id', loginCheck, hasPermission("admin"), setPath('brand'), uploadfile(fileFilterType.IMAGE).single("image"), bodyValidator(BrandUpdpateDTO), brandController.update)
+brandRouter.delete('/:id', loginCheck, hasPermission('admin'), brandController.delete)
 module.exports = brandRouter;

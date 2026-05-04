@@ -23,7 +23,7 @@ const CreateCategory = () => {
 
     const fetchCategories = async () => {
         try {
-            const response:any = await authSvc.getRequest('/category/getall');
+            const response:any = await authSvc.getRequest('/categories/all');
             setCategories(response.result);
         } catch (error) {
             toast.error('Error fetching categories');

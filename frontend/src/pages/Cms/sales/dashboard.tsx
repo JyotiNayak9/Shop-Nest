@@ -43,7 +43,7 @@ const SalesAnalytics = () => {
     const fetchSalesData = async () => {
       try {
         setLoading(true);
-    const order: any = await authSvc .getRequest("/order/getAllOrders", {auth:true});
+    const order: any = await authSvc .getRequest("/orders", {auth:true});
         setOrderCount(order.meta.total)
         const response:any = await authSvc.getRequest('/order/analytics', { auth: true });
         if (response && response.result) {

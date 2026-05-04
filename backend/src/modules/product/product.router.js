@@ -11,26 +11,25 @@ const productRouter = require("express").Router();
 
 const upload = multer()
 
-// Product approval routes
-productRouter.patch('/approve/:id', loginCheck, hasPermission('admin'), ProductCtrl.approveProduct);
-productRouter.patch('/reject/:id', loginCheck, hasPermission('admin'), ProductCtrl.rejectProduct);
+// Product routes - RESTful design
+productRouter.get('/', ProductCtrl.index)
+productRouter.post('/', loginCheck, setPath('product'), uploadfile(fileFilterType.IMAGE).array('image',10), bodyValidator(ProductCreateDTO), ProductCtrl.CreateProduct)
+productRouter.get('/:id', ProductCtrl.getaproduct)
+productRouter.patch('/:id', loginCheck, upload.none(), bodyValidator(ProductUpdateDTO), ProductCtrl.UpdateaProduct)
+productRouter.delete('/:id', loginCheck, hasPermission('admin'), ProductCtrl.DeleteaProduct)
 
-productRouter.post('/createProduct',loginCheck, setPath('product'), uploadfile(fileFilterType.IMAGE).array('image',10), bodyValidator(ProductCreateDTO), ProductCtrl.CreateProduct)
-productRouter.get('/getaproduct/:id',ProductCtrl.getaproduct)
-productRouter.get('/getproductbyslug/:slug',ProductCtrl.getbyslug)
-productRouter.get('/getallproducts',ProductCtrl.getallProducts)
-productRouter.get('/getproductbycategory/:categoryId',ProductCtrl.getProductByCategory)
-productRouter.get('/getproducts', ProductCtrl.index)
-productRouter.get('/approved-products', ProductCtrl.getApprovedProducts)
-productRouter.get('/getProductBySeller/:id', loginCheck, ProductCtrl.getProductBySeller)
-// productRouter.get('/filter',ProductCtrl.getProductsByCategoryAndPrice)
-productRouter.patch('/updateaproduct/:id',loginCheck,  upload.none(),bodyValidator(ProductUpdateDTO),ProductCtrl.UpdateaProduct)
-productRouter.delete('/deleteaproduct/:id',loginCheck, hasPermission('admin'),ProductCtrl.DeleteaProduct)
+// Product specific actions
+productRouter.get('/slug/:slug', ProductCtrl.getbyslug)
+productRouter.get('/category/:categoryId', ProductCtrl.getProductByCategory)
+productRouter.get('/seller/:id', loginCheck, ProductCtrl.getProductBySeller)
+productRouter.get('/approved', ProductCtrl.getApprovedProducts)
+productRouter.patch('/:id/approve', loginCheck, hasPermission('admin'), ProductCtrl.approveProduct)
+productRouter.patch('/:id/reject', loginCheck, hasPermission('admin'), ProductCtrl.rejectProduct)
 
-
-productRouter.get('/getreview/:slug', ProductCtrl.getReviews)
-productRouter.post('/addreview/:slug', loginCheck,hasPermission('customer'), ProductCtrl.addReview)
-productRouter.patch('/updatereview/:slug/:reviewId', loginCheck, ProductCtrl.updateReview)
-productRouter.delete('/deletereview/:slug/:reviewId', loginCheck, ProductCtrl.deleteReview)
+// Product reviews - nested resources
+productRouter.get('/:slug/reviews', ProductCtrl.getReviews)
+productRouter.post('/:slug/reviews', loginCheck, hasPermission('customer'), ProductCtrl.addReview)
+productRouter.patch('/:slug/reviews/:reviewId', loginCheck, ProductCtrl.updateReview)
+productRouter.delete('/:slug/reviews/:reviewId', loginCheck, ProductCtrl.deleteReview)
 
 module.exports = productRouter

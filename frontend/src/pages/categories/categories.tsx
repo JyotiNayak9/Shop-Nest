@@ -8,7 +8,7 @@ export const AllCategory = () => {
   const getCategory = async () => {
     try{
       // setLoading(true)
-      const response: any = await authSvc.getRequest("/category/getall" )
+      const response: any = await authSvc.getRequest("/categories/all" )
       console.log(response)
       setCategory(response.result);
       console.log(category)

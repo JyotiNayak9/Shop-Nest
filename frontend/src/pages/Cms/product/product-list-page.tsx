@@ -40,7 +40,7 @@ const ProductListingPage = () => {
     
       try{
         setLoading(true)
-        const response: any = await authSvc.getRequest("/product/getproducts", {auth:true , params : {limit: limit, page: page, search: search, filter: filter, sort: sort}})
+        const response: any = await authSvc.getRequest("/products", {auth:true , params : {limit: limit, page: page, search: search, filter: filter, sort: sort}})
         console.log(response)
         setProduct(response.result);
         console.log(Product)
@@ -70,7 +70,7 @@ const ProductListingPage = () => {
   //   }
   const getAllCategories = async () => {
     try {
-      const response: any = await authSvc.getRequest("/category/getall", { auth: true });
+      const response: any = await authSvc.getRequest("/categories/all", { auth: true });
       const map: { [key: string]: string } = {};
       response.result.forEach((cat: any) => {
         map[cat._id] = cat.title;
@@ -83,7 +83,7 @@ const ProductListingPage = () => {
   };
   const getAllBrand = async () => {
     try {
-      const response: any = await authSvc.getRequest("/brand/getall", { auth: true });
+      const response: any = await authSvc.getRequest("/brands/all", { auth: true });
       const map: { [key: string]: string } = {};
       response.result.forEach((br: any) => {
         map[br._id] = br.title;
@@ -111,7 +111,7 @@ useEffect(() => {
 
     const deleteData = async (id: string) => {
         try {
-            await ProductSvc.deleteRequest('/product/deleteaproduct/' + id, { auth: true })
+            await ProductSvc.deleteRequest('/products/' + id, { auth: true })
             toast.success("Product deleted successfully")
             getAllProduct({
                 page: 1,
@@ -125,7 +125,7 @@ useEffect(() => {
 
     const approveProduct = async (id: string) => {
         try {
-            await authSvc.patchRequest(`/product/approve/${id}`, {}, { auth: true });
+            await authSvc.patchRequest(`/products/${id}/approve`, {}, { auth: true });
             toast.success("Product approved successfully");
             getAllProduct({
                 page: pagination.currentPage,
@@ -142,7 +142,7 @@ useEffect(() => {
 
     const rejectProduct = async (id: string) => {
         try {
-            await authSvc.patchRequest(`/product/reject/${id}`, { reason: 'Rejected by admin' }, { auth: true });
+            await authSvc.patchRequest(`/products/${id}/reject`, { reason: 'Rejected by admin' }, { auth: true });
             toast.success("Product rejected successfully");
             getAllProduct({
                 page: pagination.currentPage,

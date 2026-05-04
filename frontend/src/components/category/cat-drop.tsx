@@ -14,7 +14,7 @@ const CategoryDropdown = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response:any = await authSvc.getRequest('/category/getcategorieswithsubcategories');
+        const response:any = await authSvc.getRequest('/categories/with-subcategories');
         console.log(response)
         setCategories(response.result);
       } catch (err) {

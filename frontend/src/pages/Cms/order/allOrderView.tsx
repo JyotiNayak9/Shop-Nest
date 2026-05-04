@@ -31,7 +31,7 @@ const OrderListingPage: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res:any = await authSvc.getRequest('order/getAllOrders', {auth:true});
+        const res:any = await authSvc.getRequest('orders', {auth:true});
         console.log(res);
         setOrders(res.result);
       } catch (exception:any){

@@ -32,7 +32,7 @@ const BrandListingPage = () => {
     const getAllBrand = async ({page = 1, limit=10, search=''}: SearchParams) => {
       try{
         setLoading(true)
-        const response: any = await authSvc.getRequest("/Brand/", {auth:true , params : {limit: limit, page: page,search: search}})
+        const response: any = await authSvc.getRequest("/brands", {auth:true , params : {limit: limit, page: page,search: search}})
         console.log(response)
         setBrand(response.result);
         console.log(Brand)
@@ -66,7 +66,7 @@ const BrandListingPage = () => {
 
     const deleteData = async (id:string) => {
    try{
-          await BrandSvc.deleteRequest('/Brand/'+id, {auth:true})
+          await BrandSvc.deleteRequest('/brands/'+id, {auth:true})
           toast.success("Brand deleted successfully")
           getAllBrand({
             page:1,

@@ -14,9 +14,9 @@ const {LoggedInUser} = useContext(AuthContext)
  const totalUsers = async() => {
   try{
    
-        const response: any = await authSvc.getRequest("/product/getProductBySeller/"+LoggedInUser._id, {auth:true})
+        const response: any = await authSvc.getRequest("/products/seller/"+LoggedInUser._id, {auth:true})
         setProductsCount(response.meta.total);
-        const res:any = await authSvc.getRequest('order/getOrdersBySeller/'+LoggedInUser._id, {auth:true});
+        const res:any = await authSvc.getRequest('orders/seller/'+LoggedInUser._id, {auth:true});
         setOrderCount(res.meta.total);
   }catch(exception){
             toast.error("Error while fetching details")

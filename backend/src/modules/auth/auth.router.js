@@ -11,14 +11,14 @@ const LoginDTO = require("./auth.request");
 const multer = require("multer")
 const upload = multer()
 
-authRouter.post("/register",setPath('user'),uploadfile().single('image'), bodyValidator(userCreateDTO),  userCtrl.userCreate)
-authRouter.post("/seller/register", uploadfile().none(), bodyValidator(userCreateDTO) ,userCtrl.registerSeller)
-authRouter.get("/activate/:token",authController.activateUser)
-authRouter.get("/resend-activationToken/:token",authController.resendActivationToken)
-authRouter.post("/login",uploadfile().none(),bodyValidator(LoginDTO), authController.login);
-authRouter.get("/me",loginCheck, authController.getloggedinUser);
-
+// Auth routes - RESTful design
+authRouter.post("/register", setPath('user'), uploadfile().single('image'), bodyValidator(userCreateDTO), userCtrl.userCreate)
+authRouter.post("/seller/register", uploadfile().none(), bodyValidator(userCreateDTO), userCtrl.registerSeller)
+authRouter.post("/login", uploadfile().none(), bodyValidator(LoginDTO), authController.login)
+authRouter.get("/me", loginCheck, authController.getloggedinUser)
 authRouter.get("/refresh", authController.refreshToken)
+authRouter.get("/activate/:token", authController.activateUser)
+authRouter.get("/resend-activation/:token", authController.resendActivationToken)
 
 module.exports = authRouter;
 
