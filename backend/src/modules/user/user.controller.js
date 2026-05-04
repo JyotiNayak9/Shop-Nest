@@ -14,14 +14,17 @@ class UserController{
                 const body = req.body;
                 const data = await userSvc.transformUserCreate(body);
                 const user = await userSvc.registerUser(data);
-               
+                
                 console.log("Registered Data:", user);
-                // await userSvc.sendActivationEmail({name: user.name, email: user.email, token: user.activationToken})   
-            res.json({
-                result:user,
-                message:"User created",
-                meta : null
-            })
+                
+                // Send OTP for email verification
+                await userSvc.sendVerificationOTP(user);
+                
+                res.json({
+                    result: null,
+                    message: "Registration successful. Please check your email for OTP.",
+                    meta : null
+                })
             } catch(exception){
                 next(exception)
             }
@@ -135,23 +138,39 @@ ForgotPasswordToken = async (req, res, next) => {
             };
             console.log(userData)
             let user = await userSvc.transformUserCreate(userData);
-            user = userSvc.generateUserActivationToken(user);
             user = await userSvc.registerUser(user);
             console.log("Registered Data:", user);
 
-            // Send activation email
-            // await userSvc.sendActivationEmail({
-            //     email: user.email,
-            //     name: user.name,
-            //     token: user.activationToken,
-            //     sub: "Activate your seller account"
-            // });
+            // Send OTP for email verification
+            await userSvc.sendVerificationOTP(user);
 
             res.json({
                 result: null,
-                message: "Seller registration successful. Please check your email to activate your account.",
+                message: "Seller registration successful. Please check your email for OTP.",
                 meta: null
             });
+        } catch (exception) {
+            next(exception);
+        }
+    }
+
+    // Verify OTP
+    verifyEmail = async (req, res, next) => {
+        try {
+            const { email, otp } = req.body;
+            const result = await userSvc.verifyOTP(email, otp);
+            res.json({ result, message: "Email verified successfully.", meta: null });
+        } catch (exception) {
+            next(exception);
+        }
+    }
+
+    // Resend OTP
+    resendOTP = async (req, res, next) => {
+        try {
+            const { email } = req.body;
+            const result = await userSvc.resendVerificationOTP(email);
+            res.json({ result: null, message: "OTP resent successfully.", meta: null });
         } catch (exception) {
             next(exception);
         }

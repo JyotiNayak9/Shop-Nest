@@ -4,62 +4,26 @@ const { randomStringGenerator, deleteFile } = require("../../utilities/helper");
 const mailSvc = require("../../services/mail.service");
 const UserModel = require("./user.model");
 const uploadImage = require("../../config/cloudinary.config");
+const redisSvc = require("../../services/redis.service");
+const generateOTP = require("../../utils/otp.util");
 // const { hasValidDomain, verifyEmailExists } = require("./email_validator");
 // const dns= require('dns').promises;
 
 
 
 class UserService{
-
-generateUserActivationToken = (data) =>{
-    data.activationToken = randomStringGenerator(100)
-    data.activateFor = Date.now()+(process.env.TOKEN_ACTIVE_FOR*60*60*1000)     
-    return data; 
-}
+    
 transformUserCreate = async (req) =>{
 let data = req;
-        // if(req.file){
-        //     data.image = req.file.filename
-        // }
         console.log("Data", data)
         data.password = bcrypt.hashSync(data.password, 10)
-    //    const tokenData = this.generateUserActivationToken(data)
-    //    data.activationToken = tokenData.activationToken;
-    //    data.status = "inactive"
+
     console.log(data)
 
-    //    data.image = await uploadImage("./public/uploads/user/"+req.file.filename)
         return data;
 }
 
-      
-
-    sendActivationEmail =  async ({name, email, token, sub = "Activate your account"}) =>{
-        try{
-          
-            await mailSvc.sendEmail({
-                to: email,
-                sub: sub ,
-                message : `
-                Dear ${name}, <br/>
-                <p>Your account has been registered successfully</p>
-                <p> Please click on the link below or copy and paste the url inthe browser to activate your account: </p>
-                <a href = "${process.env.FRONTEND_URL+'activate/'+token}">${process.env.FRONTEND_URL+'activate/'+token}</a>
-                <br>
-                <p>----------------------------------------------------</p>
-                <p>Regards</p>
-                <p>System Admin</p>
-                <p>"${process.env.SMTP_FROM}"</p>
-                <p>
-                <small><i>Please do not reply to this email</i></small>
-                </p>               
-                `
-                
-            })
-        }catch(exception){
-            throw exception
-        }
-    }
+ 
 
     registerUser = async (data)=>{
         try{
@@ -177,6 +141,58 @@ let data = req;
 
 countUsers= async (filter = {}) => {
     return await UserModel.countDocuments(filter);
+}
+
+sendVerificationOTP = async (user) => {
+    const otp = generateOTP();
+    
+    await redisSvc.setOtp(user.email, otp);
+    
+    // Send email
+    await mailSvc.sendEmail({
+        to: user.email,
+        sub: "Verify your ShopNest account",
+        message: `
+            Dear ${user.name}, <br/>
+            <p>Your OTP for email verification is:</p>
+            <h2 style="letter-spacing: 8px; color: #6d28d9;">${otp}</h2>
+            <p>This OTP is valid for <strong>5 minutes</strong>.</p>
+            <p>If you did not register, ignore this email.</p>
+        `
+    });
+    
+    console.log("OTP sent to:", user.email);
+}
+
+verifyOTP = async (email, otp) => {
+    const storedOtp = await redisSvc.getOtp(email);
+    
+    if (!storedOtp) {
+        throw { status: 400, message: "OTP expired or not found. Please request a new one." };
+    }
+    
+    if (storedOtp !== otp) {
+        throw { status: 400, message: "Invalid OTP. Please try again." };
+    }
+    
+    // OTP matched → mark user as verified in MongoDB
+    await UserModel.findOneAndUpdate(
+        { email: email },
+        { isVerified: true }
+    );
+    
+    // Delete OTP from Redis — one time use
+    await redisSvc.deleteOtp(email);
+    
+    return { message: "Email verified successfully" };
+}
+
+resendVerificationOTP = async (email) => {
+    const user = await UserModel.findOne({ email });
+    if (!user) throw { status: 404, message: "User not found" };
+    if (user.isVerified) throw { status: 400, message: "Email already verified" };
+    await this.sendVerificationOTP(user);
+    return { message: "OTP resent successfully" };
 }
 
 }

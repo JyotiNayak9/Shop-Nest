@@ -70,6 +70,11 @@ class AuthController {
         const user = await userSvc.getSingleUserByFilter({ email: email });
         console.log("Login attempt - hash in DB:", user.password);
 
+        // Check if user is verified
+        if (!user.isVerified) {
+            throw { status: 403, message: "Please verify your email before logging in." };
+        }
+
         const isMatch = bcrypt.compareSync(password, user.password);
         console.log("Login attempt - bcrypt result:", isMatch);
 

@@ -54,14 +54,7 @@ const UserSchema = new mongoose.Schema({
         enum: [...Object.values(UserRoles)],
         default: UserRoles.CUSTOMER
     },
-    // image: Array,
-    // status:{
-    //     type : String,
-    //     enum: [...Object.values(StatusType)],
-    //     default: StatusType.INACTIVE
-    // },
-    // activationToken: String,
-    // activateFor: Date,
+     isVerified: { type: Boolean, default: false },
     phone: [String],
     address: {
         permanent:AddressSchema,
