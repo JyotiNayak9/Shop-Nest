@@ -156,20 +156,18 @@ const SellerProductList = () => {
     }
   };
 
-  useEffect(() => {
+ useEffect(() => {
+    getAllCategories();
+    getAllBrand();
+}, []);
+
+useEffect(() => {
     const timeout = setTimeout(() => {
-      (getAllProduct({
-        page: 1,
-        limit: 10,
-        search: search,
-      }),
-        getAllCategories(),
-        getAllBrand());
-    });
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [search]);
+        getAllProduct({ page: 1, limit: 10, search: search });
+    }, 500);
+
+    return () => clearTimeout(timeout);
+}, [search, sort, filter]);
 
   const deleteData = async (id: string) => {
     try {
