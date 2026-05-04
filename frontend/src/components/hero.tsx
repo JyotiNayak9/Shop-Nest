@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import authSvc from "../pages/auth/auth.service";
 import { toast } from "react-toastify";
-import { TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 interface Search {
