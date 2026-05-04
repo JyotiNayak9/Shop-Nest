@@ -7,43 +7,39 @@ import { TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 interface Search {
-    
-    search?: string | null| undefined;
-   
+  search?: string | null | undefined;
 }
 
 const HeroSection = () => {
-  const [search, setSearch] =  useState<string |null>();
+  const [search, setSearch] = useState<string | null>();
   const [Product, setProduct] = useState<any[]>([]);
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
-   const getAllProduct = async ({search = ''}: Search) => {
-      
-        try{
-      
-          const response: any = await authSvc.getRequest("/product/getproducts", { params : {search: search}})
-          console.log(response)
-          setProduct(response.result);
-          console.log(Product)
-         
-        }catch(exception){
-          toast.error("Error while fetching Product ")
-          console.log(exception)
-        }
-       
-      }
-     useEffect(()=>{
-      const timeout = setTimeout(() =>{
-         if (search && search.trim() !== "") {
-      getAllProduct({ search });
-    } else {
-      setProduct([]);
+  const getAllProduct = async ({ search = "" }: Search) => {
+    try {
+      const response: any = await authSvc.getRequest("/product/getproducts", {
+        params: { search: search },
+      });
+      console.log(response);
+      setProduct(response.result);
+      console.log(Product);
+    } catch (exception) {
+      toast.error("Error while fetching Product ");
+      console.log(exception);
     }
-  });
-      return () => {
-        clearTimeout(timeout)
+  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (search && search.trim() !== "") {
+        getAllProduct({ search });
+      } else {
+        setProduct([]);
       }
-    },[search])
+    });
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [search]);
   return (
     <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[90vh] flex items-center justify-center bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 text-white overflow-hidden">
       {/* Background Image with Overlay */}
@@ -71,32 +67,38 @@ const navigate = useNavigate()
         {/* Search Bar */}
         <div className="flex flex-col sm:flex-row items-center gap-2 justify-center">
           <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-2 shadow-lg w-full sm:w-64 md:w-80">
-            <TextInput className="border-none outline-none" type="search"  onChange={(e: any) => {
-                      setSearch(e.target.value)
-                    }}/>
+            <input
+              type="search"
+              placeholder="Search products..."
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full bg-transparent outline-none border-none"
+            />
           </div>
           <button className="w-full sm:w-auto bg-white text-purple-600 font-semibold px-4 sm:px-5 py-2 rounded-full shadow-md hover:bg-gray-100 transition mt-2 sm:mt-0">
             Search
           </button>
         </div>
-{/* Product Results */}
-       {Product.length > 0 && (
-  <div className="bg-white/10 backdrop-blur-sm p-3 sm:p-4 rounded-xl max-h-60 overflow-y-auto mt-4 mx-4 sm:mx-auto max-w-2xl">
-    <h3 className="text-white text-lg font-semibold mb-2">Results:</h3>
-    <ul className="space-y-2">
-      {Product.map((prod, index) => (
-        <li
-          key={index}
-          onClick={() => navigate(`/products/${prod.slug || prod._id}`)}
-          className="text-white text-base bg-white/5 p-2 rounded-md cursor-pointer hover:bg-white/10 transition"
+        {/* Product Results */}
+        {Product.length > 0 && (
+          <div className="bg-white/10 backdrop-blur-sm p-3 sm:p-4 rounded-xl max-h-60 overflow-y-auto mt-4 mx-4 sm:mx-auto max-w-2xl">
+            <h3 className="text-white text-lg font-semibold mb-2">Results:</h3>
+            <ul className="space-y-2">
+              {Product.map((prod, index) => (
+                <li
+                  key={index}
+                  onClick={() => navigate(`/products/${prod.slug || prod._id}`)}
+                  className="text-white text-base bg-white/5 p-2 rounded-md cursor-pointer hover:bg-white/10 transition"
+                >
+                  {prod.title}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <button
+          onClick={() => navigate("/products")}
+          className="mt-6 px-6 sm:px-8 py-3 bg-white/10 border border-white rounded-full text-white font-medium hover:bg-white/20 transition duration-300 text-sm sm:text-base"
         >
-          {prod.title}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
-        <button onClick={() => navigate('/products')} className="mt-6 px-6 sm:px-8 py-3 bg-white/10 border border-white rounded-full text-white font-medium hover:bg-white/20 transition duration-300 text-sm sm:text-base">
           🔍 Browse All Products
         </button>
       </motion.div>
