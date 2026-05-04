@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import authSvc from "../pages/auth/auth.service";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { TextInput } from "flowbite-react";
 
 interface Search {
   search?: string | null | undefined;
@@ -66,12 +67,14 @@ const HeroSection = () => {
         {/* Search Bar */}
         <div className="flex flex-col sm:flex-row items-center gap-2 justify-center">
           <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-2 shadow-lg w-full sm:w-64 md:w-80">
-            <input
-              type="search"
-              placeholder="Search products..."
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent outline-none border-none"
-            />
+            <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-lg w-full sm:w-64 md:w-80">
+              <TextInput
+                type="search"
+                placeholder="Search products..."
+                onChange={(e: any) => setSearch(e.target.value)}
+                className="w-full bg-transparent border-none focus:ring-0 focus:outline-none"
+              />
+            </div>
           </div>
           <button className="w-full sm:w-auto bg-white text-purple-600 font-semibold px-4 sm:px-5 py-2 rounded-full shadow-md hover:bg-gray-100 transition mt-2 sm:mt-0">
             Search
