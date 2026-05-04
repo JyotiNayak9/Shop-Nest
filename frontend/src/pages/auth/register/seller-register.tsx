@@ -45,8 +45,13 @@ const SellerRegister = () => {
         setLoading(true);
         await authSvc.postRequest('/auth/seller/register',data,{file:true});
 
-          toast.success("Your account has been created successfully. ")
-          navigate('/')
+          // Store email for OTP verification
+          localStorage.setItem("pendingVerificationEmail", data.email);
+          
+          toast.success("Seller registration successful! Please check your email for OTP verification.")
+          
+          // Redirect to OTP verification page
+          navigate('/verify-otp', { state: { email: data.email } });
       } catch(exception : any){
         if(+exception.status === 400){
           Object.keys(exception.data.result).map((field:any) =>{

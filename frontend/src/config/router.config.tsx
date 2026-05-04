@@ -21,6 +21,7 @@ import NotFoundError from "../components/common/error/not-found-error";
 import RegisterPage from "../pages/auth/register/register.page";
 import Logout from "../pages/auth/logout";
 import ResetPassword from "../pages/auth/forget-password";
+import OTPVerificationPage from "../pages/auth/otp/otp-verification.page";
 import CategoryListingPage from "../pages/Cms/category/category-list-page";
 import CreateCategory from "../pages/Cms/category/category-create-page";
 import EditCategory from "../pages/Cms/category/category-edit-page";
@@ -85,6 +86,7 @@ const RouterConfig = () => {
                   <Route index element={<LandingPage />} />
                   <Route path="register" element={<RegisterPage />} />
                   <Route path="/SellerRegister" element={<SellerRegister />} />
+                  <Route path="verify-otp" element={<OTPVerificationPage />} />
                   <Route path="activate/:token" element={<UserActivation />} />
                   <Route path="login" element={<LoginPage />} />
                   <Route path="login" element={<LoginPage />} />
