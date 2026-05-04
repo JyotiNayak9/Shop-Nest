@@ -70,9 +70,8 @@ const HeroSection = () => {
             <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-lg w-full sm:w-64 md:w-80">
               <TextInput
                 type="search"
-                placeholder="Search products..."
                 onChange={(e: any) => setSearch(e.target.value)}
-                className="w-full bg-transparent border-none focus:ring-0 focus:outline-none"
+                className="[&_input]:border-none [&_input]:outline-none [&_input]:ring-0 focus:[&_input]:ring-0"
               />
             </div>
           </div>
