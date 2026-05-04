@@ -71,7 +71,7 @@ const navigate = useNavigate()
         {/* Search Bar */}
         <div className="flex flex-col sm:flex-row items-center gap-2 justify-center">
           <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-2 shadow-lg w-full sm:w-64 md:w-80">
-            <TextInput type="search"  onChange={(e: any) => {
+            <TextInput className="border-none outline-none" type="search"  onChange={(e: any) => {
                       setSearch(e.target.value)
                     }}/>
           </div>
