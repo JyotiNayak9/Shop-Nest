@@ -9,7 +9,7 @@ export const AllProducts = () => {
   const getproduct = async () => {
     try{
       // setLoading(true)
-      const response: any = await authSvc.getRequest("/product/approved-products?limit=100" )
+      const response: any = await authSvc.getRequest("/products/approved?limit=100" )
       console.log(response)
       setproduct(response.result);
       console.log(product)

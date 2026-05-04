@@ -10,7 +10,7 @@ export const Homeproduct = () => {
   const getproduct = async () => {
     try {
       const response: any = await authSvc.getRequest(
-        "/product/approved-products",
+        "/products/approved",
       );
 
       if (response && response.result) {
