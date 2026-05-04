@@ -57,11 +57,12 @@ const CategoryListingPage = () => {
           limit: 5,
           search: search
         })
-    })
+    },500)
       return () => {
         clearTimeout(timeout)
       }
     },[search])
+
 
     const deleteData = async (id:string) => {
    try{

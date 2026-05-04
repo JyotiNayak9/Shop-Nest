@@ -41,18 +41,7 @@ export const AdminHeader = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-4">
-              <NavLink
-                to={"/" + LoggedInUser.role}
-                className={({ isActive }) =>
-                  `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isActive
-                      ? "text-violet-600 bg-violet-50"
-                      : "text-gray-700 hover:text-violet-600 hover:bg-gray-50"
-                  }`
-                }
-              >
-                Dashboard
-              </NavLink>
+              
               
               <Dropdown
                 label={LoggedInUser.name}

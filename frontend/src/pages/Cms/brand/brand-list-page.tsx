@@ -58,7 +58,7 @@ const BrandListingPage = () => {
           limit: 10,
           search: search
         })
-    })
+    },500)
       return () => {
         clearTimeout(timeout)
       }
