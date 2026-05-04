@@ -11,22 +11,20 @@ const productRouter = require("express").Router();
 
 const upload = multer()
 
-// Product routes - RESTful design
 productRouter.get('/', ProductCtrl.index)
 productRouter.post('/', loginCheck, setPath('product'), uploadfile(fileFilterType.IMAGE).array('image',10), bodyValidator(ProductCreateDTO), ProductCtrl.CreateProduct)
-productRouter.get('/:id', ProductCtrl.getaproduct)
-productRouter.patch('/:id', loginCheck, upload.none(), bodyValidator(ProductUpdateDTO), ProductCtrl.UpdateaProduct)
-productRouter.delete('/:id', loginCheck, hasPermission('admin'), ProductCtrl.DeleteaProduct)
 
-// Product specific actions
 productRouter.get('/slug/:slug', ProductCtrl.getbyslug)
 productRouter.get('/category/:categoryId', ProductCtrl.getProductByCategory)
 productRouter.get('/seller/:id', loginCheck, ProductCtrl.getProductBySeller)
 productRouter.get('/approved', ProductCtrl.getApprovedProducts)
+
+productRouter.get('/:id', ProductCtrl.getaproduct)
+productRouter.patch('/:id', loginCheck, upload.none(), bodyValidator(ProductUpdateDTO), ProductCtrl.UpdateaProduct)
+productRouter.delete('/:id', loginCheck, hasPermission('admin'), ProductCtrl.DeleteaProduct)
 productRouter.patch('/:id/approve', loginCheck, hasPermission('admin'), ProductCtrl.approveProduct)
 productRouter.patch('/:id/reject', loginCheck, hasPermission('admin'), ProductCtrl.rejectProduct)
 
-// Product reviews - nested resources
 productRouter.get('/:slug/reviews', ProductCtrl.getReviews)
 productRouter.post('/:slug/reviews', loginCheck, hasPermission('customer'), ProductCtrl.addReview)
 productRouter.patch('/:slug/reviews/:reviewId', loginCheck, ProductCtrl.updateReview)

@@ -12,14 +12,14 @@ const recommendationRouter = require("../modules/UserPreferences/recommendation_
 
 
  router.use("/auth", authRouter)
- router.use("/user", userRouter)
+ router.use("/users", userRouter)
 //  router.use("/banner",bannerRouter)
- router.use("/brand",brandRouter)
- router.use("/category", CategoryRouter)
- router.use("/product", productRouter)
+ router.use("/brands",brandRouter)
+ router.use("/categories", CategoryRouter)
+ router.use("/products", productRouter)
 router.use("/cart",Cartrouter)
 router.use("/recommendation",recommendationRouter)
-router.use("/order",OrderRouter)
+router.use("/orders",OrderRouter)
 router.use("/payment",PaymentRouter)
 
 
