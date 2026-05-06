@@ -1,13 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import RegisterImage from "../../../assets/images/registration.png"
-import { InputLabel, RoleSelectComponent,  TextInputComponent } from "../../../components/common/form/input-component.";
+import { InputLabel, RoleSelectComponent,  SubmitButton,  TextInputComponent } from "../../../components/common/form/input-component.";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import authSvc from "../auth.service";
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState ,useEffect, useContext} from "react";
-import { LoadingComponent } from "../../../components/common/loading/loading-component";
 import AuthContext from "../../../context/auth.context";
 
 
@@ -186,12 +185,9 @@ const RegisterPage = () => {
         
 
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-            <button disabled = {loading}
-              className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-            >
-             
-              {loading? <LoadingComponent/> : ' Create an account'}
-            </button>
+            <SubmitButton loading={loading}>
+               Create an account
+            </SubmitButton>
 
             <p className="mt-4 text-sm text-gray-500 sm:mt-0">
               Already have an account?

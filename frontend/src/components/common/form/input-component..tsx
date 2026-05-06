@@ -19,6 +19,7 @@ export interface TextInputInterface {
     errMsg?: string | null
     type?: string
     row?:number
+    onChange?: any
 }
 export interface ImageInputInterface{
     type: any
@@ -68,6 +69,31 @@ export const NumberInputComponent = ({type="number",control,name, defaultValue, 
         </>
     )
 }
+
+export const OTPInputComponent = ({type="number",control,name, onChange, defaultValue, errMsg=null}: TextInputInterface) => {
+    const {field} = useController({
+        control: control,
+        name:name,
+        defaultValue: defaultValue?? undefined,
+    })
+    return(
+        <>
+        <input
+              type={type}
+              {...field}
+              onChange={(e) => {
+                  field.onChange(e)
+                  if (onChange) onChange(e)
+              }}
+            className={`mt-1 w-full rounded-md text-center text-lg tracking-widest  ${errMsg? 'border-red-500' : 'border-gray-200'} bg-white text-sm text-gray-700 shadow-sm focus:border-violet-600 focus:ring-violet-600`}
+            />
+            <span className="text-sm italic text-red-800">
+             {errMsg}
+            </span>
+        </>
+    )
+}
+
 
 export const TextAreaInputComponent = ({row=5,control,name, defaultValue,  errMsg=null}: TextInputInterface) => {
     const {field} = useController({

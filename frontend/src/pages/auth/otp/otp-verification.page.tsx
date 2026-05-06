@@ -7,6 +7,7 @@ import {
   InputLabel,
   TextInputComponent,
   SubmitButton,
+  OTPInputComponent,
 } from "../../../components/common/form/input-component.";
 import { Heading3 } from "../../../components/common/title";
 import { Button } from "flowbite-react";
@@ -53,7 +54,7 @@ const OTPVerificationPage = () => {
   const verifyOTP = async (data: any) => {
     try {
       setLoading(true);
-      const response = await authSvc.postRequest("/users/verify-email", data);
+       await authSvc.postRequest("/users/verify-email", data);
       
       toast.success("Email verified successfully! You can now login.");
       
@@ -81,7 +82,7 @@ const OTPVerificationPage = () => {
 
     try {
       setResendLoading(true);
-      const response = await authSvc.postRequest("/users/resend-otp", { email: watchedEmail });
+      await authSvc.postRequest("/users/resend-otp", { email: watchedEmail });
       
       toast.success("OTP has been resent to your email");
       
@@ -121,8 +122,6 @@ const OTPVerificationPage = () => {
               type="email"
               control={control}
               errMsg={errors?.email?.message as string}
-              placeholder="Enter your email"
-              disabled={!!emailFromState}
             />
           </div>
 
@@ -130,15 +129,12 @@ const OTPVerificationPage = () => {
             <div className="my-2 block">
               <InputLabel htmlFor="otp">6-Digit OTP</InputLabel>
             </div>
-            <TextInputComponent
+            <OTPInputComponent
               name="otp"
               type="text"
               control={control}
               errMsg={errors?.otp?.message as string}
-              placeholder="Enter 6-digit OTP"
-              maxLength={6}
               onChange={handleOTPChange}
-              className="text-center text-lg tracking-widest"
             />
           </div>
 
@@ -156,11 +152,10 @@ const OTPVerificationPage = () => {
           </div>
 
           <SubmitButton
-            className="bg-violet-600 enabled:hover:bg-violet-800"
-            disabled={loading}
+            
             loading={loading}
           >
-            {loading ? "Verifying..." : "Verify Email"}
+             Verify Email
           </SubmitButton>
 
           <div className="mt-4 text-center">
