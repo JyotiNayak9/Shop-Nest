@@ -13,7 +13,6 @@ class UserService{
 transformUserCreate = async (req) =>{
 let data = req;
         console.log("Data", data)
-        await this.validateEmail(data.email);
         data.password = bcrypt.hashSync(data.password, 10)
     console.log(data)
 
