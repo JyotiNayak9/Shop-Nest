@@ -12,7 +12,6 @@ class UserController{
     userCreate= async (req, res, next)=>{
             try{
                 const body = req.body;
-                console.log("Received registration data:", body);
                 await userSvc.validateEmail(body.email);
                 console.log("Email validation passed for:", body.email);
                 const data = await userSvc.transformUserCreate(body);
