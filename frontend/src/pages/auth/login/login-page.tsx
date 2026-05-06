@@ -54,7 +54,7 @@ const LoginPage = () => {
     if (result.isConfirmed) {
       try {
         setLoading(true);
-        await authSvc.postRequest("/auth/resend-otp", { email });
+        await authSvc.postRequest("/users/resend-otp", { email });
         toast.success("OTP sent! Please check your email.");
         navigate("/verify-otp", { state: { email } });
       } catch (err: any) {
