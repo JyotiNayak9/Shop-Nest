@@ -17,7 +17,6 @@ class UserController{
                 
                 console.log("Registered Data:", user);
                 
-                // Send OTP for email verification
                 await userSvc.sendVerificationOTP(user);
                 
                 res.json({

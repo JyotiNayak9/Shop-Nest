@@ -6,18 +6,15 @@ const UserModel = require("./user.model");
 const uploadImage = require("../../config/cloudinary.config");
 const redisSvc = require("../../services/redis.service");
 const generateOTP = require("../../utils/otp.util");
-// const { hasValidDomain, verifyEmailExists } = require("./email_validator");
-// const dns= require('dns').promises;
-
-
+const { validate } = require('deep-email-validator');
 
 class UserService{
     
 transformUserCreate = async (req) =>{
 let data = req;
         console.log("Data", data)
+        await this.validateEmail(data.email);
         data.password = bcrypt.hashSync(data.password, 10)
-
     console.log(data)
 
         return data;
@@ -195,6 +192,35 @@ resendVerificationOTP = async (email) => {
     return { message: "OTP resent successfully" };
 }
 
+
+validateEmail = async (email) => {
+    const result = await validate({
+        email: email,
+        sender: email,
+        validateRegex: true,       
+        validateMx: true,         
+        validateDisposable: true,  
+        validateSMTP: false        
+    });
+
+    console.log("Email validation result:", result);
+
+    if (!result.valid) {
+        const reason = result.reason; 
+        const validators = result.validators;
+        
+        if (validators?.mx?.valid === false) {
+            throw { status: 400, message: "Email domain does not exist. Please use a real email." };
+        }
+        if (validators?.disposable?.valid === false) {
+            throw { status: 400, message: "Disposable/temporary emails are not allowed." };
+        }
+        
+        throw { status: 400, message: "Invalid email address." };
+    }
+
+    return true;
+}
 }
 
 
