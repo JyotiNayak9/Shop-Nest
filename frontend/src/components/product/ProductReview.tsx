@@ -13,11 +13,9 @@ interface Review {
   user: {
     _id: string;
     name: string;
-  };
+  } | null;  // ← allow null
   createdAt: string;
 }
-
-
 
 const ProductReview = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -34,7 +32,7 @@ const ProductReview = () => {
 
   const getReviews = async () => {
     try {
-      const response : any = await ProductSvc.getRequest(`/products/${slug}/reviews`);
+      const response: any = await ProductSvc.getRequest(`/products/${slug}/reviews`);
       setReviews(response.result.reviews);
       setAverageRating(response.result.averageRating);
       setReviewCount(response.result.reviewCount);
@@ -43,9 +41,11 @@ const ProductReview = () => {
     }
   };
 
-  const handleRatingChange = (newRating: number) => {
-    setRating(newRating);
-  };
+  useEffect(() => {
+    getReviews();
+  }, [slug]);
+
+  const handleRatingChange = (newRating: number) => setRating(newRating);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,62 +57,32 @@ const ProductReview = () => {
     const currentRating = editingReviewId ? editRating : rating;
     const currentComment = editingReviewId ? editComment : comment;
 
-    if (currentRating === 0) {
-      toast.error("Please select a rating");
-      return;
-    }
-
-    if (!currentComment.trim()) {
-      toast.error("Please write a comment");
-      return;
-    }
+    if (currentRating === 0) { toast.error("Please select a rating"); return; }
+    if (!currentComment.trim()) { toast.error("Please write a comment"); return; }
 
     try {
       setLoading(true);
-      const reviewData = {
-        rating: currentRating,
-        comment: currentComment
-      };
-      
+      const reviewData = { rating: currentRating, comment: currentComment };
+
       if (editingReviewId) {
-        await ProductSvc.patchRequest(
-          `/products/${slug}/reviews/${editingReviewId}`, 
-          reviewData, 
-          { auth: true }
-        );
+        await ProductSvc.patchRequest(`/products/${slug}/reviews/${editingReviewId}`, reviewData, { auth: true });
         toast.success("Review updated successfully");
         setEditingReviewId(null);
       } else {
-        await ProductSvc.postRequest(
-          `/products/${slug}/reviews`, 
-          reviewData,
-          { auth: true }
-        );
+        await ProductSvc.postRequest(`/products/${slug}/reviews`, reviewData, { auth: true });
         toast.success("Review submitted successfully");
       }
-      
+
       setRating(0);
       setComment("");
       setEditComment("");
-      // setEditRating(0);
       getReviews();
     } catch (exception: any) {
-      if (exception.data?.result) {
-        Object.keys(exception.data.result).forEach((field: any) => {
-          toast.error(exception.data.message);
-          console.error(`${field}: ${exception.data.result[field]}`);
-        });
-      } else {
-        toast.error("An error occurred while processing your request");
-      }
+      toast.error(exception?.data?.message || "An error occurred while processing your request");
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    getReviews();
-  }, [slug]);
 
   const handleEditReview = (review: Review) => {
     setEditingReviewId(review._id);
@@ -134,16 +104,16 @@ const ProductReview = () => {
         getReviews();
       } catch (error) {
         toast.error("Failed to delete review");
-        console.error("Error deleting review:", error);
       }
     }
   };
 
   return (
     <div className="space-y-6">
+      {/* Write / Edit Review Form */}
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-2xl font-bold mb-4">
-          {editingReviewId ? 'Edit Review' : 'Write a Review'}
+          {editingReviewId ? "Edit Review" : "Write a Review"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex items-center justify-center gap-2">
@@ -152,8 +122,8 @@ const ProductReview = () => {
                 key={star}
                 onClick={() => editingReviewId ? setEditRating(star) : handleRatingChange(star)}
                 className={`h-6 w-6 cursor-pointer ${
-                  (editingReviewId ? editRating >= star : rating >= star) 
-                    ? "text-yellow-400" 
+                  (editingReviewId ? editRating >= star : rating >= star)
+                    ? "text-yellow-400"
                     : "text-gray-300"
                 }`}
               />
@@ -161,28 +131,18 @@ const ProductReview = () => {
           </div>
           <textarea
             value={editingReviewId ? editComment : comment}
-            onChange={(e) => 
-              editingReviewId 
-                ? setEditComment(e.target.value) 
-                : setComment(e.target.value)
+            onChange={(e) =>
+              editingReviewId ? setEditComment(e.target.value) : setComment(e.target.value)
             }
             placeholder="Write your review here..."
             className="w-full p-2 border rounded-md min-h-[100px]"
           />
           <div className="flex gap-2">
-            <Button
-              type="submit"
-              disabled={loading}
-              className="flex-1 bg-blue-600 hover:bg-blue-700"
-            >
-              {editingReviewId ? 'Update Review' : 'Submit Review'}
+            <Button type="submit" disabled={loading} className="flex-1 bg-violet-700 hover:bg-violet-800">
+              {editingReviewId ? "Update Review" : "Submit Review"}
             </Button>
             {editingReviewId && (
-              <Button
-                type="button"
-                onClick={handleCancelEdit}
-                className="bg-gray-500 hover:bg-gray-600"
-              >
+              <Button type="button" onClick={handleCancelEdit} className="bg-gray-500 hover:bg-gray-600">
                 Cancel
               </Button>
             )}
@@ -190,50 +150,39 @@ const ProductReview = () => {
         </form>
       </div>
 
+      {/* Reviews List */}
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
-         <div className="flex items-center justify-between mb-4">
-    <div className="flex items-center gap-2">
-      <span className="text-xl font-semibold">
-        {averageRating.toFixed(1)}
-      </span>
-      <div className="flex">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <HiStar
-            key={star}
-            className={`h-5 w-5 ${
-              averageRating >= star
-                ? "text-yellow-400"
-                : "text-gray-300"
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-    <span className="text-gray-500 text-sm">
-      {reviewCount} reviews
-    </span>
-  </div>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-semibold">{averageRating.toFixed(1)}</span>
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <HiStar
+                  key={star}
+                  className={`h-5 w-5 ${averageRating >= star ? "text-yellow-400" : "text-gray-300"}`}
+                />
+              ))}
+            </div>
+          </div>
+          <span className="text-gray-500 text-sm">{reviewCount} reviews</span>
+        </div>
+
         {reviews.length === 0 ? (
           <p className="text-gray-500">No reviews yet</p>
         ) : (
           <div className="space-y-4">
             {reviews.map((review) => (
-              console.log("Review:", review),
-              <div
-                key={review._id}
-                className="border-b pb-4 last:border-b-0 relative group"
-              >
+              <div key={review._id} className="border-b pb-4 last:border-b-0 relative group">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-semibold">{review.user.name}</h3>
+                    {/* ← null safe: review.user could be null */}
+                    <h3 className="font-semibold">{review.user?.name || "Deleted User"}</h3>
                     <div className="flex gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <HiStar
                           key={star}
-                          className={`h-4 w-4 ${
-                            review.rating >= star ? "text-yellow-400" : "text-gray-300"
-                          }`}
+                          className={`h-4 w-4 ${review.rating >= star ? "text-yellow-400" : "text-gray-300"}`}
                         />
                       ))}
                     </div>
@@ -242,7 +191,8 @@ const ProductReview = () => {
                     <span className="text-sm text-gray-500">
                       {new Date(review.createdAt).toLocaleDateString()}
                     </span>
-                    {LoggedInUser && LoggedInUser._id === review.user._id && (
+                    {/* ← null safe: only show edit/delete if user exists and matches */}
+                    {LoggedInUser && review.user && LoggedInUser._id === review.user._id && (
                       <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleEditReview(review)}
