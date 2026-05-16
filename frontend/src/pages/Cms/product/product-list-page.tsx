@@ -16,7 +16,7 @@ const ProductListingPage = () => {
     const [Product, setProduct] =useState<any[]>([]);
     const [loading, setLoading] =useState(true);
     const [search, setSearch] = useState<string |null>();
-        const [sort, setSort] = useState<any>({});
+    const [sort, setSort] = useState<any>({});
     const [filter, setFilter] = useState<any>({});
     const [categoryMap, setCategoryMap] = useState<{ [key: string]: string }>({});
     const [brandMap, setBrandMap] = useState<{ [key: string]: string }>({});
@@ -287,7 +287,8 @@ useEffect(() => {
         </Table.Body>
       </Table>
       <div className="flex overflow-x-auto sm:justify-center">
-      <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPage} onPageChange={onPageChange} />
+      <Pagination 
+      currentPage={pagination.currentPage} totalPages={pagination.totalPage} onPageChange={onPageChange} />
     </div>
     </div>
   

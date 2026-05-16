@@ -35,19 +35,14 @@ const HeroSection = () => {
       } else {
         setProduct([]);
       }
-    });
+    },700);
     return () => {
       clearTimeout(timeout);
     };
   }, [search]);
   return (
     <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[90vh] flex items-center justify-center bg-gradient-to-r from-purple-700 via-purple-600 to-purple-500 text-white overflow-hidden">
-      {/* Background Image with Overlay */}
-      {/* <img
-        src="/hero-bg.jpg" // Replace with your own background
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
-      /> */}
+
       <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent z-0" />
 
       {/* Content */}
@@ -75,9 +70,7 @@ const HeroSection = () => {
               />
             </div>
           </div>
-          <button className="w-full sm:w-auto bg-white text-purple-600 font-semibold px-4 sm:px-5 py-2 rounded-full shadow-md hover:bg-gray-100 transition mt-2 sm:mt-0">
-            Search
-          </button>
+         
         </div>
         {/* Product Results */}
         {Product.length > 0 && (

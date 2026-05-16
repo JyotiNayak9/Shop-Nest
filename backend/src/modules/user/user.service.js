@@ -5,7 +5,7 @@ const mailSvc = require("../../services/mail.service");
 const UserModel = require("./user.model");
 const uploadImage = require("../../config/cloudinary.config");
 const redisSvc = require("../../services/redis.service");
-const generateOTP = require("../../utils/otp.util");
+const generateOTP = require("../../utilities/otp.util");
 const { validate } = require('deep-email-validator');
 
 class UserService{

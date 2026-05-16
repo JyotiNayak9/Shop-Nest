@@ -61,7 +61,7 @@ const CategoryListingPage = () => {
       return () => {
         clearTimeout(timeout)
       }
-    },[search])
+    },[search])                                
 
 
     const deleteData = async (id:string) => {

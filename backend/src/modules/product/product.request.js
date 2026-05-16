@@ -25,7 +25,7 @@ const ProductUpdateDTO = joi.object({
     title: joi.string().min(3).max(100),
     slug: joi.string(),
     description: joi.string(),
-    quantity : joi.number(),
+    quantity : joi.number().max(10000),
     price: joi.number().max(1000000),
     category : joi.string(),
     brand: joi.string(),

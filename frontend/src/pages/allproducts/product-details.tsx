@@ -108,8 +108,8 @@ const { LoggedInUser } = useContext(AuthContext)
     <div className="bg-gray-100 flex items-center justify-center min-h-screen px-4">
       <div className="bg-white shadow-xl rounded-2xl p-6 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-6">
         <div><img
-          src={product.image}
-          alt="Lenovo Laptop"
+          src={product.image[0]}
+          alt={product.title}
           className="w-full h-80 object-cover rounded-xl shadow-md"
         />
          <Button onClick={handleAdd} className="w-full bg-violet-700  text-white py-2 rounded-lg hover:bg-violet-800 transition duration-200 mt-10">
@@ -119,10 +119,10 @@ const { LoggedInUser } = useContext(AuthContext)
             <div className="flex flex-col justify-between">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">{product.title}</h1>
         <p className="text-gray-600 mb-1">
-          <span className="font-semibold">Brand:</span> {product.brand.title}
+          <span className="font-semibold">Brand:</span> {product.brand?.title}
         </p>
         <p className="text-gray-600 mb-1">
-          <span className="font-semibold">Category:</span> {product.category.title}
+          <span className="font-semibold">Category:</span> {product.category?.title}
         </p>
         <p className="text-black text-xl font-bold mb-2">Rs.{product.price}</p>
         <div className="mb-4">
