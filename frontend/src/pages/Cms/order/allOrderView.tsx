@@ -45,20 +45,19 @@ const OrderListingPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">All Orders </h2>
+    <div className="max-w-7xl mx-auto p-4 sm:p-6">
+      <h2 className="text-xl sm:text-2xl font-bold mb-6">All Orders </h2>
 
       {orders.length === 0 ? (
-        <p>No orders found.</p>
+        <p className="text-center text-gray-500 py-8">No orders found.</p>
       ) : (
         orders.map((order) => (
-            console.log(order),
-          <div key={order._id} className="border border-gray-300 rounded-xl mb-6 p-5 shadow-sm">
-            <div className="flex justify-between mb-3">
-              <h3 className="text-lg font-semibold text-blue-600">
+          <div key={order._id} className="border border-gray-300 rounded-xl mb-6 p-4 sm:p-5 shadow-sm">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+              <h3 className="text-base sm:text-lg font-semibold text-blue-600">
                 Order ID :{order._id.slice(-6).toUpperCase()}
               </h3>
-              <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
+              <span className="bg-gray-100 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
                 Status: {order.status}
               </span>
             </div>
@@ -71,30 +70,32 @@ const OrderListingPage: React.FC = () => {
             </div>
 
             {/* Order Items */}
-            <table className="w-full text-sm border">
-              <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="p-2 border">Product</th>
-                  <th className="p-2 border">Seller</th>
-                  <th className="p-2 border">Qty</th>
-                  <th className="p-2 border">Price (Rs)</th>
-                  <th className="p-2 border">Total (Rs)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {order.items.map((item, idx) => (
-                  <tr key={idx} className="border-t">
-                    <td className="p-2 border">{item.name}</td>
-                    <td className="p-2 border">{item.seller?.shopName} <br /><small>{item.seller?.email}</small></td>
-                    <td className="p-2 border">{item.quantity}</td>
-                    <td className="p-2 border">{item.price}</td>
-                    <td className="p-2 border">{item.price * item.quantity}</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs sm:text-sm border">
+                <thead>
+                  <tr className="bg-gray-100 text-left">
+                    <th className="p-2 sm:p-3 border">Product</th>
+                    <th className="p-2 sm:p-3 border">Seller</th>
+                    <th className="p-2 sm:p-3 border">Qty</th>
+                    <th className="p-2 sm:p-3 border">Price (Rs)</th>
+                    <th className="p-2 sm:p-3 border">Total (Rs)</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {order.items.map((item, idx) => (
+                    <tr key={idx} className="border-t">
+                      <td className="p-2 sm:p-3 border">{item.name}</td>
+                      <td className="p-2 sm:p-3 border">{item.seller?.shopName} <br /><small>{item.seller?.email}</small></td>
+                      <td className="p-2 sm:p-3 border">{item.quantity}</td>
+                      <td className="p-2 sm:p-3 border">{item.price}</td>
+                      <td className="p-2 sm:p-3 border">{item.price * item.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-            <div className="text-right font-bold text-lg mt-3">
+            <div className="text-right font-bold text-base sm:text-lg mt-3">
               Order Total: Rs. {order.totalAmount}
             </div>
           </div>

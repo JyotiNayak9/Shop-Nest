@@ -84,7 +84,7 @@ const CategoryListingPage = () => {
         <HeadingWithLink title="Category List" link="/admin/category/create" btnText="Add category"/>
 
       <div className="flex justify-end items-end mb-3">
-        <TextInput type="search" className="w-1/4 " onChange={(e: any) => {
+        <TextInput type="search" className="w-full sm:w-1/4" onChange={(e: any) => {
           setSearch(e.target.value)
         }}/>
         </div>

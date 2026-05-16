@@ -30,9 +30,9 @@ const [OrderCount, setOrderCount] = useState<number>(0);
  }, []);
     return(
         <>
-         <div className=" mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+         <div className=" mt-6 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <Card href="/admin/user-list" className="max-w-sm bg-violet-600 hover:bg-violet-800" >
-      <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
+      <h5 className="text-xl sm:text-2xl font-bold tracking-tight text-white dark:text-white">
         <HiUserGroup/>
         Total Customers
       </h5>
@@ -41,7 +41,7 @@ const [OrderCount, setOrderCount] = useState<number>(0);
       </p>
     </Card>
     <Card href="/admin/user-list" className="max-w-sm bg-violet-600 hover:bg-violet-800" >
-      <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
+      <h5 className="text-xl sm:text-2xl font-bold tracking-tight text-white dark:text-white">
         <HiUserGroup/>
         Total Vendors
       </h5>
@@ -51,7 +51,7 @@ const [OrderCount, setOrderCount] = useState<number>(0);
     </Card>
 
            <Card href="/admin/order-list" className="max-w-sm bg-yellow-500 hover:bg-yellow-700" >
-      <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
+      <h5 className="text-xl sm:text-2xl font-bold tracking-tight text-white dark:text-white">
         <HiShoppingCart/>
         Total Orders
       </h5>

@@ -160,15 +160,16 @@ useEffect(() => {
         <>
         {/* <HeadingWithLink title="Product List" link="/admin/Product/create" btnText="Add Product"/> */}
 
-     <div className="flex justify-end items-end mb-3 gap-2">
+     <div className="flex flex-col sm:flex-row justify-end items-end mb-3 gap-2">
   <TextInput
     type="search"
-    className="w-1/4"
+    className="w-full sm:w-1/4"
     onChange={(e: any) => setSearch(e.target.value)}
   />
 
+  <div className="flex gap-2 w-full sm:w-auto">
   <select
-    className="border p-2 rounded"
+    className="border p-2 rounded w-full sm:w-auto text-sm"
     onChange={(e) => setSort({ price: e.target.value })}
   >
     <option value="">Sort</option>
@@ -177,7 +178,7 @@ useEffect(() => {
   </select>
 
   <select
-    className="border p-2 rounded"
+    className="border p-2 rounded w-full sm:w-auto text-sm"
     onChange={(e) => setFilter({ approvalStatus: e.target.value })}
   >
     <option value="">Status</option>
@@ -185,6 +186,7 @@ useEffect(() => {
     <option value="approved">Approved</option>
     <option value="rejected">Rejected</option>
   </select>
+  </div>
 </div>
        
     <div className="overflow-x-auto">

@@ -117,23 +117,22 @@ const SellerOrderListing: React.FC = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4 md:p-6">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Order Management</h2>
+        <h2 className="text-xl sm:text-2xl font-bold">Order Management</h2>
       </div>
 
       {orders.length === 0 ? (
-        <p>No orders found.</p>
+        <p className="text-center text-gray-500 py-8">No orders found.</p>
       ) : (
         orders.map((order) => (
-            console.log(order),
-          <div key={order._id} className="border border-gray-300 rounded-xl mb-6 p-5 shadow-sm">
-            <div className="flex justify-between mb-3">
+          <div key={order._id} className="border border-gray-300 rounded-xl mb-6 p-4 sm:p-5 shadow-sm">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-3">
               <div>
-                <h3 className="text-lg font-semibold text-blue-600">
+                <h3 className="text-base sm:text-lg font-semibold text-blue-600">
                   Order #{order._id.slice(-6).toUpperCase()}
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs sm:text-sm text-gray-500">
                   {new Date(order.createdAt).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -143,8 +142,8 @@ const SellerOrderListing: React.FC = () => {
                   })}
                 </p>
               </div>
-              <div className="flex items-center space-x-4">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadgeColor(order.status)}`}>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:space-x-4 w-full sm:w-auto">
+                <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${getStatusBadgeColor(order.status)}`}>
                   {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                 </span>
                 {order.status !== 'cancelled' && order.status !== 'delivered' && (
@@ -152,7 +151,7 @@ const SellerOrderListing: React.FC = () => {
                     value={order.status}
                     onValueChange={(value) => handleStatusUpdate(order._id, value)}
                     disabled={updatingStatus === order._id}
-                    className="w-40"
+                    className="w-full sm:w-40"
                   >
                     {statusOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
@@ -162,7 +161,7 @@ const SellerOrderListing: React.FC = () => {
                   </Select>
                 )}
                 {updatingStatus === order._id && (
-                  <span className="text-sm text-gray-500">Updating...</span>
+                  <span className="text-xs sm:text-sm text-gray-500">Updating...</span>
                 )}
               </div>
             </div>
@@ -187,33 +186,33 @@ const SellerOrderListing: React.FC = () => {
 
             {/* Order Items */}
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border rounded-lg overflow-hidden">
+              <table className="w-full text-xs sm:text-sm border rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-gray-50 text-left">
-                    <th className="p-3 border-b">Product</th>
-                    <th className="p-3 border-b text-right">Qty</th>
-                    <th className="p-3 border-b text-right">Price (Rs)</th>
-                    <th className="p-3 border-b text-right">Total (Rs)</th>
+                    <th className="p-2 sm:p-3 border-b">Product</th>
+                    <th className="p-2 sm:p-3 border-b text-right">Qty</th>
+                    <th className="p-2 sm:p-3 border-b text-right">Price (Rs)</th>
+                    <th className="p-2 sm:p-3 border-b text-right">Total (Rs)</th>
                   </tr>
                 </thead>
                 <tbody>
                   {order.items.map((item, idx) => (
                     <tr key={idx} className="hover:bg-gray-50">
-                      <td className="p-3 border-b">
+                      <td className="p-2 sm:p-3 border-b">
                         <div className="flex items-center">
                           {item.image && (
                             <img 
                               src={item.image} 
                               alt={item.name}
-                              className="w-10 h-10 object-cover rounded mr-3"
+                              className="w-8 h-8 sm:w-10 sm:h-10 object-cover rounded mr-2 sm:mr-3"
                             />
                           )}
-                          <span>{item.name}</span>
+                          <span className="text-xs sm:text-sm">{item.name}</span>
                         </div>
                       </td>
-                      <td className="p-3 border-b text-right">{item.quantity}</td>
-                      <td className="p-3 border-b text-right">{item.price.toFixed(2)}</td>
-                      <td className="p-3 border-b text-right font-medium">
+                      <td className="p-2 sm:p-3 border-b text-right">{item.quantity}</td>
+                      <td className="p-2 sm:p-3 border-b text-right">{item.price.toFixed(2)}</td>
+                      <td className="p-2 sm:p-3 border-b text-right font-medium">
                         {(item.price * item.quantity).toFixed(2)}
                       </td>
                     </tr>
@@ -221,8 +220,8 @@ const SellerOrderListing: React.FC = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={3} className="p-3 text-right font-medium">Order Total:</td>
-                    <td className="p-3 text-right font-bold">
+                    <td colSpan={3} className="p-2 sm:p-3 text-right font-medium text-xs sm:text-sm">Order Total:</td>
+                    <td className="p-2 sm:p-3 text-right font-bold text-xs sm:text-sm">
                       {order.totalAmount?.toFixed(2) || 
                         order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}
                     </td>

@@ -109,32 +109,32 @@ const { LoggedInUser } = useContext(AuthContext)
   return (
     <>
   
-    <div className="bg-gray-100 flex items-center justify-center min-h-screen px-4">
-      <div className="bg-white shadow-xl rounded-2xl p-6 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="bg-gray-100 flex items-center justify-center min-h-screen px-4 py-8">
+      <div className="bg-white shadow-xl rounded-2xl p-4 sm:p-6 max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <div><img
           src={product.image[0]}
           alt={product.title}
-          className="w-full h-80 object-cover rounded-xl shadow-md"
+          className="w-full h-64 sm:h-80 object-cover rounded-xl shadow-md"
         />
-         <Button onClick={handleAdd} className="w-full bg-violet-700  text-white py-2 rounded-lg hover:bg-violet-800 transition duration-200 mt-10">
+         <Button onClick={handleAdd} className="w-full bg-violet-700  text-white py-2 sm:py-3 rounded-lg hover:bg-violet-800 transition duration-200 mt-6 sm:mt-10 text-sm sm:text-base">
           Add to Cart
         </Button>
         </div>
             <div className="flex flex-col justify-between">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">{product.title}</h1>
-        <p className="text-gray-600 mb-1">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">{product.title}</h1>
+        <p className="text-sm sm:text-base text-gray-600 mb-1">
           <span className="font-semibold">Brand:</span> {product.brand?.title}
         </p>
-        <p className="text-gray-600 mb-1">
+        <p className="text-sm sm:text-base text-gray-600 mb-1">
           <span className="font-semibold">Category:</span> {product.category?.title}
         </p>
-        <p className="text-black text-xl font-bold mb-2">Rs.{product.price}</p>
+        <p className="text-black text-lg sm:text-xl font-bold mb-2">Rs.{product.price}</p>
         <div className="mb-4">
-        <p className="text-gray-600 mb-4">{product.description}</p>
+        <p className="text-sm sm:text-base text-gray-600 mb-4">{product.description}</p>
         </div>
         <div className="mb-4">
-        <p className="text-gray-600 mb-4"><span className="font-semibold">Features:</span></p>
-        <ul className="list-disc list-inside mb-4">
+        <p className="text-sm sm:text-base text-gray-600 mb-4"><span className="font-semibold">Features:</span></p>
+        <ul className="list-disc list-inside mb-4 text-sm sm:text-base">
           {product.features.map((feature: string, index: number) => (
             <li key={index} className="text-gray-600">{feature}</li>
           ))}
@@ -142,14 +142,14 @@ const { LoggedInUser } = useContext(AuthContext)
         </ul>
         </div>
         <div className="mb-4">
-      <p className="text-gray-600 font-semibold mb-2">Store Information:</p>
+      <p className="text-sm sm:text-base text-gray-600 font-semibold mb-2">Store Information:</p>
       <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-        <p className="text-gray-700"><span className="font-medium">Name:</span> {product.createdBy.store?.name || "N/A"}</p>
+        <p className="text-sm sm:text-base text-gray-700"><span className="font-medium">Name:</span> {product.createdBy.store?.name || "N/A"}</p>
       </div>
     </div>
 
     {/* Add Reviews Section */}
-    <div className="mt-6">
+    <div className="mt-4 sm:mt-6">
       <ProductReview />
     </div>
     {/* <p className="text-gray-700"><span className="font-medium">Location:</span> {product.store?.location || "N/A"}</p> */}
