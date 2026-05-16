@@ -20,7 +20,7 @@ const { LoggedInUser } = useContext(AuthContext)
   const getProductBySlug = async () => {
     try {
       const response:any = await ProductSvc.getRequest(`/products/slug/${slug}`);
-      setProduct(response.result);
+      setProduct(response.result[0]);
       console.log(product)
       console.log('Product response:', response);
     } catch (err) {

@@ -35,7 +35,7 @@ const HeroSection = () => {
       } else {
         setProduct([]);
       }
-    },700);
+    },800);
     return () => {
       clearTimeout(timeout);
     };
