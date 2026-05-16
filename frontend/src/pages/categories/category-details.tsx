@@ -53,7 +53,7 @@ const CategoryDetailsPage = () => {
       }
       >
       {/* <CategoryDropdown/> */}
-        <div className="flex justify-between mx-20 mt-10 border-b border-violet-200 pb-3">
+        <div className="flex justify-between px-4 sm:px-6 lg:px-20 mt-6 lg:mt-10 border-b border-violet-200 pb-3">
       <Heading2 value={category}></Heading2>
           {/* <a
             className="bg-violet-700 w-40 rounded-lg text-white text-center py-2.5 text-[18px]"
@@ -63,7 +63,7 @@ const CategoryDetailsPage = () => {
           </a> */}
         </div>
   
-       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-4 my-10">
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4 sm:px-6 lg:px-20 my-6 lg:my-10">
         
           {products.map((item) => (
             <SingleProductCard
